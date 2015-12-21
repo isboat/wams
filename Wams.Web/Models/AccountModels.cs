@@ -73,8 +73,24 @@ namespace Wams.Web.Models
     public class RegisterModel
     {
         [Required]
-        [Display(Name = "User name")]
-        public string UserName { get; set; }
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "First names")]
+        public string FirstName { get; set; }
+        
+        [Required]
+        [Display(Name = "Last/Family name")]
+        public string LastName { get; set; }
+        
+        [Required]
+        [Display(Name = "Mobile number")]
+        public string MobileNumber { get; set; }
+        
+        [Required]
+        [Display(Name = "Address")]
+        public string Address { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
