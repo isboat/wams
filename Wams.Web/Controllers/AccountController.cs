@@ -10,13 +10,18 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using Wams.Web.Filters;
 using Wams.Web.Models;
+using Wams.Interfaces;
+using Wams.Common;
+using Wams.ViewModels;
 
 namespace Wams.Web.Controllers
 {
     [Authorize]
-    [InitializeSimpleMembership]
+    //[InitializeSimpleMembership]
     public class AccountController : Controller
     {
+        private readonly IAuthentication authentication = Ioc.Instance.Resolve<IAuthentication>();
+
         //
         // GET: /Account/Login
 
@@ -35,11 +40,24 @@ namespace Wams.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            //if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            //{
+            //    return RedirectToLocal(returnUrl);
+            //}
+            if (ModelState.IsValid)
             {
+                var response = this.authentication.Login(model);
+
+                if (response != null && response.Status == Status.Success)
+                {
+                    var formAuthCookie = new HttpCookie(response.FormsAuthCookieName, response.FormsAuthCookieValue);
+                    this.Response.Cookies.Add(formAuthCookie);
+
+                    return this.RedirectToAction("Index", "Home");
+                }
                 return RedirectToLocal(returnUrl);
             }
-
+            
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "The user name or password provided is incorrect.");
             return View(model);
@@ -52,7 +70,13 @@ namespace Wams.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            WebSecurity.Logout();
+            if (!this.Request.IsAuthenticated)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            //WebSecurity.Logout();
+            FormsAuthentication.SignOut();
 
             return RedirectToAction("Index", "Home");
         }

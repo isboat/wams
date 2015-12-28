@@ -5,6 +5,18 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wams.Web", "Wams.Web\Wams.Web.csproj", "{84BA1CD1-1859-4B91-9663-103710696164}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wams.Common", "Wams.Common\Wams.Common.csproj", "{5374CC2C-9E8B-4153-B27E-DE52D38C949D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wams.Interfaces", "Wams.Interfaces\Wams.Interfaces.csproj", "{5A359E86-401B-4E5C-B7D5-0D3FF8C8225C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wams.DomainService", "Wams.DomainService\Wams.DomainService.csproj", "{819D356B-9381-4CD3-B13D-FEC3A5569A7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wams.ViewModels", "Wams.ViewModels\Wams.ViewModels.csproj", "{798551DA-B3B4-4621-A13E-D6CF6A7137C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wams.DataAccess", "Wams.DataAccess\Wams.DataAccess.csproj", "{8A2D01F0-6024-472D-AA25-66891088893F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wams.DataObjects", "Wams.DataObjects\Wams.DataObjects.csproj", "{4478F23F-7EAF-4CBF-954A-73D1F4B71E11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +27,30 @@ Global
 		{84BA1CD1-1859-4B91-9663-103710696164}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84BA1CD1-1859-4B91-9663-103710696164}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84BA1CD1-1859-4B91-9663-103710696164}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5374CC2C-9E8B-4153-B27E-DE52D38C949D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5374CC2C-9E8B-4153-B27E-DE52D38C949D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5374CC2C-9E8B-4153-B27E-DE52D38C949D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5374CC2C-9E8B-4153-B27E-DE52D38C949D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A359E86-401B-4E5C-B7D5-0D3FF8C8225C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A359E86-401B-4E5C-B7D5-0D3FF8C8225C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A359E86-401B-4E5C-B7D5-0D3FF8C8225C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A359E86-401B-4E5C-B7D5-0D3FF8C8225C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{819D356B-9381-4CD3-B13D-FEC3A5569A7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{819D356B-9381-4CD3-B13D-FEC3A5569A7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{819D356B-9381-4CD3-B13D-FEC3A5569A7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{819D356B-9381-4CD3-B13D-FEC3A5569A7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{798551DA-B3B4-4621-A13E-D6CF6A7137C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{798551DA-B3B4-4621-A13E-D6CF6A7137C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{798551DA-B3B4-4621-A13E-D6CF6A7137C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{798551DA-B3B4-4621-A13E-D6CF6A7137C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A2D01F0-6024-472D-AA25-66891088893F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A2D01F0-6024-472D-AA25-66891088893F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A2D01F0-6024-472D-AA25-66891088893F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A2D01F0-6024-472D-AA25-66891088893F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4478F23F-7EAF-4CBF-954A-73D1F4B71E11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4478F23F-7EAF-4CBF-954A-73D1F4B71E11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4478F23F-7EAF-4CBF-954A-73D1F4B71E11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4478F23F-7EAF-4CBF-954A-73D1F4B71E11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

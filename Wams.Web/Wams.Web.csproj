@@ -302,12 +302,42 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
+    <Content Include="unity.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wams.Common\Wams.Common.csproj">
+      <Project>{5374cc2c-9e8b-4153-b27e-de52d38c949d}</Project>
+      <Name>Wams.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wams.DataAccess\Wams.DataAccess.csproj">
+      <Project>{8a2d01f0-6024-472d-aa25-66891088893f}</Project>
+      <Name>Wams.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wams.DataObjects\Wams.DataObjects.csproj">
+      <Project>{4478f23f-7eaf-4cbf-954a-73d1f4b71e11}</Project>
+      <Name>Wams.DataObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wams.DomainService\Wams.DomainService.csproj">
+      <Project>{819d356b-9381-4cd3-b13d-fec3a5569a7f}</Project>
+      <Name>Wams.DomainService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wams.Interfaces\Wams.Interfaces.csproj">
+      <Project>{5a359e86-401b-4e5c-b7d5-0d3ff8c8225c}</Project>
+      <Name>Wams.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wams.ViewModels\Wams.ViewModels.csproj">
+      <Project>{798551da-b3b4-4621-a13e-d6cf6a7137c3}</Project>
+      <Name>Wams.ViewModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

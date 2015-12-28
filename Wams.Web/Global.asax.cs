@@ -6,6 +6,9 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Web.Script.Serialization;
+using System.Web.Security;
+using Wams.ViewModels;
 
 namespace Wams.Web
 {
@@ -23,6 +26,34 @@ namespace Wams.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+        }
+
+        protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
+        {
+            var authCookie = this.Request.Cookies[FormsAuthentication.FormsCookieName];
+
+            if (authCookie != null)
+            {
+                var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                var serializer = new JavaScriptSerializer();
+                if (authTicket == null)
+                {
+                    return;
+                }
+
+                var serializeModel = serializer.Deserialize<CustomPrincipalSerializeModel>(authTicket.UserData);
+                var newUser = new CustomPrincipal(authTicket.Name)
+                {
+                    Id = serializeModel.Id,
+                    FirstName = serializeModel.FirstName,
+                    LastName = serializeModel.LastName,
+                    Email = serializeModel.Email,
+                    DateOfBirth = serializeModel.DateOfBirth,
+                    Gender = serializeModel.Gender
+                };
+
+                HttpContext.Current.User = newUser;
+            }
         }
     }
 }
