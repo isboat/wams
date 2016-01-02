@@ -12,7 +12,14 @@ namespace Wams.DataAccess
     {
         public UserAccount Login(string email, string password)
         {
-            return new UserAccount();
+            return new UserAccount { 
+                AccountId = 1, 
+                DateOfBirth = DateTime.Now, 
+                EmailAddress = "em@em.com", 
+                FirstName = "First name",
+                Gender = "Male",
+                LastName = "Lastname"
+            };
         }
     }
 }

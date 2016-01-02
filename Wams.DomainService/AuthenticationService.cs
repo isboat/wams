@@ -22,7 +22,7 @@ namespace Wams.DomainService
 
         public LoginResponse Login(LoginModel model)
         {
-            var userAccount = this.accountDataAccess.Login(model.UserName, model.Password);
+            var userAccount = this.accountDataAccess.Login(model.Email, model.Password);
             var response = new LoginResponse { Status = Status.Fail };
             if (userAccount != null)
             {
@@ -37,7 +37,7 @@ namespace Wams.DomainService
 
                 var authTicket = new FormsAuthenticationTicket(
                     1,
-                    model.UserName,
+                    model.Email,
                     DateTime.Now,
                     DateTime.Now.AddMinutes(15),
                     false,
