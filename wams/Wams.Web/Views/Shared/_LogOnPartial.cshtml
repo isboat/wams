@@ -1,0 +1,23 @@
+﻿@if (Request.IsAuthenticated)
+{
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown">My Account<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("My Profile", "ViewMyProfile", "Account", new { memberId = User.Id }, null)</li>
+            <li>@Html.ActionLink("Change Password", "ChangePassword", "Auth")</li>
+            <li>@Html.ActionLink("My Car", "ViewMyVehicle", "Account")</li>
+            <li><a href="#">Ride History</a></li>
+            <li><a href="#">Others</a></li>
+            <li class="divider"></li>
+            @*<li class="dropdown-header">Dropdown header 2</li>*@
+            <li>@Html.ActionLink("Log Off", "LogOff", "Auth")</li>
+        </ul>
+    </li>
+
+    <li></li>
+}
+else
+{
+    <li>@Html.ActionLink("Log in", "Login", "Auth")</li>
+    <li>@Html.ActionLink("Register", "Register", "Account")</li>
+}

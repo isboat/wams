@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8B7E2E58-6128-4A14-B31E-24142CF0930A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Wams.BusinessLogic</RootNamespace>
+    <AssemblyName>Wams.BusinessLogic</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountLogic.cs" />
+    <Compile Include="AuthenticationLogic.cs" />
+    <Compile Include="AuthenticationModels\CustomPrincipal.cs" />
+    <Compile Include="AuthenticationModels\CustomPrincipalSerializeModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wams.Caching\Wams.Caching.csproj">
+      <Project>{F754CE7A-68F2-4C9E-8BE8-C0DA2B85871F}</Project>
+      <Name>Wams.Caching</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wams.Common\Wams.Common.csproj">
+      <Project>{bc4d0aee-6ffb-43f3-8db3-b5ae737a0aa2}</Project>
+      <Name>Wams.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wams.DAL\Wams.DAL.csproj">
+      <Project>{467E11F2-92A7-4A29-AD70-36E24868A1D3}</Project>
+      <Name>Wams.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wams.DataObjects\Wams.DataObjects.csproj">
+      <Project>{51b8b4c8-627c-4e9c-b6bf-fc2c2438c247}</Project>
+      <Name>Wams.DataObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wams.DomainServices\Wams.DomainObjects.csproj">
+      <Project>{10bc8600-97f1-4f21-b393-144c142d9807}</Project>
+      <Name>Wams.DomainObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wams.Enums\Wams.Enums.csproj">
+      <Project>{5ef6322a-18a4-498b-a08d-72dc3075f540}</Project>
+      <Name>Wams.Enums</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wams.Interfaces\Wams.Interfaces.csproj">
+      <Project>{31669643-5985-439d-ab3d-bee56aae53ec}</Project>
+      <Name>Wams.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

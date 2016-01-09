@@ -1,0 +1,25 @@
+﻿@using Wams.Web.Models
+@model Wams.Web.Models.BaseResponse
+<br/>
+<div class="container">
+@{
+    if (Model.Status == BaseResponseStatus.Success)
+    {
+        <div class="alert alert-success">
+            <p>
+                <strong>congratulations!!!</strong> Your registration is successful.
+            </p>
+            <div>@Html.ActionLink("Log in.", "Login", "Auth") with your registered credentials</div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            <p>
+                <strong>Error occurred!</strong> Your registration was unsuccessful.
+            </p>
+            <div>Please @Html.ActionLink("try again.", "Register", "Account")</div>
+        </div>
+    }
+}
+</div>
