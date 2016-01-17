@@ -14,19 +14,16 @@ namespace Wams.DomainObjects.Authentication
         /// <summary>
         /// Account key of logged in user
         /// </summary>
-        [DataMember]
         public string AccountKey { get; set; }
 
         /// <summary>
         /// Status of login, whether login was successful or an error occured
         /// </summary>
-        [DataMember]
         public AuthenticationStatus AuthenticationStatus { get; set; }
 
         /// <summary>
         /// Login Message
         /// </summary>
-        [DataMember]
         public string Message { get; set; }
 
         public string FormsAuthCookieName { get; set; }

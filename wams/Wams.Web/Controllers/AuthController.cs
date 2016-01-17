@@ -45,19 +45,23 @@ namespace Wams.Web.Controllers
                     return this.View();
                 }
 
-                request.WebSource = new Source { Checksum = "dsktpid=12/12/2015", TimeStamp = "12/12/2015"};
-                var response = this.authenticationLogic.Login(request.Username, request.Password, request.WebSource);
+                var response = this.authenticationLogic.Login(request.Username, request.Password);
 
-                if (response != null)
+                if (response != null && response.AuthenticationStatus == AuthenticationStatus.Successful)
                 {
-
                     var formAuthCookie = new HttpCookie(response.FormsAuthCookieName, response.FormsAuthCookieValue);
                     this.Response.Cookies.Add(formAuthCookie);
 
                     return this.RedirectToAction("Index", "Home");
                 }
 
-                this.ModelState.AddModelError("Username", "username or password is incorrect");
+                var error = "username or password is incorrect";
+                if (response != null && !string.IsNullOrEmpty(response.Message))
+                {
+                    error = response.Message;
+                }
+
+                this.ModelState.AddModelError("Username", error);
                 return this.View();
             }
             catch (Exception ex)

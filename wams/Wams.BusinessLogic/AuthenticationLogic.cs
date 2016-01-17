@@ -32,16 +32,8 @@ namespace Wams.BusinessLogic
             this.accountRepository = accountRepository;
         }
 
-        public LoginResponse Login(string username, string password, Source webUserInfo)
+        public LoginResponse Login(string username, string password)
         {
-            bool sameAsTimestamp;
-            var appId = UtilityHelper.GetAppId(webUserInfo.Checksum, webUserInfo.TimeStamp, out sameAsTimestamp);
-
-            if (!sameAsTimestamp || string.IsNullOrEmpty(appId) || !this.upaCarConfiguration.IsClientId(appId))
-            {
-                throw new SecurityException("Encountered Security Issue");
-            }
-
             var cacheKey = GlobalCachingProvider.Instance.GetCacheKey("AuthenticationLogic", "Login", username);
 
             if (GlobalCachingProvider.Instance.ItemExist(cacheKey))
@@ -51,7 +43,6 @@ namespace Wams.BusinessLogic
 
             var userAccount = this.accountRepository.Login(username, password);
             
-            LoginResponse response = null;
             if (userAccount != null)
             {
                 var serializeModel = new CustomPrincipalSerializeModel();
@@ -59,6 +50,17 @@ namespace Wams.BusinessLogic
                 serializeModel.FirstName = userAccount.FirstName;
                 serializeModel.LastName = userAccount.LastName;
                 serializeModel.Email = userAccount.EmailAddress;
+                serializeModel.UserLoginRole = userAccount.UserLoginRole;
+                serializeModel.MembershipType = userAccount.MembershipType;
+
+                var response = new LoginResponse();
+
+                if (userAccount.UserLoginRole == 0)
+                {
+                    response.AuthenticationStatus = AuthenticationStatus.Failed;
+                    response.Message = "User login role is 0.";
+                    return response;
+                }
 
                 var serializer = new JavaScriptSerializer();
                 var userData = serializer.Serialize(serializeModel);
@@ -77,17 +79,17 @@ namespace Wams.BusinessLogic
                                AccountKey = userAccount.AccountId.ToString(),
                                FirstName = userAccount.FirstName,
                                LastName = userAccount.LastName,
-                               Gender = userAccount.Gender,
                                EmailAddress = userAccount.EmailAddress,
-                               DateOfBirth = userAccount.DateOfBirth,
                                FormsAuthCookieName = FormsAuthentication.FormsCookieName,
                                FormsAuthCookieValue = FormsAuthentication.Encrypt(authTicket)
                            };
 
                 GlobalCachingProvider.Instance.AddItem(cacheKey, response);
+
+                return response;
             }
 
-            return response;
+            return null;
         }
 
         public ChangePasswordResponse ChangePassword(ChangePasswordRequest request)

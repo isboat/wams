@@ -11,18 +11,28 @@ namespace Wams.DAL.Interfaces
 
     public interface IAccountRepository
     {
-        UserAccount Login(string email, string password);
+        BaseUserInfo Login(string email, string password);
 
         UserAccount GetAccountInfo(int accountid);
 
         bool SetPasscode(string accountkey, string passcodeKey);
 
-        int CreateApplication(string firstname, string lastname, string gender, DateTime dob, string email, string password);
+        int CreateApplication(
+            string firstname, 
+            string lastname, 
+            string gender, 
+            DateTime dob, 
+            string email, 
+            string password, 
+            string membershipType,
+            int userLoginRole);
 
         int UpdateAccountInfo(UserAccount userAccount);
 
         int ChangePassword(string accountKey, string newPassword);
 
         string GetPassword(string accountKey);
+
+        List<UserAccount> GetAllUserAccounts();
     }
 }

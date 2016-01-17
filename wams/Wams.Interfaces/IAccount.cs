@@ -19,5 +19,7 @@ namespace Wams.Interfaces
         Profile GetMemberProfile(int memberId);
 
         int UpdateProfile(Profile profile);
+
+        List<Profile> GetUserProfiles();
     }
 }

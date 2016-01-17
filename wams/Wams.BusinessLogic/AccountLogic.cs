@@ -38,7 +38,9 @@ namespace Wams.BusinessLogic
                 application.Gender,
                 application.DateOfBirth,
                 application.EmailAddress,
-                application.Password);
+                application.Password,
+                application.MembershipType,
+                application.UserLoginRole);
 
             if (memberId > 0)
             {
@@ -63,7 +65,9 @@ namespace Wams.BusinessLogic
                       MemberId = userProfile.AccountId,
                       Telephone = userProfile.Telephone,
                       Biography = userProfile.Biography,
-                      EmergencyTel = userProfile.EmergencyTel
+                      EmergencyTel = userProfile.EmergencyTel,
+                      UserLoginRole = userProfile.UserLoginRole,
+                      MembershipType = userProfile.MembershipType
                   }
                 : null;
         }
@@ -86,30 +90,38 @@ namespace Wams.BusinessLogic
                         LastName = profile.LastName,
                         Telephone = profile.Telephone,
                         Biography = profile.Biography,
-                        EmergencyTel = profile.EmergencyTel
+                        EmergencyTel = profile.EmergencyTel,
+                        MembershipType = profile.MembershipType,
+                        UserLoginRole = profile.UserLoginRole
                     });
 
             return response;
         }
 
-        //public string GetAccountKeyByEmailAddress(string emailAddress)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public List<Profile> GetUserProfiles()
+        {
+            var users = this.accountRepository.GetAllUserAccounts();
+            if (users != null && users.Count > 0)
+            {
+                var profiles = new List<Profile>();
+                foreach (var user in users)
+                {
+                    profiles.Add(new Profile
+                        {
+                            MemberId = user.AccountId,
+                            EmailAddress = user.EmailAddress,
+                            DateOfBirth = user.DateOfBirth,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+                            MembershipType = user.MembershipType,
+                            Telephone = user.Telephone
+                        });
+                }
 
-        //public string GetFirstName(string accountKey)
-        //{
-        //    throw new NotImplementedException();
-        //}
+                return profiles;
+            }
 
-        //public IEnumerable<HistoryItem> GetHistory(string accountKey, DateTime periodFrom, DateTime periodTo)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public DateTime GetPreviousLoginDate(string accountKey)
-        //{
-        //    throw new NotImplementedException();
-        //}
+            return null;
+        }
     }
 }

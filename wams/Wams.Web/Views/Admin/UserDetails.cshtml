@@ -1,0 +1,122 @@
+﻿@model Wams.DomainObjects.Account.Profile
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Profile</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div>
+            @Html.HiddenFor(model => model.MemberId)
+            @Html.HiddenFor(model => model.ProfilePicUrl)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Gender, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Gender)
+                @Html.ValidationMessageFor(model => model.Gender)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FirstName)
+                @Html.ValidationMessageFor(model => model.FirstName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LastName)
+                @Html.ValidationMessageFor(model => model.LastName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateOfBirth, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DateOfBirth)
+                @Html.ValidationMessageFor(model => model.DateOfBirth)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmailAddress, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EmailAddress)
+                @Html.ValidationMessageFor(model => model.EmailAddress)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Telephone, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Telephone)
+                @Html.ValidationMessageFor(model => model.Telephone)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Biography, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Biography)
+                @Html.ValidationMessageFor(model => model.Biography)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmergencyTel, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EmergencyTel)
+                @Html.ValidationMessageFor(model => model.EmergencyTel)
+            </div>
+        </div>
+
+        <div class="form-group preset">
+            @Html.LabelFor(model => model.MembershipType, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MembershipType)
+                @Html.ValidationMessageFor(model => model.MembershipType)
+                <button value="None">None</button>
+                <button value="Investor">Investor</button>
+                <button value="Admin">Admin</button>
+            </div>
+        </div>
+
+        <div class="form-group preset">
+            @Html.LabelFor(model => model.UserLoginRole, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserLoginRole)
+                @Html.ValidationMessageFor(model => model.UserLoginRole)
+                <button value="0">None</button>
+                <button value="1">As Investor</button>
+                <button value="2">As admin</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save User's Profile" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "List")
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".preset button").click(function (evt) {
+            evt.preventDefault();
+            $(this).siblings("input").val($(this).val());
+        })
+    });
+</script>

@@ -33,5 +33,11 @@
 
         [DisplayName("Emergency Telephone")]
         public string EmergencyTel { get; set; }
+        
+        [DisplayName("Membership Type ")]
+        public string MembershipType { get; set; }
+
+        [DisplayName("Login Level")]
+        public int UserLoginRole { get; set; }
     }
 }

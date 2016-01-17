@@ -13,7 +13,5 @@ namespace Wams.DomainObjects.Authentication
         public int AccountKey { get; set; }
 
         public string Username { get; set; }
-
-        public Source WebSource { get; set; }
     }
 }

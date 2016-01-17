@@ -30,5 +30,9 @@ namespace Wams.BusinessLogic.AuthenticationModels
         public string LastName { get; set; }
 
         public string Email { get; set; }
+
+        public int UserLoginRole { get; set; }
+
+        public string MembershipType { get; set; }
     }
 }

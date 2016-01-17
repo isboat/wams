@@ -17,5 +17,9 @@ namespace Wams.DomainObjects.Registration
         public string EmailAddress { get; set; }
 
         public string Password { get; set; }
+
+        public string MembershipType { get; set; }
+
+        public int UserLoginRole { get; set; }
     }
 }

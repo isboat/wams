@@ -11,7 +11,7 @@ namespace Wams.Interfaces
 {
     public interface IAuthentication
     {
-        LoginResponse Login(string username, string password, Source webUserInfo);
+        LoginResponse Login(string username, string password);
 
         ChangePasswordResponse ChangePassword(ChangePasswordRequest request);
 

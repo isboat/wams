@@ -48,7 +48,9 @@ namespace Wams.Web.Controllers
                             DateOfBirth = req.DateOfBirth,
                             EmailAddress = req.EmailAddress,
                             Gender = req.Gender,
-                            Password = req.Password
+                            Password = req.Password,
+                            MembershipType = "None",
+                            UserLoginRole = 0
                         });
 
                 var result = new BaseResponse { Status = BaseResponseStatus.Failed};
@@ -106,20 +108,5 @@ namespace Wams.Web.Controllers
         }
 
         #endregion
-
-        #region Other profiles
-
-        [HttpGet]
-        public ActionResult ViewOtherProfile(int memberId)
-        {
-            if (memberId < 1)
-                return this.RedirectToAction("Index", "Home");
-
-            var model = this.accountLogic.GetMemberProfile(memberId);
-            return this.View(model);
-        }
-
-        #endregion
-
     }
 }

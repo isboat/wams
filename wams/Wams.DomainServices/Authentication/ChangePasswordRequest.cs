@@ -22,7 +22,5 @@ namespace Wams.DomainObjects.Authentication
 
         [DisplayName("Confirm new password")]
         public string ConfirmNewPassword { get; set; }
-
-        public Source WebSource { get; set; }
     }
 }

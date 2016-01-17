@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title Upacar Application</title>
+    @*<title>@ViewBag.Title WAMS Application</title>*@
+    <title>Welfare Account Management</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -25,6 +26,7 @@
                 </button>
                 <a class="navbar-brand navbar-default" href="/">
                     <img src="@Url.Content("~/Images/logo.png")" width="100" height="40" />
+                    Welfare Account Management
                 </a>
                 @*@Html.ActionLink("UPACAR", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
