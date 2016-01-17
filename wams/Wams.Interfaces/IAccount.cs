@@ -20,6 +20,8 @@ namespace Wams.Interfaces
 
         int UpdateProfile(Profile profile);
 
+        int UpdateProfilePicUrl(int accountId, string url);
+
         List<Profile> GetUserProfiles();
     }
 }

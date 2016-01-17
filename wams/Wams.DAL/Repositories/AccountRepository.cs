@@ -106,7 +106,8 @@ namespace Wams.DAL.Repositories
                                        Telephone = record["phone_number"].ToString(),
                                        EmergencyTel = record["emergency_contact_number"].ToString(),
                                        MembershipType = record["membershiptype"].ToString(),
-                                       UserLoginRole = Convert.ToInt32(record["loginrole"].ToString())
+                                       UserLoginRole = Convert.ToInt32(record["loginrole"].ToString()),
+                                       ProfilePicUrl = record["picurl"].ToString()
                                    };
                         }
 
@@ -295,6 +296,35 @@ namespace Wams.DAL.Repositories
                 throw;
             }
 
+        }
+
+        public int UpdateProfilePicUrl(int accountId, string url)
+        {
+            try
+            {
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    using (var cmd = new MySqlCommand("updateprofileurl", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        connection.Open();
+
+                        cmd.Parameters.AddWithValue("@p_id", accountId);
+                        cmd.Parameters["@p_id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_url", url);
+                        cmd.Parameters["@p_url"].Direction = ParameterDirection.Input;
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public int ChangePassword(string accountKey, string newPassword)

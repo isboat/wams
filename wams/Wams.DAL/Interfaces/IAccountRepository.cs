@@ -29,6 +29,8 @@ namespace Wams.DAL.Interfaces
 
         int UpdateAccountInfo(UserAccount userAccount);
 
+        int UpdateProfilePicUrl(int accountId, string url);
+
         int ChangePassword(string accountKey, string newPassword);
 
         string GetPassword(string accountKey);

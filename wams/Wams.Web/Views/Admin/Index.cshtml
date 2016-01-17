@@ -1,5 +1,18 @@
-﻿<div>
-    <ul>
-        <li>@Html.ActionLink("View all users", "List", "Admin")</li>
-    </ul>
+﻿<br /><br />
+<div class="alert alert-success">
+    <strong>As an administrator,</strong> you can make changes to client's profile by using the following buttons
+</div>
+
+<div class="panel panel-info">
+    <div class="panel-heading">Client Profiles</div>
+    <div class="panel-body">
+        @Html.ActionLink("View all users", "List", "Admin", null, new { @class = "btn btn-primary" })
+    </div>
+</div>
+
+<div class="panel panel-danger">
+    <div class="panel-heading">Page Settings</div>
+    <div class="panel-body">
+        @Html.ActionLink("Edit Contact Us", "", "", null, new { @class = "btn btn-danger" })
+    </div>
 </div>

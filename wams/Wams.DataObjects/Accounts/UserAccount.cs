@@ -34,5 +34,7 @@ namespace Wams.DataObjects.Accounts
         public string LastName { get; set; }
 
         public string MembershipType { get; set; }
+
+        public string ProfilePicUrl { get; set; }
     }
 }

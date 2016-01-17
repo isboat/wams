@@ -67,7 +67,8 @@ namespace Wams.BusinessLogic
                       Biography = userProfile.Biography,
                       EmergencyTel = userProfile.EmergencyTel,
                       UserLoginRole = userProfile.UserLoginRole,
-                      MembershipType = userProfile.MembershipType
+                      MembershipType = userProfile.MembershipType,
+                      ProfilePicUrl = userProfile.ProfilePicUrl
                   }
                 : null;
         }
@@ -96,6 +97,11 @@ namespace Wams.BusinessLogic
                     });
 
             return response;
+        }
+
+        public int UpdateProfilePicUrl(int accountId, string url)
+        {
+            return this.accountRepository.UpdateProfilePicUrl(accountId, url);
         }
 
         public List<Profile> GetUserProfiles()

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Wams.Web.Controllers
 {
+    using System.IO;
     using Wams.Common.IoC;
     using Wams.DomainObjects.Account;
     using Wams.DomainObjects.Registration;
@@ -105,6 +106,41 @@ namespace Wams.Web.Controllers
             var response = this.accountLogic.UpdateProfile(profile);
 
             return response > 0 ? this.RedirectToAction("ViewMyProfile", new { memberId = profile.MemberId}) : this.RedirectToAction("Index", "Home");
+        }
+
+        #endregion
+
+        #region Upload Photo
+        [HttpGet]
+        public ActionResult UploadPhoto()
+        {
+            if (this.Request.IsAuthenticated)
+            {
+                return this.View();
+            }
+
+            return this.RedirectToAction("Login", "Auth");
+        }
+
+        [HttpPost]
+        public ActionResult UploadPhoto(HttpPostedFileBase file)
+        {
+            if (!this.Request.IsAuthenticated)
+            {
+                return this.RedirectToAction("Login", "Auth");
+            }
+
+            //check file was submitted
+            if (file != null && file.ContentLength > 0)
+            {
+                string fname = Guid.NewGuid().ToString("N") +  Path.GetFileName(file.FileName);
+                file.SaveAs(Server.MapPath(Path.Combine("~/Images/ProfilePics/", fname)));
+
+                var response = this.accountLogic.UpdateProfilePicUrl(this.User.Id, fname);
+
+            }
+            return this.RedirectToAction("Index", "Home");
+            //return View();
         }
 
         #endregion
