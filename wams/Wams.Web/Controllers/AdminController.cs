@@ -16,8 +16,8 @@ namespace Wams.Web.Controllers
         private readonly IAccount accountLogic = IoC.Instance.Resolve<IAccount>();
 
         #endregion
+        
         //
-        // GET: /Admin/
         public ActionResult Index()
         {
             if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
@@ -78,11 +78,19 @@ namespace Wams.Web.Controllers
                 this.RedirectToAction("UserDetails", new { id = profile.MemberId });
         }
 
+        #region Dues
+
         //
-        // GET: /Admin/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult AddCustomerDues()
         {
-            return View();
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            {
+                return View();
+            }
+
+            return this.RedirectToAction("Index", "Home");
         }
+
+        #endregion
     }
 }
