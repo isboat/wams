@@ -6,7 +6,8 @@
     <div class="panel-heading">Profile of @Model.FirstName @Model.LastName</div>
     <div class="panel-body">
         @Html.ActionLink("Add customer's dues", "List", "Admin", null, new { @class = "btn btn-primary" })
-        @Html.ActionLink("Process customer's transfer", "List", "Admin", null, new { @class = "btn btn-primary disabled" })
+        @Html.ActionLink("View customer's dues", "List", "Admin", null, new { @class = "btn btn-warning" })
+        @Html.ActionLink("Process customer's transfer", "List", "Admin", null, new { @class = "btn btn-danger disabled" })
     </div>
 </div>
 
@@ -27,70 +28,77 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Gender, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Gender)
-                @Html.ValidationMessageFor(model => model.Gender)
+                @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control", placeholder = "gender" } })
+                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FirstName)
-                @Html.ValidationMessageFor(model => model.FirstName)
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "first name" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.LastName)
-                @Html.ValidationMessageFor(model => model.LastName)
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "last name" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.DateOfBirth, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateOfBirth)
-                @Html.ValidationMessageFor(model => model.DateOfBirth)
+                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", placeholder = "date of birth" } })
+                @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Telephone, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Telephone)
-                @Html.ValidationMessageFor(model => model.Telephone)
+                @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control", placeholder = "telephone" } })
+                @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.EmergencyTel, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EmergencyTel)
-                @Html.ValidationMessageFor(model => model.EmergencyTel)
+                @Html.EditorFor(model => model.EmergencyTel, new { htmlAttributes = new { @class = "form-control", placeholder = "emergency telephone" } })
+                @Html.ValidationMessageFor(model => model.EmergencyTel, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group preset">
             @Html.LabelFor(model => model.MembershipType, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.MembershipType)
-                @Html.ValidationMessageFor(model => model.MembershipType)
+                @Html.EditorFor(model => model.MembershipType, new { htmlAttributes = new { @class = "form-control", placeholder = "membership type" } })
+                @Html.ValidationMessageFor(model => model.MembershipType, "", new { @class = "text-danger" })
                 <button value="None">None</button>
                 <button value="Investor">Investor</button>
-                <button value="Admin">Admin</button>
+                @if (Model.UserLoginRole > 1)
+                {
+                    <button value="Admin">Admin</button>
+                }
             </div>
         </div>
 
         <div class="form-group preset">
             @Html.LabelFor(model => model.UserLoginRole, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UserLoginRole)
-                @Html.ValidationMessageFor(model => model.UserLoginRole)
-                <button value="0">None</button>
-                <button value="1">As Investor</button>
-                <button value="2">As admin</button>
+                @Html.EditorFor(model => model.UserLoginRole, new { htmlAttributes = new { @class = "form-control", placeholder = "login role" } })
+                @Html.ValidationMessageFor(model => model.UserLoginRole, "", new { @class = "text-danger" })
+                <button value="0">Deactivate Login</button>
+                <button value="1">Activate Login</button>
+
+                @if (Model.UserLoginRole > 1)
+                {
+                    <button value="2">As admin</button>
+                }
             </div>
         </div>
 

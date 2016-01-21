@@ -27,6 +27,10 @@ textarea {
     max-width: 280px;
 }
 
+.nomax-width {
+    max-width: none;
+}
+
 #findRideForm {
     margin-top: 10px;
 }
