@@ -5,7 +5,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using Wams.DataObjects;
-using Wams.DomainObjects.Authentication;
+using Wams.ViewModels.Authentication;
 
 namespace Wams.Interfaces
 {

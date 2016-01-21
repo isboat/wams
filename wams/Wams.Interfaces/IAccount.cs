@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ServiceModel;
-using Wams.DomainObjects.Account;
+using Wams.ViewModels.Account;
+using Wams.ViewModels.Registration;
 
 namespace Wams.Interfaces
 {
-    using Wams.DomainObjects.Registration;
-
     public interface IAccount
     {
         CreateAccountResponse CreateAccount(CreateAccountRequest application);

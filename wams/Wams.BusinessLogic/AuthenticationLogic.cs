@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Wams.DataObjects;
-using Wams.DomainObjects.Authentication;
 using Wams.Enums.Authentication;
 using Wams.Interfaces;
+using Wams.ViewModels.Authentication;
 
 namespace Wams.BusinessLogic
 {

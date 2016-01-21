@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -28,25 +29,33 @@ namespace Wams.Web
 
             if (authCookie != null)
             {
-                var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                var serializer = new JavaScriptSerializer();
-                if (authTicket == null)
+                try
                 {
-                    return;
-                }
-                
-                var serializeModel = serializer.Deserialize<CustomPrincipalSerializeModel>(authTicket.UserData);
-                var newUser = new CustomPrincipal(authTicket.Name)
-                              {
-                                  Id = serializeModel.Id,
-                                  FirstName = serializeModel.FirstName,
-                                  LastName = serializeModel.LastName,
-                                  Email = serializeModel.Email,
-                                  UserLoginRole = serializeModel.UserLoginRole,
-                                  MembershipType = serializeModel.MembershipType
-                              };
+                    var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    var serializer = new JavaScriptSerializer();
+                    if (authTicket == null)
+                    {
+                        return;
+                    }
 
-                HttpContext.Current.User = newUser;
+                    var serializeModel = serializer.Deserialize<CustomPrincipalSerializeModel>(authTicket.UserData);
+                    var newUser = new CustomPrincipal(authTicket.Name)
+                    {
+                        Id = serializeModel.Id,
+                        FirstName = serializeModel.FirstName,
+                        LastName = serializeModel.LastName,
+                        Email = serializeModel.Email,
+                        UserLoginRole = serializeModel.UserLoginRole,
+                        MembershipType = serializeModel.MembershipType
+                    };
+
+                    HttpContext.Current.User = newUser;
+
+                }
+                catch (CryptographicException exception)
+                {
+                    FormsAuthentication.SignOut();
+                }
             }
         }
     }

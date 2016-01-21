@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Wams.DomainObjects.Account;
 using Wams.Interfaces;
+using Wams.ViewModels.Account;
+using Wams.ViewModels.Registration;
 
 namespace Wams.BusinessLogic
 {
     using Wams.DataObjects.Accounts;
     using Wams.DAL.Interfaces;
-    using Wams.DomainObjects.Registration;
     using Wams.Enums.Registration;
     using Wams.DataObjects;
 

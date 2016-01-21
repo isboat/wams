@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Wams.ViewModels.Account;
+using Wams.ViewModels.Registration;
 
 namespace Wams.Web.Controllers
 {
     using System.IO;
     using Wams.Common.IoC;
-    using Wams.DomainObjects.Account;
-    using Wams.DomainObjects.Registration;
     using Wams.Enums.Registration;
     using Wams.Interfaces;
     using Wams.Web.Models;

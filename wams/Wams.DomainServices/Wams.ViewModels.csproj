@@ -7,8 +7,8 @@
     <ProjectGuid>{10BC8600-97F1-4F21-B393-144C142D9807}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wams.DomainObjects</RootNamespace>
-    <AssemblyName>Wams.DomainObjects</AssemblyName>
+    <RootNamespace>Wams.ViewModels</RootNamespace>
+    <AssemblyName>Wams.ViewModels</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

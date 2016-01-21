@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Wams.DomainObjects.Authentication
+namespace Wams.ViewModels.Authentication
 {
-    using System.ComponentModel.DataAnnotations;
-
-    using Wams.DataObjects;
-
     /// <summary>
     /// login request
     /// </summary>

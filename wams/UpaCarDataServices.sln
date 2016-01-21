@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wams.Common", "Wams.Common\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wams.Interfaces", "Wams.Interfaces\Wams.Interfaces.csproj", "{31669643-5985-439D-AB3D-BEE56AAE53EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wams.DomainObjects", "Wams.DomainServices\Wams.DomainObjects.csproj", "{10BC8600-97F1-4F21-B393-144C142D9807}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wams.ViewModels", "Wams.DomainServices\Wams.ViewModels.csproj", "{10BC8600-97F1-4F21-B393-144C142D9807}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wams.Enums", "Wams.Enums\Wams.Enums.csproj", "{5EF6322A-18A4-498B-A08D-72DC3075F540}"
 EndProject

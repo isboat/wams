@@ -51,9 +51,9 @@
       <Project>{51B8B4C8-627C-4E9C-B6BF-FC2C2438C247}</Project>
       <Name>Wams.DataObjects</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Wams.DomainServices\Wams.DomainObjects.csproj">
+    <ProjectReference Include="..\Wams.DomainServices\Wams.ViewModels.csproj">
       <Project>{10BC8600-97F1-4F21-B393-144C142D9807}</Project>
-      <Name>Wams.DomainObjects</Name>
+      <Name>Wams.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

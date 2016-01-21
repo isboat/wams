@@ -1,9 +1,8 @@
-﻿namespace Wams.DomainObjects.Account
-{
-    using System;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel;
 
+namespace Wams.ViewModels.Account
+{
     public class Profile
     {
         public int MemberId { get; set; }

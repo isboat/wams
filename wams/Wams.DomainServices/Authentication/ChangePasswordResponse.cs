@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
+using Wams.Enums.Authentication;
 
-namespace Wams.DomainObjects.Authentication
+namespace Wams.ViewModels.Authentication
 {
-    using Wams.Enums.Authentication;
-
     [DataContract]
     public class ChangePasswordResponse
     {

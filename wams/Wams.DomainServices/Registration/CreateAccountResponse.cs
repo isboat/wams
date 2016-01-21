@@ -1,10 +1,8 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
+using Wams.Enums.Registration;
 
-namespace Wams.DomainObjects.Registration
+namespace Wams.ViewModels.Registration
 {
-    using Wams.Enums.Registration;
-
     [DataContract]
     public class CreateAccountResponse
     {

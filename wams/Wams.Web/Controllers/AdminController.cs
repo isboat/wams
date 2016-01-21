@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Wams.Common.IoC;
-using Wams.DomainObjects.Account;
 using Wams.Interfaces;
+using Wams.ViewModels.Account;
 
 namespace Wams.Web.Controllers
 {
@@ -78,10 +78,10 @@ namespace Wams.Web.Controllers
                 this.RedirectToAction("UserDetails", new { id = profile.MemberId });
         }
 
-        #region Dues
+        #region Member's Dues
 
         //
-        public ActionResult AddCustomerDues()
+        public ActionResult AddMemberDues(int id)
         {
             if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
             {

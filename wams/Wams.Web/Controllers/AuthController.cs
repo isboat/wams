@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Wams.ViewModels.Authentication;
 
 namespace Wams.Web.Controllers
 {
@@ -10,7 +11,6 @@ namespace Wams.Web.Controllers
 
     using Wams.Common.IoC;
     using Wams.DataObjects;
-    using Wams.DomainObjects.Authentication;
     using Wams.Enums.Authentication;
     using Wams.Interfaces;
     using Wams.Web.Models;

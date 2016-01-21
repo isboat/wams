@@ -1,9 +1,9 @@
-﻿namespace Wams.DomainObjects.Account
-{
-    using System;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
+namespace Wams.ViewModels.Account
+{
     public class RegisterRequest
     {
         [Required(ErrorMessage = "Gender is required")]

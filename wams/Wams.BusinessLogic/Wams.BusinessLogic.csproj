@@ -65,9 +65,9 @@
       <Project>{51b8b4c8-627c-4e9c-b6bf-fc2c2438c247}</Project>
       <Name>Wams.DataObjects</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Wams.DomainServices\Wams.DomainObjects.csproj">
+    <ProjectReference Include="..\Wams.DomainServices\Wams.ViewModels.csproj">
       <Project>{10bc8600-97f1-4f21-b393-144c142d9807}</Project>
-      <Name>Wams.DomainObjects</Name>
+      <Name>Wams.ViewModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\Wams.Enums\Wams.Enums.csproj">
       <Project>{5ef6322a-18a4-498b-a08d-72dc3075f540}</Project>

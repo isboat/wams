@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Wams.DomainObjects.Authentication
+﻿namespace Wams.ViewModels.Authentication
 {
-    using Wams.DataObjects;
-
     public class LogoutRequest
     {
         public int AccountKey { get; set; }

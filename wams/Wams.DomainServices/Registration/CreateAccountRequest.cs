@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
-
-namespace Wams.DomainObjects.Registration
+namespace Wams.ViewModels.Registration
 {
     public class CreateAccountRequest
     {

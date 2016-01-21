@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using Wams.Enums.Authentication;
+﻿using Wams.Enums.Authentication;
 
-namespace Wams.DomainObjects.Authentication
+namespace Wams.ViewModels.Authentication
 {
     public class AuthenticationResponse
     {
