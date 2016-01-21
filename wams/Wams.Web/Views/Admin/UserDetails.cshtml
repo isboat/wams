@@ -1,11 +1,11 @@
-﻿@model Wams.DomainObjects.Account.Profile
+﻿@model Wams.ViewModels.Account.Profile
 
 <br />
 
 <div class="panel panel-info">
     <div class="panel-heading">Profile of @Model.FirstName @Model.LastName</div>
     <div class="panel-body">
-        @Html.ActionLink("Add customer's dues", "List", "Admin", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Add customer's dues", "AddMemberDues", "Admin", new { id = Model.MemberId}, new { @class = "btn btn-primary" })
         @Html.ActionLink("View customer's dues", "List", "Admin", null, new { @class = "btn btn-warning" })
         @Html.ActionLink("Process customer's transfer", "List", "Admin", null, new { @class = "btn btn-danger disabled" })
     </div>

@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using Wams.Common.IoC;
 using Wams.Interfaces;
 using Wams.ViewModels.Account;
+using Wams.ViewModels.MemberDues;
+using Wams.Web.Models;
 
 namespace Wams.Web.Controllers
 {
@@ -83,14 +85,40 @@ namespace Wams.Web.Controllers
         //
         public ActionResult AddMemberDues(int id)
         {
-            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1 && id > 0)
             {
-                return View();
+                var member = this.accountLogic.GetMemberProfile(id);
+                var model = new AddMemberDuesRequest
+                {
+                    MemberId = id,
+                    MemberFullName = string.Format("{0} {1}", member.FirstName, member.LastName),
+                    AddedBy = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
+                    AddedById = this.User.Id,
+                    DueMonthOptions = UIHelper.GetMonthOptions(),
+                    DueYearOptions = UIHelper.GetYearOptions()
+                };
+
+                return View(model);
             }
 
             return this.RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        public ActionResult AddMemberDues(AddMemberDuesRequest request)
+        {
+            if (!this.Request.IsAuthenticated || this.User.UserLoginRole < 2)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            if (request == null)
+            {
+                return this.RedirectToAction("Error");
+            }
+
+            return null;
+        }
         #endregion
     }
 }
