@@ -12,7 +12,7 @@
         <ul class="dropdown-menu">
             <li>@Html.ActionLink("My Profile", "ViewMyProfile", "Account", new { memberId = User.Id }, null)</li>
             <li>@Html.ActionLink("Change Password", "ChangePassword", "Auth")</li>
-            <li><a href="#">View Dues</a></li>
+            <li>@Html.ActionLink("Dues statement", "ViewMemberDues", "Account")</li>
             <li><a href="#">View Account type</a></li>
             <li><a href="#">Others</a></li>
             <li class="divider"></li>

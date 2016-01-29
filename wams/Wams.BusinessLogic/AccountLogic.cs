@@ -139,7 +139,9 @@ namespace Wams.BusinessLogic
             try
             {
                 var list = this.accountRepository.ViewAllMemberDues(accountId);
-                return
+
+                return list == null ? 
+                    null :
                     list.Select(
                         x =>
                             new MemberDuesViewModel

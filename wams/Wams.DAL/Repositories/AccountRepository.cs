@@ -160,7 +160,7 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -389,12 +389,92 @@ namespace Wams.DAL.Repositories
 
         public int AddMemberDues(MemberDues dues)
         {
-            return 1;
+            try
+            {
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    using (var cmd = new MySqlCommand("adddues", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        connection.Open();
+
+                        cmd.Parameters.AddWithValue("@p_mem_id", dues.MemberId);
+                        cmd.Parameters["@p_mem_id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_mem_name", dues.MemberName);
+                        cmd.Parameters["@p_mem_name"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_month", dues.DuesMonth);
+                        cmd.Parameters["@p_month"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_year", dues.DuesYear);
+                        cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate);
+                        cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_by", dues.AddedBy);
+                        cmd.Parameters["@p_added_by"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_by_id", dues.AddedById);
+                        cmd.Parameters["@p_added_by_id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_amount", dues.Amount.ToString());
+                        cmd.Parameters["@p_amount"].Direction = ParameterDirection.Input;
+
+                        var results = cmd.ExecuteNonQuery();
+
+                        return results;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
         }
 
         public List<MemberDues> ViewAllMemberDues(int accountId)
         {
-            return new List<MemberDues>(3) {new MemberDues(), new MemberDues(), new MemberDues(), new MemberDues()};
+            try
+            {
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = string.Format("select * from dues where member_id = {0}", accountId);
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        var record = cmd.ExecuteReader();
+
+                        var records = new List<MemberDues>();
+                        while (record.Read())
+                        {
+                            records.Add(new MemberDues
+                            {
+                                DuesId = Convert.ToInt32(record["duesid"].ToString()),
+                                MemberId = Convert.ToInt32(record["member_id"].ToString()),
+                                MemberName = record["member_name"].ToString(),
+                                Amount = Convert.ToDecimal(record["amount"].ToString()),
+                                DuesMonth = record["dues_month"].ToString(),
+                                DuesYear = Convert.ToInt32(record["dues_year"].ToString()),
+                                AddedDate = Convert.ToDateTime(record["added_date"].ToString()),
+                                AddedBy = record["added_by"].ToString(),
+                                AddedById = Convert.ToInt32(record["added_by_id"].ToString())
+                            });
+                        }
+
+                        return records;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
         #endregion
 
