@@ -144,5 +144,31 @@ namespace Wams.Web.Controllers
         }
 
         #endregion
+
+        #region Dues
+        
+        public ActionResult ViewMemberDues()
+        {
+            if (!this.Request.IsAuthenticated)
+            {
+                return this.RedirectToAction("Login", "Auth");
+            }
+
+            var model = this.accountLogic.ViewAllMemberDues(this.User.Id);
+
+            if (model == null)
+            {
+                return View("BaseResponse",
+                    new BaseResponse
+                    {
+                        Status = BaseResponseStatus.Failed,
+                        Message = "Unknown error occured.",
+                        HtmlString = new HtmlString("Try again.")
+                    });
+            }
+
+            return View(model);
+        }
+        #endregion
     }
 }

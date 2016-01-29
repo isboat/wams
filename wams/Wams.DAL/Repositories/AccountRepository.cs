@@ -384,8 +384,22 @@ namespace Wams.DAL.Repositories
             }
         }
 
+
+        #region Dues
+
+        public int AddMemberDues(MemberDues dues)
+        {
+            return 1;
+        }
+
+        public List<MemberDues> ViewAllMemberDues(int accountId)
+        {
+            return new List<MemberDues>(3) {new MemberDues(), new MemberDues(), new MemberDues(), new MemberDues()};
+        }
+        #endregion
+
         #region Private methods
-        
+
         private UserAccount CreateUserAccount(IDataRecord row)
         {
             return new UserAccount

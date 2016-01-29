@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using Wams.ViewModels;
 using Wams.ViewModels.Account;
+using Wams.ViewModels.MemberDues;
 using Wams.ViewModels.Registration;
 
 namespace Wams.Interfaces
@@ -22,5 +24,9 @@ namespace Wams.Interfaces
         int UpdateProfilePicUrl(int accountId, string url);
 
         List<Profile> GetUserProfiles();
+
+        BaseResponse AddMemberDues(AddMemberDuesRequest request);
+
+        List<MemberDuesViewModel> ViewAllMemberDues(int accountId);
     }
 }

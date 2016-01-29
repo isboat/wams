@@ -10,6 +10,8 @@ namespace Wams.Web.Models
         public string Message { get; set; }
 
         public BaseResponseStatus Status { get; set; }
+
+        public HtmlString HtmlString { get; set; }
     }
 
     public enum BaseResponseStatus

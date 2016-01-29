@@ -1,0 +1,35 @@
+﻿@using Wams.Web.Models
+@model BaseResponse
+<br />
+<div class="container">
+    @{
+        if (Model.Status == BaseResponseStatus.Success)
+        {
+            <div class="alert alert-success">
+                <p>
+                    <strong>Success!!!</strong> @Model.Message
+                </p>
+                <div>@Model.HtmlString</div>
+            </div>
+        }
+        else if (Model.Status == BaseResponseStatus.Failed)
+        {
+            <div class="alert alert-danger">
+                <p>
+                    <strong>Failed!</strong> @Model.Message
+                </p>
+                <div>@Model.HtmlString</div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning">
+                <p>
+                    <strong>@Model.Status!</strong> @Model.Message
+                </p>
+                <div>@Model.HtmlString</div>
+            </div>
+        }
+    }
+</div>
+

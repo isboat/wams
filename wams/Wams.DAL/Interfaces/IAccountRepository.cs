@@ -36,5 +36,13 @@ namespace Wams.DAL.Interfaces
         string GetPassword(string accountKey);
 
         List<UserAccount> GetAllUserAccounts();
+
+        #region Dues
+
+        int AddMemberDues(MemberDues dues);
+
+        List<MemberDues> ViewAllMemberDues(int accountId);
+
+        #endregion
     }
 }

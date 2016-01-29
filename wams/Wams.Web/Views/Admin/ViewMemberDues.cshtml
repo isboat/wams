@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Wams.ViewModels.MemberDues.MemberDuesViewModel>
+
+<p>
+    @Html.ActionLink("Add Dues", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MemberName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DuesMonth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DuesYear)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AddedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AddedBy)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MemberName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DuesMonth)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DuesYear)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AddedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AddedBy)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+        </td>
+    </tr>
+}
+
+</table>

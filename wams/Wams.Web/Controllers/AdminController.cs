@@ -117,8 +117,52 @@ namespace Wams.Web.Controllers
                 return this.RedirectToAction("Error");
             }
 
-            return null;
+            if (!ModelState.IsValid)
+            {
+                request.DueMonthOptions = UIHelper.GetMonthOptions();
+                request.DueYearOptions = UIHelper.GetYearOptions();
+
+                return View(request);
+            }
+
+            var response = this.accountLogic.AddMemberDues(request);
+
+            var model = new BaseResponse
+            {
+                Status = response.Success ? BaseResponseStatus.Success : BaseResponseStatus.Failed,
+                Message = response.Message,
+                HtmlString = response.Success ? 
+                    new HtmlString("click here <button>Success</button>") : 
+                    new HtmlString("Click this button <button>Failed</button>")
+            };
+
+            return View("BaseResponse", model);
         }
+
+        public ActionResult ViewMemberDues(int id)
+        {
+            if (!this.Request.IsAuthenticated || this.User.UserLoginRole < 2)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            var model = this.accountLogic.ViewAllMemberDues(id);
+
+            if (model == null)
+            {
+                return View("BaseResponse",
+                    new BaseResponse
+                    {
+                        Status = BaseResponseStatus.Failed,
+                        Message = "Unknown error occured.",
+                        HtmlString = new HtmlString("Try again.")
+                    });
+            }
+
+            return View(model);
+        }
+
+
         #endregion
     }
 }

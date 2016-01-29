@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Wams.ViewModels.MemberDues.MemberDuesViewModel>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DuesMonth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DuesYear)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DuesMonth)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DuesYear)
+        </td>
+    </tr>
+}
+
+</table>

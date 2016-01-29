@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Wams.Interfaces;
+using Wams.ViewModels;
 using Wams.ViewModels.Account;
+using Wams.ViewModels.MemberDues;
 using Wams.ViewModels.Registration;
 
 namespace Wams.BusinessLogic
@@ -129,5 +131,66 @@ namespace Wams.BusinessLogic
 
             return null;
         }
+
+        #region Member's dues
+
+        public List<MemberDuesViewModel> ViewAllMemberDues(int accountId)
+        {
+            try
+            {
+                var list = this.accountRepository.ViewAllMemberDues(accountId);
+                return
+                    list.Select(
+                        x =>
+                            new MemberDuesViewModel
+                            {
+                                DuesId = x.DuesId,
+                                MemberId = x.MemberId,
+                                MemberName = x.MemberName,
+                                DuesMonth = x.DuesMonth,
+                                DuesYear = x.DuesYear.ToString(),
+                                Amount = x.Amount,
+                                AddedBy = x.AddedBy,
+                                AddedDate = x.AddedDate.ToShortDateString(),
+                                AddedById = x.AddedById
+                            }).ToList();
+            }
+            catch (Exception ex)
+            {
+                //log ex.Message;
+                return null;
+            }
+        }
+
+        public BaseResponse AddMemberDues(AddMemberDuesRequest request)
+        {
+            var baseResponse = new BaseResponse();
+            try
+            {
+                var rows = this.accountRepository.AddMemberDues(new MemberDues
+                {
+                    MemberId = request.MemberId,
+                    MemberName = request.MemberFullName,
+                    Amount = request.Amount,
+                    DuesMonth = request.DueMonth,
+                    DuesYear = request.DueYear,
+                    AddedDate = request.AddedDate,
+                    AddedBy = request.AddedBy,
+                    AddedById = request.AddedById,
+                });
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+
+            }
+            catch (Exception exception)
+            {
+                //log exception.Message here
+                return baseResponse;
+            }
+        }
+
+        #endregion
     }
 }

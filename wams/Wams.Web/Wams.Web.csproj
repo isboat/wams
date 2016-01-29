@@ -173,11 +173,14 @@
     <Content Include="Views\Admin\UserDetails.cshtml" />
     <Content Include="Views\Account\UploadPhoto.cshtml" />
     <Content Include="Views\Admin\AddMemberDues.cshtml" />
+    <Content Include="Views\Admin\ViewMemberDues.cshtml" />
+    <Content Include="Views\Account\ViewMemberDues.cshtml" />
     <None Include="Views\Base\AboutUs.cshtml" />
     <None Include="Views\Base\ContactUs.cshtml" />
     <None Include="Views\Base\CookiePolicy.cshtml" />
     <None Include="Views\Base\PrivacyPolicy.cshtml" />
     <None Include="Views\Base\TermsAndConditions.cshtml" />
+    <Content Include="Views\Shared\BaseResponse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
