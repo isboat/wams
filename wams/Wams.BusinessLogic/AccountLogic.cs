@@ -193,6 +193,62 @@ namespace Wams.BusinessLogic
             }
         }
 
+        public MemberDuesViewModel GetMemberDues(int duesid)
+        {
+            try
+            {
+                var dues = this.accountRepository.GetMemberDues(duesid);
+
+                return dues == null ?
+                    null :
+                    new MemberDuesViewModel
+                            {
+                                DuesId = dues.DuesId,
+                                MemberId = dues.MemberId,
+                                MemberName = dues.MemberName,
+                                DuesMonth = dues.DuesMonth,
+                                DuesYear = dues.DuesYear.ToString(),
+                                Amount = dues.Amount,
+                                AddedBy = dues.AddedBy,
+                                AddedDate = dues.AddedDate.ToShortDateString(),
+                                AddedById = dues.AddedById
+                            };
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public BaseResponse UpdateMemberDues(EditMemberDuesRequest request)
+        {
+            var baseResponse = new BaseResponse();
+            try
+            {
+                var rows = this.accountRepository.UpdateMemberDues(new MemberDues
+                {
+                    DuesId = request.DuesId,
+                    MemberId = request.MemberId,
+                    MemberName = request.MemberFullName,
+                    Amount = request.Amount,
+                    DuesMonth = request.DueMonth,
+                    DuesYear = request.DueYear,
+                    AddedDate = request.AddedDate,
+                    AddedBy = request.AddedBy,
+                    AddedById = request.AddedById,
+                });
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+
+            }
+            catch (Exception exception)
+            {
+                //log exception.Message here
+                return baseResponse;
+            }
+        }
         #endregion
     }
 }

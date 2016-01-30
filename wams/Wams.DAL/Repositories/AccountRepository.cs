@@ -384,7 +384,6 @@ namespace Wams.DAL.Repositories
             }
         }
 
-
         #region Dues
 
         public int AddMemberDues(MemberDues dues)
@@ -411,7 +410,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_year", dues.DuesYear);
                         cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate);
+                        cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate.ToShortDateString());
                         cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_added_by", dues.AddedBy);
@@ -476,6 +475,93 @@ namespace Wams.DAL.Repositories
                 throw;
             }
         }
+
+        public MemberDues GetMemberDues(int duesid)
+        {
+            try
+            {
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = string.Format("select * from dues where duesid = {0} limit 1", duesid);
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        var record = cmd.ExecuteReader(CommandBehavior.SingleRow);
+
+                        if(record.Read())
+                        {
+                            return new MemberDues
+                            {
+                                DuesId = Convert.ToInt32(record["duesid"].ToString()),
+                                MemberId = Convert.ToInt32(record["member_id"].ToString()),
+                                MemberName = record["member_name"].ToString(),
+                                Amount = Convert.ToDecimal(record["amount"].ToString()),
+                                DuesMonth = record["dues_month"].ToString(),
+                                DuesYear = Convert.ToInt32(record["dues_year"].ToString()),
+                                AddedDate = Convert.ToDateTime(record["added_date"].ToString()),
+                                AddedBy = record["added_by"].ToString(),
+                                AddedById = Convert.ToInt32(record["added_by_id"].ToString())
+                            };
+                        }
+
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public int UpdateMemberDues(MemberDues dues)
+        {
+            try
+            {
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    using (var cmd = new MySqlCommand("updatedues", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        connection.Open();
+
+                        cmd.Parameters.AddWithValue("@p_dues_id", dues.DuesId);
+                        cmd.Parameters["@p_dues_id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_month", dues.DuesMonth);
+                        cmd.Parameters["@p_month"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_year", dues.DuesYear);
+                        cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate.ToShortDateString());
+                        cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_by", dues.AddedBy);
+                        cmd.Parameters["@p_added_by"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_by_id", dues.AddedById);
+                        cmd.Parameters["@p_added_by_id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_amount", dues.Amount.ToString());
+                        cmd.Parameters["@p_amount"].Direction = ParameterDirection.Input;
+
+                        var results = cmd.ExecuteNonQuery();
+
+                        return results;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
         #endregion
 
         #region Private methods

@@ -43,6 +43,10 @@ namespace Wams.DAL.Interfaces
 
         List<MemberDues> ViewAllMemberDues(int accountId);
 
+        MemberDues GetMemberDues(int duesid);
+
+        int UpdateMemberDues(MemberDues memberDues);
+
         #endregion
     }
 }

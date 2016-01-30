@@ -94,6 +94,7 @@ namespace Wams.Web.Controllers
                     MemberFullName = string.Format("{0} {1}", member.FirstName, member.LastName),
                     AddedBy = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
                     AddedById = this.User.Id,
+                    AddedDate = DateTime.Now,
                     DueMonthOptions = UIHelper.GetMonthOptions(),
                     DueYearOptions = UIHelper.GetYearOptions()
                 };
@@ -131,9 +132,9 @@ namespace Wams.Web.Controllers
             {
                 Status = response.Success ? BaseResponseStatus.Success : BaseResponseStatus.Failed,
                 Message = response.Message,
-                HtmlString = response.Success ? 
-                    new HtmlString("click here <button>Success</button>") : 
-                    new HtmlString("Click this button <button>Failed</button>")
+                HtmlString = response.Success ?
+                    new HtmlString(string.Format("Member's due added. <a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", request.MemberId)) :
+                    new HtmlString(string.Format("<a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", request.MemberId))
             };
 
             return View("BaseResponse", model);
@@ -162,6 +163,68 @@ namespace Wams.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public ActionResult EditMemberDues(int duesid)
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            {
+                var model = this.accountLogic.GetMemberDues(duesid);
+
+                var req = new EditMemberDuesRequest
+                {
+                    MemberId = model.MemberId,
+                    DuesId = model.DuesId,
+                    Amount = model.Amount,
+                    MemberFullName = model.MemberName,
+                    AddedBy = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
+                    AddedById = this.User.Id,
+                    AddedDate = DateTime.Now,
+                    DueMonth = model.DuesMonth,
+                    DueYear = Convert.ToInt32(model.DuesYear),
+                    DueMonthOptions = UIHelper.GetMonthOptions(),
+                    DueYearOptions = UIHelper.GetYearOptions()
+                };
+
+                return View(req);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult EditMemberDues(EditMemberDuesRequest model)
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            {
+                if (model == null)
+                {
+                    return this.RedirectToAction("Error");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    model.DueMonthOptions = UIHelper.GetMonthOptions();
+                    model.DueYearOptions = UIHelper.GetYearOptions();
+
+                    return View(model);
+                }
+
+                var result = this.accountLogic.UpdateMemberDues(model);
+
+                var response = new BaseResponse
+                {
+                    Status = result.Success ? BaseResponseStatus.Success : BaseResponseStatus.Failed,
+                    Message = result.Message,
+                    HtmlString = result.Success ?
+                        new HtmlString(string.Format("Member's due updated. <a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", model.MemberId)) :
+                        new HtmlString(string.Format("<a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", model.MemberId))
+                };
+
+                return View("BaseResponse", response);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
 
         #endregion
     }

@@ -14,7 +14,7 @@ namespace Wams.DAL.Repositories
 
         public BaseRepository()
         {
-            this.ConString = ConfigurationManager.ConnectionStrings["mysql"].ConnectionString;
+            this.ConString = ConfigurationManager.ConnectionStrings["wams"].ConnectionString;
         }
     }
 }

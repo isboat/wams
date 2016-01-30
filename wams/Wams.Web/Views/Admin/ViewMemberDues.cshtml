@@ -32,7 +32,7 @@
             @Html.DisplayFor(modelItem => item.MemberName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Amount)
+            &#x20b5; @Html.DisplayFor(modelItem => item.Amount)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DuesMonth)
@@ -47,7 +47,7 @@
             @Html.DisplayFor(modelItem => item.AddedBy)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Edit", "EditMemberDues", new { duesid = item.DuesId })
         </td>
     </tr>
 }

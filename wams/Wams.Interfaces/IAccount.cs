@@ -25,8 +25,16 @@ namespace Wams.Interfaces
 
         List<Profile> GetUserProfiles();
 
+        #region
+
         BaseResponse AddMemberDues(AddMemberDuesRequest request);
 
         List<MemberDuesViewModel> ViewAllMemberDues(int accountId);
+
+        MemberDuesViewModel GetMemberDues(int duesid);
+
+        BaseResponse UpdateMemberDues(EditMemberDuesRequest model);
+
+        #endregion
     }
 }

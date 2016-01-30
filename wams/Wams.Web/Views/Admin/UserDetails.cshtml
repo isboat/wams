@@ -2,6 +2,9 @@
 
 <br />
 
+@if (Model.UserLoginRole < 2)
+{
+
 <div class="panel panel-info">
     <div class="panel-heading">Profile of @Model.FirstName @Model.LastName</div>
     <div class="panel-body">
@@ -11,6 +14,8 @@
     </div>
 </div>
 
+}
+    
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -79,11 +84,13 @@
                 @Html.EditorFor(model => model.MembershipType, new { htmlAttributes = new { @class = "form-control", placeholder = "membership type" } })
                 @Html.ValidationMessageFor(model => model.MembershipType, "", new { @class = "text-danger" })
                 <button value="None">None</button>
-                <button value="Investor">Investor</button>
                 @if (Model.UserLoginRole > 1)
                 {
                     <button value="Admin">Admin</button>
-                }
+                }else
+	            {
+                    <button value="Investor">Investor</button>
+	            }
             </div>
         </div>
 
@@ -93,11 +100,13 @@
                 @Html.EditorFor(model => model.UserLoginRole, new { htmlAttributes = new { @class = "form-control", placeholder = "login role" } })
                 @Html.ValidationMessageFor(model => model.UserLoginRole, "", new { @class = "text-danger" })
                 <button value="0">Deactivate Login</button>
-                <button value="1">Activate Login</button>
 
                 @if (Model.UserLoginRole > 1)
                 {
                     <button value="2">As admin</button>
+                }else
+                {
+                    <button value="1">Activate Login</button>
                 }
             </div>
         </div>

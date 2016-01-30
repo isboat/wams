@@ -19,7 +19,7 @@ namespace Wams.Web.Models
                 
                 if (x > 12) x = x - 12;
 
-                var date = new DateTime(DateTime.Now.Year, x, DateTime.Now.Day);
+                var date = new DateTime(DateTime.Now.Year, x, 1);
                 months.Add(new SelectListItem{ Text = date.ToString("MMM"), Value = date.ToString("MMM"), Selected = x == curMonth});
             }
 
