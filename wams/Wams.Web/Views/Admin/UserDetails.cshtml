@@ -87,10 +87,13 @@
                 @if (Model.UserLoginRole > 1)
                 {
                     <button value="Admin">Admin</button>
-                }else
-	            {
-                    <button value="Investor">Investor</button>
-	            }
+                }
+                else
+                {
+                    <button value="Individual">Individual</button>
+                    <button value="Association">Association</button>
+                    <button value="CommunityBase">Community Base</button>
+                }
             </div>
         </div>
 

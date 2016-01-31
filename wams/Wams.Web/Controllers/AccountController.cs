@@ -170,5 +170,24 @@ namespace Wams.Web.Controllers
             return View(model);
         }
         #endregion
+
+        #region Membership type
+
+        public ActionResult ViewMembershipType()
+        {
+            if (!this.Request.IsAuthenticated)
+            {
+                return this.RedirectToAction("Login", "Auth");
+            }
+
+            var user = this.accountLogic.GetMemberProfile(this.User.Id);
+
+            if (user == null) return this.RedirectToAction("ViewMyProfile", new { memberId = this.User.Id });
+
+            var model = Tuple.Create<string>(user.MembershipType);
+            return View("ViewMembershipType", model);
+        }
+
+        #endregion
     }
 }

@@ -13,8 +13,10 @@
             <li>@Html.ActionLink("My Profile", "ViewMyProfile", "Account", new { memberId = User.Id }, null)</li>
             <li>@Html.ActionLink("Change Password", "ChangePassword", "Auth")</li>
             <li>@Html.ActionLink("Dues statement", "ViewMemberDues", "Account")</li>
-            <li><a href="#">View Account type</a></li>
-            <li><a href="#">Others</a></li>
+            <li>@Html.ActionLink("Investment statement", "ViewMemberDues", "Account")</li>
+            <li>@Html.ActionLink("View Pending Dues", "ViewMemberDues", "Account")</li>
+            <li>@Html.ActionLink("View Membership type", "ViewMembershipType", "Account")</li>
+            <li>@Html.ActionLink("Request Loan", "ViewMemberDues", "Account")</li>
             <li class="divider"></li>
             @*<li class="dropdown-header">Dropdown header 2</li>*@
             <li>@Html.ActionLink("Log Off", "LogOff", "Auth")</li>

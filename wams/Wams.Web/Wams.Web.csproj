@@ -176,6 +176,7 @@
     <Content Include="Views\Admin\ViewMemberDues.cshtml" />
     <Content Include="Views\Account\ViewMemberDues.cshtml" />
     <Content Include="Views\Admin\EditMemberDues.cshtml" />
+    <Content Include="Views\Account\ViewMembershipType.cshtml" />
     <None Include="Views\Base\AboutUs.cshtml" />
     <None Include="Views\Base\ContactUs.cshtml" />
     <None Include="Views\Base\CookiePolicy.cshtml" />
