@@ -122,7 +122,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\profile.png" />
-    <Content Include="Images\ProfilePics\2e5cc60009d440cab066b986482b798d29840308.jpg" />
+    <Content Include="Images\ProfilePics\5e790e8284484e4482215662de6c256f29840308.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="packages.config" />
@@ -177,6 +177,8 @@
     <Content Include="Views\Account\ViewMemberDues.cshtml" />
     <Content Include="Views\Admin\EditMemberDues.cshtml" />
     <Content Include="Views\Account\ViewMembershipType.cshtml" />
+    <Content Include="Views\Account\RequestLoan.cshtml" />
+    <Content Include="Views\Admin\ViewLoanRequests.cshtml" />
     <None Include="Views\Base\AboutUs.cshtml" />
     <None Include="Views\Base\ContactUs.cshtml" />
     <None Include="Views\Base\CookiePolicy.cshtml" />

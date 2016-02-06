@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\LoanRequest.cs" />
     <Compile Include="Account\Profile.cs" />
     <Compile Include="Authentication\AuthenticationResponse.cs" />
     <Compile Include="Authentication\ChangePasswordRequest.cs" />

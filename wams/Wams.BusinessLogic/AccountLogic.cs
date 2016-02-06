@@ -140,28 +140,78 @@ namespace Wams.BusinessLogic
             {
                 var list = this.accountRepository.ViewAllMemberDues(accountId);
 
-                return list == null ? 
-                    null :
-                    list.Select(
-                        x =>
-                            new MemberDuesViewModel
-                            {
-                                DuesId = x.DuesId,
-                                MemberId = x.MemberId,
-                                MemberName = x.MemberName,
-                                DuesMonth = x.DuesMonth,
-                                DuesYear = x.DuesYear.ToString(),
-                                Amount = x.Amount,
-                                AddedBy = x.AddedBy,
-                                AddedDate = x.AddedDate.ToShortDateString(),
-                                AddedById = x.AddedById
-                            }).ToList();
+                var uptodateMonths = this.UptoDateMonths();
+
+                var response = new List<MemberDuesViewModel>();
+
+                foreach (var month in uptodateMonths)
+                {
+                    var vm = new MemberDuesViewModel { DuesMonth = month.Month, DuesYear = month.Year.ToString() };
+
+                    list.ForEach(x => {
+
+                        if (x.DuesMonth == month.Month && x.DuesYear == month.Year)
+                        {
+                            vm.Paid = true;
+                            vm.DuesId = x.DuesId;
+                            vm.MemberId = x.MemberId;
+                            vm.MemberName = x.MemberName;
+                            vm.DuesYear = x.DuesYear.ToString();
+                            vm.Amount = x.Amount;
+                            vm.AddedBy = x.AddedBy;
+                            vm.AddedDate = x.AddedDate.ToShortDateString();
+                            vm.AddedById = x.AddedById;
+                        }
+                    });
+
+                    response.Add(vm);
+                }
+
+                return response;
+
+                //return list == null ? 
+                //    null :
+                //    list.Select(
+                //        x =>
+                //            new MemberDuesViewModel
+                //            {
+                //                DuesId = x.DuesId,
+                //                MemberId = x.MemberId,
+                //                MemberName = x.MemberName,
+                //                DuesMonth = x.DuesMonth,
+                //                DuesYear = x.DuesYear.ToString(),
+                //                Amount = x.Amount,
+                //                AddedBy = x.AddedBy,
+                //                AddedDate = x.AddedDate.ToShortDateString(),
+                //                AddedById = x.AddedById
+                //            }).ToList();
             }
             catch (Exception ex)
             {
                 //log ex.Message;
                 return null;
             }
+        }
+
+        private List<MonthViewModel> UptoDateMonths()
+        {
+            var months = new List<MonthViewModel>();
+
+            var cur = DateTime.Now;
+
+            for (int i = 1; i <= cur.Month; i++)
+            {
+                if (i <= cur.Month)
+                {
+                    months.Add(new MonthViewModel 
+                        { 
+                            Year = cur.Year, 
+                            Month = new DateTime(cur.Year, i, 1).ToString("MMM") 
+                        });
+                }
+            }
+
+            return months;
         }
 
         public BaseResponse AddMemberDues(AddMemberDuesRequest request)
@@ -247,6 +297,61 @@ namespace Wams.BusinessLogic
             {
                 //log exception.Message here
                 return baseResponse;
+            }
+        }
+        
+        #endregion
+
+        #region
+
+        public BaseResponse RequestLoan(LoanRequest request)
+        {
+            var baseResponse = new BaseResponse();
+
+            try
+            {
+                var rows = this.accountRepository.RequestLoan(new PendingLoan 
+                { 
+                    Amount = request.Amount,
+                    MemberId = request.MemberId,
+                    MemberName = request.MemberName,
+                    Reason = request.Reason
+                });
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+            }
+            catch (Exception ex)
+            {
+                return baseResponse;
+            }
+        }
+
+        public List<LoanRequest> GetAllRequestedLoans()
+        {
+            try
+            {
+                var pendingLoans = this.accountRepository.GetAllPendingdLoans();
+                if (pendingLoans == null)
+                {
+                    return null;
+                }
+
+                return pendingLoans.Select(x =>
+                    new LoanRequest
+                    {
+                        Amount = x.Amount,
+                        MemberId = x.MemberId,
+                        MemberName = x.MemberName,
+                        Reason = x.Reason,
+                        PendingLoanId = x.PendingLoanId
+                    }).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
         #endregion

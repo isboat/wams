@@ -48,5 +48,9 @@ namespace Wams.DAL.Interfaces
         int UpdateMemberDues(MemberDues memberDues);
 
         #endregion
+
+        int RequestLoan(PendingLoan pending);
+
+        List<PendingLoan> GetAllPendingdLoans();
     }
 }

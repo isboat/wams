@@ -171,6 +171,59 @@ namespace Wams.Web.Controllers
         }
         #endregion
 
+        #region
+
+        public ActionResult RequestLoan() 
+        {
+            if (!this.Request.IsAuthenticated)
+            {
+                return this.RedirectToAction("Login", "Auth");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult RequestLoan(LoanRequest request)
+        {
+            if (!this.Request.IsAuthenticated)
+            {
+                return this.RedirectToAction("Login", "Auth");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(request);
+            }
+
+            request.MemberId = this.User.Id;
+            request.MemberName = string.Format("{0} {1}", this.User.FirstName, this.User.LastName);
+
+            var model = this.accountLogic.RequestLoan(request);
+
+            if (model == null)
+            {
+                return this.RedirectToAction("Error");
+            }
+
+            return View("BaseResponse",
+                !model.Success ?
+                    new BaseResponse
+                    {
+                        Status = BaseResponseStatus.Failed,
+                        Message = "Unknown error occured.",
+                        HtmlString = new HtmlString("Try again." + model.Message)
+                    } :
+                    new BaseResponse
+                    {
+                        Status = BaseResponseStatus.Success,
+                        Message = "Your loan is requested successfully. Customer services will contact you soon.",
+                        HtmlString = new HtmlString("Update your contact information if they're not update to date.")
+                    });
+        }
+
+        #endregion
+
         #region Membership type
 
         public ActionResult ViewMembershipType()

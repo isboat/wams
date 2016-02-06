@@ -31,5 +31,13 @@ namespace Wams.ViewModels.MemberDues
         public string AddedBy { get; set; }
 
         public int AddedById { get; set; }
+
+        public bool Paid { get; set; }
+    }
+
+    public class MonthViewModel
+    {
+        public string Month { get; set; }
+        public int Year { get; set; }
     }
 }

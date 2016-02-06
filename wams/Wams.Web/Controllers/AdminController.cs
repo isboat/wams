@@ -227,5 +227,20 @@ namespace Wams.Web.Controllers
         }
 
         #endregion
+
+        #region Loan Requests
+
+        public ActionResult ViewLoanRequests()
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            {
+                var model = this.accountLogic.GetAllRequestedLoans();
+                return View(model);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
+        #endregion
     }
 }

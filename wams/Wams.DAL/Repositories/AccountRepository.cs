@@ -410,9 +410,9 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_year", dues.DuesYear);
                         cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate.ToShortDateString());
+                        cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate.ToString());
                         cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
-
+                        
                         cmd.Parameters.AddWithValue("@p_added_by", dues.AddedBy);
                         cmd.Parameters["@p_added_by"].Direction = ParameterDirection.Input;
 
@@ -460,7 +460,7 @@ namespace Wams.DAL.Repositories
                                 Amount = Convert.ToDecimal(record["amount"].ToString()),
                                 DuesMonth = record["dues_month"].ToString(),
                                 DuesYear = Convert.ToInt32(record["dues_year"].ToString()),
-                                AddedDate = Convert.ToDateTime(record["added_date"].ToString()),
+                                AddedDate = DateTime.Parse(record["added_date"].ToString()),
                                 AddedBy = record["added_by"].ToString(),
                                 AddedById = Convert.ToInt32(record["added_by_id"].ToString())
                             });
@@ -538,7 +538,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_year", dues.DuesYear);
                         cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate.ToShortDateString());
+                        cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate.ToString());
                         cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_added_by", dues.AddedBy);
@@ -563,6 +563,17 @@ namespace Wams.DAL.Repositories
         }
 
         #endregion
+
+        public int RequestLoan(PendingLoan pending)
+        {
+            return 1;
+        }
+
+        public List<PendingLoan> GetAllPendingdLoans()
+        {
+            return new List<PendingLoan> { 
+                new PendingLoan { Amount = 2000, MemberName = "Tom Sammy", Reason = "To start a business" }};
+        }
 
         #region Private methods
 

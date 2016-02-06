@@ -1,8 +1,5 @@
 ﻿@model IEnumerable<Wams.ViewModels.MemberDues.MemberDuesViewModel>
 
-<p>
-    @Html.ActionLink("Add Dues", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -26,8 +23,9 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
+@foreach (var item in Model)
+{
+    <tr class="@if (!item.Paid) { <text>alert-danger</text> }">
         <td>
             @Html.DisplayFor(modelItem => item.MemberName)
         </td>
@@ -47,7 +45,14 @@
             @Html.DisplayFor(modelItem => item.AddedBy)
         </td>
         <td>
-            @Html.ActionLink("Edit", "EditMemberDues", new { duesid = item.DuesId })
+            @if (!item.Paid)
+            {
+                <span class="alert-danger">Unpaid</span>
+            }
+            else
+            {
+                @Html.ActionLink("Edit", "EditMemberDues", new { duesid = item.DuesId })
+            }
         </td>
     </tr>
 }

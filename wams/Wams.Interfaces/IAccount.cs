@@ -25,7 +25,7 @@ namespace Wams.Interfaces
 
         List<Profile> GetUserProfiles();
 
-        #region
+        #region Dues
 
         BaseResponse AddMemberDues(AddMemberDuesRequest request);
 
@@ -36,5 +36,9 @@ namespace Wams.Interfaces
         BaseResponse UpdateMemberDues(EditMemberDuesRequest model);
 
         #endregion
+
+        BaseResponse RequestLoan(LoanRequest request);
+
+        List<LoanRequest> GetAllRequestedLoans();
     }
 }

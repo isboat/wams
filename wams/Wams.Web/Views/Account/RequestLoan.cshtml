@@ -1,0 +1,46 @@
+﻿@model Wams.ViewModels.Account.LoanRequest
+
+<br />
+<div class="panel panel-danger">
+    <div class="panel-heading">Loan Request</div>
+    <div class="panel-body">
+        <p>
+            No forms to fill because your details are already on the system.
+        </p>
+        <p>By clicking on the request button below, you are agreeing to the terms and conditions of our loan agreement.
+            To view the loan agreement, visit the terms and conditions page.</p>
+        <div>            
+            @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Amount, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Amount)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Reason, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.Reason, new { @class = "form-control", style = "height: 200px;" })
+                        @Html.ValidationMessageFor(model => model.Reason)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Request Loan" class="btn btn-danger" />
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+

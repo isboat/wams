@@ -1,8 +1,21 @@
 ﻿@model Tuple<string>
     <br />
     <div class="panel panel-info">
-        <div class="panel-heading">Your membership type</div>
+        <div class="panel-heading">Membership</div>
         <div class="panel-body">
-            @Model.Item1
+            <p>
+                <div class="alert alert-success">
+                    <strong>Your membership is: </strong><span>@Model.Item1</span>
+                </div>
+            </p>
+            
+            <p>
+                <div class="alert alert-danger">
+                    <strong>Please note that the following are the membership cost</strong> 
+                    <div>
+                        Individual (&#x20b5;30 per year) - Association (&#x20b5;50 per year) - Community-based (&#x20b5;10 per month).
+                    </div>
+                </div>
+            </p>
         </div>
     </div>
