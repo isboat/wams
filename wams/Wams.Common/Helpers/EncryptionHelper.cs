@@ -6,6 +6,36 @@
 
     public class EncryptionHelper
     {
+        #region Hashing
+
+        /*
+        You could generate a salt from a Guid converted into a base 64 string, 
+        then save that in the database as char. I use nvarchar to maximise my options using a .NET string.
+
+        Then you can implement something like this for generating the original password hash, 
+        and comparing the hash when the user logs in:
+        */
+        
+        //public static byte[] GetHash(string password, string salt)
+        //{
+        //    byte[] unhashedBytes = Encoding.Unicode.GetBytes(String.Concat(salt, password));
+
+        //    SHA256Managed sha256 = new SHA256Managed();
+        //    byte[] hashedBytes = sha256.ComputeHash(unhashedBytes);
+
+        //    return hashedBytes;
+        //}
+
+        //public static bool CompareHash(string attemptedPassword, byte[] hash, string salt)
+        //{
+        //    string base64Hash = Convert.ToBase64String(hash);
+        //    string base64AttemptedHash = Convert.ToBase64String(GetHash(attemptedPassword, salt));
+
+        //    return base64Hash == base64AttemptedHash;
+        //}
+
+        #endregion
+
         //public static string Encrypt(string clearText, string encryptionKey)
         //{
         //    byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
