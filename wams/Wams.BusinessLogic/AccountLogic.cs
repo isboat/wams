@@ -302,7 +302,7 @@ namespace Wams.BusinessLogic
         
         #endregion
 
-        #region
+        #region Request Loan
 
         public BaseResponse RequestLoan(LoanRequest request)
         {

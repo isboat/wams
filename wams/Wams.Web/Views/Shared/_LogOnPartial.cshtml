@@ -7,21 +7,29 @@
     }
     else
     {
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown">My Account<span class="caret"></span></a>
-        <ul class="dropdown-menu">
-            <li>@Html.ActionLink("My Profile", "ViewMyProfile", "Account", new { memberId = User.Id }, null)</li>
-            <li>@Html.ActionLink("Change Password", "ChangePassword", "Auth")</li>
-            <li>@Html.ActionLink("Dues statement", "ViewMemberDues", "Account")</li>
-            @*<li>@Html.ActionLink("View Pending Dues", "ViewMemberDues", "Account")</li>*@
-            <li>@Html.ActionLink("Investment statement", "ViewMemberDues", "Account")</li>
-            <li>@Html.ActionLink("View Membership type", "ViewMembershipType", "Account")</li>
-            <li>@Html.ActionLink("Request Loan", "RequestLoan", "Account")</li>
-            <li class="divider"></li>
-            @*<li class="dropdown-header">Dropdown header 2</li>*@
-            <li>@Html.ActionLink("Log Off", "LogOff", "Auth")</li>
-        </ul>
-    </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown">My Account<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("My Profile", "ViewMyProfile", "Account", new {memberId = User.Id}, null)</li>
+                <li>@Html.ActionLink("Change Password", "ChangePassword", "Auth")</li>
+                <li>@Html.ActionLink("View Membership type", "ViewMembershipType", "Account")</li>
+            </ul>
+        </li>
+
+        <li>@Html.ActionLink("Request Loan", "RequestLoan", "Account")</li>
+    
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown">Report<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("Dues statement", "ViewMemberDues", "Account")</li>
+                <li>@Html.ActionLink("Outstanding dues", "ViewMemberDues", "Account")</li>
+                <li>@Html.ActionLink("Investment statement", "ViewMemberDues", "Account")</li>
+
+            </ul>
+        </li>
+    
+        <li class="divider"></li>
+        <li>@Html.ActionLink("Log Off", "LogOff", "Auth")</li>
     }
 }
 else

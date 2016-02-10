@@ -171,7 +171,7 @@ namespace Wams.Web.Controllers
         }
         #endregion
 
-        #region
+        #region Request Loan
 
         public ActionResult RequestLoan() 
         {

@@ -228,7 +228,6 @@ namespace Wams.DAL.Repositories
                         return -1;
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -289,13 +288,11 @@ namespace Wams.DAL.Repositories
                         return cmd.ExecuteNonQuery();
                     }
                 }
-
             }
             catch (Exception ex)
             {
                 throw;
             }
-
         }
 
         public int UpdateProfilePicUrl(int accountId, string url)
@@ -564,16 +561,87 @@ namespace Wams.DAL.Repositories
 
         #endregion
 
+        #region Request Loan
+
         public int RequestLoan(PendingLoan pending)
         {
-            return 1;
+            if (pending == null)
+            {
+                return -1;
+            }
+
+            try
+            {
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    using (var cmd = new MySqlCommand("addloanrequest", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        connection.Open();
+
+                        cmd.Parameters.AddWithValue("@memid", pending.MemberId);
+                        cmd.Parameters["@memid"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@memname", pending.MemberName);
+                        cmd.Parameters["@memname"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@amount", pending.Amount);
+                        cmd.Parameters["@amount"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@reason", pending.Reason);
+                        cmd.Parameters["@reason"].Direction = ParameterDirection.Input;
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public List<PendingLoan> GetAllPendingdLoans()
         {
-            return new List<PendingLoan> { 
-                new PendingLoan { Amount = 2000, MemberName = "Tom Sammy", Reason = "To start a business" }};
+            try
+            {
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = string.Format("select * from loans where granted = 0;");
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        var record = cmd.ExecuteReader();
+
+                        var records = new List<PendingLoan>();
+                        while (record.Read())
+                        {
+                            records.Add(new PendingLoan
+                            {
+                                PendingLoanId = Convert.ToInt32(record["loanid"].ToString()),
+                                MemberId = Convert.ToInt32(record["member_id"].ToString()),
+                                MemberName = record["member_name"].ToString(),
+                                Amount = Convert.ToDecimal(record["amount"].ToString()),
+                                Reason = record["reason"].ToString(),
+                                Granted = Convert.ToInt32(record["granted"].ToString()) == 1,
+                            });
+                        }
+
+                        return records;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
+
+        #endregion
 
         #region Private methods
 
