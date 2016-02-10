@@ -25,7 +25,11 @@ namespace Wams.Web.Controllers
         // GET: Account
         public ActionResult Register()
         {
-            return View();
+            var model = new RegisterRequest
+            {
+                MembershipTypeOptions = UIHelper.GetMembershipTypeOptions()
+            };
+            return View(model);
         }
 
         #region Register
@@ -40,14 +44,23 @@ namespace Wams.Web.Controllers
                     return this.View();
                 }
 
+                DateTime dob;
+                if (!ModelState.IsValid || !DateTime.TryParse(req.DateOfBirth, out dob))
+                {
+                    req.MembershipTypeOptions = UIHelper.GetMembershipTypeOptions();
+                    return View(req);
+                }
+
                 var response =
                     this.accountLogic.CreateAccount(
                         new CreateAccountRequest
                         {
                             FirstName = req.FirstName,
                             LastName = req.LastName,
-                            DateOfBirth = req.DateOfBirth,
+                            DateOfBirth = dob,
                             EmailAddress = req.EmailAddress,
+                            Address = req.Address,
+                            Occupation = req.Occupation,
                             Gender = req.Gender,
                             Password = req.Password,
                             MembershipType = "None",

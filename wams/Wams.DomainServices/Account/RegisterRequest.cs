@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace Wams.ViewModels.Account
 {
@@ -18,11 +20,27 @@ namespace Wams.ViewModels.Account
         public string LastName { get; set; }
 
         [DisplayName("Date of birth")]
-        public DateTime DateOfBirth { get; set; }
+        [Required(ErrorMessage = "Date of birth is required (dd/MM/yyyy)")]
+        public string DateOfBirth { get; set; }
 
         [DisplayName("Email address")]
         [Required(ErrorMessage = "Email address is required")]
         public string EmailAddress { get; set; }
+
+        [DisplayName("Address/Location")]
+        [Required(ErrorMessage = "Address is required")]
+        public string Address { get; set; }
+
+        [DisplayName("Occupation")]
+        [Required(ErrorMessage = "Occupation is required")]
+        public string Occupation { get; set; }
+
+        [DisplayName("Membership type")]
+        [Required(ErrorMessage = "Membership type is required")]
+        public string MembershipType { get; set; }
+
+        public IEnumerable<SelectListItem> MembershipTypeOptions { get; set; }
+        
 
         [DisplayName("Password")]
         [Required(ErrorMessage = "Password is required")]

@@ -36,5 +36,17 @@ namespace Wams.Web.Models
             
             return new SelectList(years, "Value", "Text");
         }
+
+        public static IEnumerable<SelectListItem> GetMembershipTypeOptions()
+        {
+            var types = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Individual", Value = "Individual"},
+                new SelectListItem {Text = "Association", Value = "Association"},
+                new SelectListItem {Text = "Community Based", Value = "CommunityBased"}
+            };
+
+            return new SelectList(types, "Value", "Text");
+        }
     }
 }
