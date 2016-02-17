@@ -11,6 +11,8 @@ namespace Wams.ViewModels.Account
         [Required(ErrorMessage = "Gender is required")]
         public string Gender { get; set; }
 
+        public IEnumerable<SelectListItem> GenderOptions { get; set; }
+
         [DisplayName("First name")]
         [Required(ErrorMessage = "First name is required")]
         public string FirstName { get; set; }
@@ -20,7 +22,7 @@ namespace Wams.ViewModels.Account
         public string LastName { get; set; }
 
         [DisplayName("Date of birth")]
-        [Required(ErrorMessage = "Date of birth is required (dd/MM/yyyy)")]
+        [Required(ErrorMessage = "Date of birth is required (dd-MM-yyyy)")]
         public string DateOfBirth { get; set; }
 
         [DisplayName("Email address")]

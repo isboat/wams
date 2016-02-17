@@ -48,5 +48,16 @@ namespace Wams.Web.Models
 
             return new SelectList(types, "Value", "Text");
         }
+
+        public static IEnumerable<SelectListItem> GetGenderOptions()
+        {
+            var types = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Male", Value = "Male"},
+                new SelectListItem {Text = "Female", Value = "Female"}
+            };
+
+            return new SelectList(types, "Value", "Text");
+        }
     }
 }

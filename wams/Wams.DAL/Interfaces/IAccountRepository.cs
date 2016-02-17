@@ -22,7 +22,9 @@ namespace Wams.DAL.Interfaces
             string lastname, 
             string gender, 
             DateTime dob, 
-            string email, 
+            string email,
+            string address,
+            string occupation,
             string password, 
             string membershipType,
             int userLoginRole);

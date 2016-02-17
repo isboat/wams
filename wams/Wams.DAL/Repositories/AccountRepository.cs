@@ -173,8 +173,10 @@ namespace Wams.DAL.Repositories
             string firstname, 
             string lastname, 
             string gender, 
-            DateTime dob, 
-            string email, 
+            DateTime dob,
+            string email,
+            string address,
+            string occupation,
             string password, 
             string membershipType,
             int userLoginRole)
@@ -203,6 +205,12 @@ namespace Wams.DAL.Repositories
 
                         cmd.Parameters.AddWithValue("@p_email", email);
                         cmd.Parameters["@p_email"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_address", address);
+                        cmd.Parameters["@p_address"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_occupation", occupation);
+                        cmd.Parameters["@p_occupation"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_password", password);
                         cmd.Parameters["@p_password"].Direction = ParameterDirection.Input;

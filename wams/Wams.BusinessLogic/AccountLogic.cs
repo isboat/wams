@@ -40,6 +40,8 @@ namespace Wams.BusinessLogic
                 application.Gender,
                 application.DateOfBirth,
                 application.EmailAddress,
+                application.Address,
+                application.Occupation,
                 application.Password,
                 application.MembershipType,
                 application.UserLoginRole);

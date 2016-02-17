@@ -27,7 +27,8 @@ namespace Wams.Web.Controllers
         {
             var model = new RegisterRequest
             {
-                MembershipTypeOptions = UIHelper.GetMembershipTypeOptions()
+                MembershipTypeOptions = UIHelper.GetMembershipTypeOptions(),
+                GenderOptions = UIHelper.GetGenderOptions()
             };
             return View(model);
         }
@@ -48,6 +49,7 @@ namespace Wams.Web.Controllers
                 if (!ModelState.IsValid || !DateTime.TryParse(req.DateOfBirth, out dob))
                 {
                     req.MembershipTypeOptions = UIHelper.GetMembershipTypeOptions();
+                    req.GenderOptions = UIHelper.GetGenderOptions();
                     return View(req);
                 }
 
@@ -63,7 +65,7 @@ namespace Wams.Web.Controllers
                             Occupation = req.Occupation,
                             Gender = req.Gender,
                             Password = req.Password,
-                            MembershipType = "None",
+                            MembershipType = req.MembershipType,
                             UserLoginRole = 0
                         });
 
