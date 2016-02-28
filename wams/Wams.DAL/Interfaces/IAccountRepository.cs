@@ -54,5 +54,13 @@ namespace Wams.DAL.Interfaces
         int RequestLoan(PendingLoan pending);
 
         List<PendingLoan> GetAllPendingdLoans();
+
+        int BenefitRequest(PendingBenefitRequest pending);
+
+        List<PendingBenefitRequest> GetAllPendingdBenefits();
+
+        PendingBenefitRequest GetPendingdBenefits(int id);
+
+        int UpdateBenefit(PendingBenefitRequest pendingBenefitRequest);
     }
 }

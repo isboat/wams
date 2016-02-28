@@ -356,6 +356,120 @@ namespace Wams.BusinessLogic
                 throw;
             }
         }
+
+        #endregion
+
+        #region Benefit Request
+
+        public BaseResponse BenefitRequest(BenefitRequest request)
+        {
+            var baseResponse = new BaseResponse();
+
+            try
+            {
+                var rows = this.accountRepository.BenefitRequest(new PendingBenefitRequest
+                {
+                    MemberId = request.MemberId,
+                    MemberName = request.MemberName,
+                    Message = request.Message,
+                    BenefitDate = request.BenefitDate,
+                    BenefitType = request.BenefitType
+                });
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+            }
+            catch (Exception ex)
+            {
+                return baseResponse;
+            }
+        }
+
+        public List<BenefitRequest> GetAllRequestedBenefits()
+        {
+            try
+            {
+                var pendingBenefits = this.accountRepository.GetAllPendingdBenefits();
+                if (pendingBenefits == null)
+                {
+                    return null;
+                }
+
+                return pendingBenefits.Select(x =>
+                    new BenefitRequest
+                    {
+                        MemberId = x.MemberId,
+                        MemberName = x.MemberName,
+                        Message = x.Message,
+                        BenefitId = x.BenefitId,
+                        BenefitDate = x.BenefitDate,
+                        BenefitType = x.BenefitType
+                    }).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public BenefitRequest GetBenefit(int id)
+        {
+            try
+            {
+                var pending = this.accountRepository.GetPendingdBenefits(id);
+                if (pending == null)
+                {
+                    return null;
+                }
+
+                return new BenefitRequest
+                    {
+                        MemberId = pending.MemberId,
+                        MemberName = pending.MemberName,
+                        Message = pending.Message,
+                        BenefitId = pending.BenefitId,
+                        BenefitDate = pending.BenefitDate,
+                        BenefitType = pending.BenefitType,
+                        Granted = pending.Granted
+                    };
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public BaseResponse UpdateBenefit(BenefitRequest request)
+        {
+            var baseResponse = new BaseResponse();
+            try
+            {
+                var rows = this.accountRepository.UpdateBenefit(new PendingBenefitRequest
+                {
+                    BenefitId = request.BenefitId,
+                    MemberId = request.MemberId,
+                    MemberName = request.MemberName,
+                    Message = request.Message,
+                    BenefitDate = request.BenefitDate,
+                    BenefitType = request.BenefitType,
+                    Granted = request.Granted
+                });
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+
+            }
+            catch (Exception exception)
+            {
+                //log exception.Message here
+                return baseResponse;
+            }
+        }
+
         #endregion
     }
 }

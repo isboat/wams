@@ -169,16 +169,8 @@ namespace Wams.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public int CreateApplication(
-            string firstname, 
-            string lastname, 
-            string gender, 
-            DateTime dob,
-            string email,
-            string address,
-            string occupation,
-            string password, 
-            string membershipType,
+        public int CreateApplication(string firstname, string lastname, string gender, DateTime dob,
+            string email, string address, string occupation, string password, string membershipType,
             int userLoginRole)
         {
             try
@@ -646,6 +638,176 @@ namespace Wams.DAL.Repositories
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+
+        #endregion
+
+        #region Benefit
+
+        public int BenefitRequest(PendingBenefitRequest pending)
+        {
+            if (pending == null)
+            {
+                return -1;
+            }
+
+            try
+            {
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    using (var cmd = new MySqlCommand("addbenefitrequest", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        connection.Open();
+
+                        cmd.Parameters.AddWithValue("@memid", pending.MemberId);
+                        cmd.Parameters["@memid"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@memname", pending.MemberName);
+                        cmd.Parameters["@memname"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@benefitdate", pending.BenefitDate);
+                        cmd.Parameters["@benefitdate"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@benefittype", pending.BenefitType);
+                        cmd.Parameters["@benefittype"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@message", pending.Message);
+                        cmd.Parameters["@message"].Direction = ParameterDirection.Input;
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            } 
+        }
+
+        public List<PendingBenefitRequest> GetAllPendingdBenefits()
+        {
+            try
+            {
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = string.Format("select * from benefits where granted = 0;");
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        var record = cmd.ExecuteReader();
+
+                        var records = new List<PendingBenefitRequest>();
+                        while (record.Read())
+                        {
+                            records.Add(new PendingBenefitRequest
+                            {
+                                BenefitId = Convert.ToInt32(record["benefitid"].ToString()),
+                                MemberId = Convert.ToInt32(record["member_id"].ToString()),
+                                MemberName = record["member_name"].ToString(),
+                                Message = record["message"].ToString(),
+                                BenefitType = record["benefittype"].ToString(),
+                                BenefitDate = record["benefitdate"].ToString(),
+                                Granted = Convert.ToInt32(record["granted"].ToString()) == 1,
+                            });
+                        }
+
+                        return records;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            } 
+        }
+
+        public PendingBenefitRequest GetPendingdBenefits(int id)
+        {
+            try
+            {
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = string.Format("select * from benefits where benefitid = {0} limit 1", id);
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        var record = cmd.ExecuteReader(CommandBehavior.SingleRow);
+
+                        if (record.Read())
+                        {
+                            return new PendingBenefitRequest
+                            {
+                                BenefitId = Convert.ToInt32(record["benefitid"].ToString()),
+                                MemberId = Convert.ToInt32(record["member_id"].ToString()),
+                                MemberName = record["member_name"].ToString(),
+                                Message = record["message"].ToString(),
+                                BenefitType = record["benefittype"].ToString(),
+                                BenefitDate = record["benefitdate"].ToString(),
+                                Granted = Convert.ToInt32(record["granted"].ToString()) == 1,
+                            };
+                        }
+
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public int UpdateBenefit(PendingBenefitRequest request)
+        {
+            try
+            {
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    using (var cmd = new MySqlCommand("updatebenefit", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        connection.Open();
+
+                        cmd.Parameters.AddWithValue("@benefitid", request.BenefitId);
+                        cmd.Parameters["@benefitid"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@benefitdate", request.BenefitDate);
+                        cmd.Parameters["@benefitdate"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@benefittype", request.BenefitType);
+                        cmd.Parameters["@benefittype"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@memname", request.MemberName);
+                        cmd.Parameters["@memname"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@message", request.Message);
+                        cmd.Parameters["@message"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@memid", request.MemberId);
+                        cmd.Parameters["@memid"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@granted", request.Granted ? 1 : 0);
+                        cmd.Parameters["@granted"].Direction = ParameterDirection.Input;
+
+                        var results = cmd.ExecuteNonQuery();
+
+                        return results;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return -1;
             }
         }
 

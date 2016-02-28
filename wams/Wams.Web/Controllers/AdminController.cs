@@ -242,5 +242,61 @@ namespace Wams.Web.Controllers
         }
 
         #endregion
+
+        #region Benefits
+
+        public ActionResult ViewBenefitRequests()
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            {
+                var model = this.accountLogic.GetAllRequestedBenefits();
+                return View(model);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult EditBenefit(int id)
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            {
+                var model = this.accountLogic.GetBenefit(id);
+                return View(model);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult EditBenefit(BenefitRequest model)
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                var response = this.accountLogic.UpdateBenefit(model);
+                
+                return View("BaseResponse",
+                    !response.Success ?
+                        new BaseResponse
+                        {
+                            Status = BaseResponseStatus.Failed,
+                            Message = "Unknown error occured.",
+                            HtmlString = new HtmlString("Try again." + model.Message)
+                        } :
+                        new BaseResponse
+                        {
+                            Status = BaseResponseStatus.Success,
+                            Message = "You have updated the benefit successfully.",
+                            HtmlString = new HtmlString("Contact the member to let them know about this.")
+                        });
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
+        #endregion
     }
 }

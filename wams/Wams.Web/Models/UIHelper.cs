@@ -59,5 +59,18 @@ namespace Wams.Web.Models
 
             return new SelectList(types, "Value", "Text");
         }
+
+        public static IEnumerable<SelectListItem> GetBenefitTypeOptions()
+        {
+            var types = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Child Birth", Value = "ChildBirth"},
+                new SelectListItem {Text = "Funeral Assistance", Value = "FuneralAssistance"},
+                new SelectListItem {Text = "Maternity Allowance", Value = "MaternityAllowance"},
+                new SelectListItem {Text = "Family Support", Value = "FamilySupport"}
+            };
+
+            return new SelectList(types, "Value", "Text");
+        }
     }
 }

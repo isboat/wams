@@ -130,6 +130,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="Properties\PublishProfiles\dep.pubxml" />
+    <None Include="Properties\PublishProfiles\deploy.pubxml" />
     <None Include="Properties\PublishProfiles\MobileSite.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\datepicker\jquery.pickmeup.min.js" />
@@ -180,6 +181,9 @@
     <Content Include="Views\Account\ViewMembershipType.cshtml" />
     <Content Include="Views\Account\RequestLoan.cshtml" />
     <Content Include="Views\Admin\ViewLoanRequests.cshtml" />
+    <Content Include="Views\Account\BenefitRequest.cshtml" />
+    <Content Include="Views\Admin\ViewBenefitRequests.cshtml" />
+    <Content Include="Views\Admin\EditBenefit.cshtml" />
     <None Include="Views\Base\AboutUs.cshtml" />
     <None Include="Views\Base\ContactUs.cshtml" />
     <None Include="Views\Base\CookiePolicy.cshtml" />

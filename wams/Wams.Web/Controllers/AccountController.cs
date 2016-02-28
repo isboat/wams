@@ -239,6 +239,61 @@ namespace Wams.Web.Controllers
 
         #endregion
 
+        #region Benefit Request
+
+        public ActionResult BenefitRequest()
+        {
+            if (!this.Request.IsAuthenticated)
+            {
+                return this.RedirectToAction("Login", "Auth");
+            }
+
+            var model = new BenefitRequest { BenefitTypeOptions = UIHelper.GetBenefitTypeOptions() };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult BenefitRequest(BenefitRequest request)
+        {
+            if (!this.Request.IsAuthenticated)
+            {
+                return this.RedirectToAction("Login", "Auth");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                request.BenefitTypeOptions = UIHelper.GetBenefitTypeOptions();
+                return View(request);
+            }
+
+            request.MemberId = this.User.Id;
+            request.MemberName = string.Format("{0} {1}", this.User.FirstName, this.User.LastName);
+
+            var model = this.accountLogic.BenefitRequest(request);
+
+            if (model == null)
+            {
+                return this.RedirectToAction("Error");
+            }
+
+            return View("BaseResponse",
+                !model.Success ?
+                    new BaseResponse
+                    {
+                        Status = BaseResponseStatus.Failed,
+                        Message = "Unknown error occured.",
+                        HtmlString = new HtmlString("Try again." + model.Message)
+                    } :
+                    new BaseResponse
+                    {
+                        Status = BaseResponseStatus.Success,
+                        Message = "Your benefit is requested successfully. Customer services will contact you soon.",
+                        HtmlString = new HtmlString("Update your contact information if they're not update to date.")
+                    });
+        }
+
+        #endregion
+
         #region Membership type
 
         public ActionResult ViewMembershipType()

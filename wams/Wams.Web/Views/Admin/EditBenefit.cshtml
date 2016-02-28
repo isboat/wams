@@ -1,0 +1,76 @@
+﻿@model Wams.ViewModels.Account.BenefitRequest
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Grant Benefit</h4>
+
+        <div class="alert alert-warning">
+            Before granting this benefit, speak to the member first.
+        </div>
+
+        <hr />
+        @Html.ValidationSummary(true)
+
+        @Html.HiddenFor(model => model.BenefitId)
+        @Html.HiddenFor(model => model.MemberId)
+        @Html.HiddenFor(model => model.Address)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BenefitType, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BenefitType, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BenefitType)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BenefitDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BenefitDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BenefitDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MemberName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MemberName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MemberName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Message, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Message, new { @class = "form-control", style = "height: 200px;" })
+                @Html.ValidationMessageFor(model => model.Message)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Granted, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Granted, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Granted)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#BenefitDate').pickmeup();
+            });
+        </script>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

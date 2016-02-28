@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Wams.ViewModels.Account.BenefitRequest>
+
+@if (!Model.Any())
+{
+<br />
+<div class="alert alert-warning">
+    No benefits request available yet.
+</div>
+}
+else {
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BenefitType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BenefitDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Message)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MemberName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BenefitType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BenefitDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Message)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MemberName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditBenefit", new { id = item.BenefitId })
+        </td>
+    </tr>
+}
+
+</table>
+}
