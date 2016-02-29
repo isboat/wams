@@ -1,5 +1,15 @@
 ﻿@model System.Collections.Generic.IEnumerable<Wams.ViewModels.Account.Profile>
 <br /><br />
+<p>
+    <select id="searchBy" class="form-control" style="display:inline-block; float: left; width: 130px">
+        <option value="">Search By...</option>
+        <option value="firstname">First name</option>
+        <option value="lastname">Last name</option>
+        <option value="dob">DOB</option>
+        <option value="memberId">Member ID</option>
+    </select>
+    <input type="text" id="search" placeholder="Search" class="form-control text-box single-line" />
+</p>
 <div>
     <table class="table table-hover table-responsive">
         <tr>
@@ -27,13 +37,13 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td class="firstname">
                     @Html.DisplayFor(modelItem => item.FirstName)
                 </td>
-                <td>
+                <td class="lastname">
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
-                <td>
+                <td class="dob">
                     @Html.DisplayFor(modelItem => item.DateOfBirth)
                 </td>
                 <td>
@@ -53,3 +63,30 @@
 
     </table>
 </div>
+<script type="text/javascript">
+    $(function () {
+
+        var search = function (searchTerm) {
+            var criteria = $("#searchBy").val();
+            if (!criteria) {
+                alert("Please select by...")
+                return;
+            }
+
+            $("." + criteria).each(function (index, element) {
+                if ($(this).html().trim().toLowerCase().indexOf(searchTerm) == -1) {
+                    $(this).parents("tr").hide();
+                }
+            })
+        }
+
+        $("#search").on("keyup", function () {
+            var text = $(this).val();
+            if (text) {
+                search(text);
+            } else {
+                $("tr").show();
+            }
+        })
+    });
+</script>

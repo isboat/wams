@@ -58,7 +58,9 @@ namespace Wams.BusinessLogic
                 if (userAccount.UserLoginRole == 0)
                 {
                     response.AuthenticationStatus = AuthenticationStatus.Failed;
-                    response.Message = "User login role is 0.";
+                    response.Message = "Sorry, you can't login now, waiting for permission" + 
+                        " from the adminstration. You will get text message confirmation including" + 
+                        " your membership number";
                     return response;
                 }
 

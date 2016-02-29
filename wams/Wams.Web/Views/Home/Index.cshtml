@@ -2,24 +2,69 @@
     ViewBag.Title = "Home Page";
 }
 <br />
-<div class="alert alert-success">
-    <strong>Get an intelligent,</strong> fully-managed investment account
-</div>
 
-<h3>This System gives you the following benefits:</h3>
-<ol class="round">
-    <li class="one">
-        <h5>Online Account</h5>
-        With an online account, you can manage your details whenever you like
-    </li>
+@if (this.Request.IsAuthenticated && this.User.UserLoginRole == 1)
+{    
+    <div class="panel panel-success">
+        <div class="panel-heading">Congratulations</div>
+        <div class="panel-body">            
+            Congratulations on joining a well-respected national membership organization that strives to propel the
+            welfare of its members across the country. Founded in 2013, UWWAG  is the only  dues –based national
+            organization representing the interest of its cherished members, by providing all forms of support and
+            raising the standard of its members across the country. UWWAG is focused on providing you, our valued members,
+            with the tools and resources to take your carrier to the next level. Becoming a UWWAG member means that you’ve
+            taken a step in the right direction to tap into the resources of an already established community of successful people.
+        </div>
+    </div>
+    
+    <div class="panel panel-info">
+        <div class="panel-heading">Stay connected with UWWAG</div>
+        <div class="panel-body">
+            Stay connected with UWWAG through our interactive national portal at
+            <a href="http://www.uwwag.org">www.uwwag.org</a>. UWWAG members are assigned a unique username and password for
+            access to the member-only areas of our Website. We encourage all our members to
+            update their profile as soon as they log on into our website.
+        </div>
+    </div>
+    <div class="panel panel-success">
+        <div class="panel-heading">Member Service</div>
+        <div class="panel-body">
+            If you have any questions about your membership, please contact Member Service Thus
+            UWWAG OFFICE  CAPE COAST                        0555873145
+            Our Ambassador’s   sends their best wishes and sincerest thanks for having chosen UWWAG as the organization to join.
+        </div>
+    </div>
+}
+else if (this.Request.IsAuthenticated && this.User.UserLoginRole >= 1)
+{
+    <div>
+        <div class="alert alert-success">
+            <strong>Welcome</strong> @this.User.FirstName
+        </div>
+    </div>
+}
+else
+{
 
-    <li class="two">
-        <h5>Online Access</h5>
-        Deposit and Withdraw couldn't be any easier.
-    </li>
+    <div class="alert alert-success">
+        <strong>Get an intelligent,</strong> fully-managed investment account
+    </div>
 
-    <li class="three">
-        <h5>View Statements</h5>
-        Access to your statement is paperless.
-    </li>
-</ol>
+    <h3>This System gives you the following benefits:</h3>
+    <ol class="round">
+        <li class="one">
+            <h5>Online Account</h5>
+            With an online account, you can manage your details whenever you like
+        </li>
+
+        <li class="two">
+            <h5>Online Access</h5>
+            Deposit and Withdraw couldn't be any easier.
+        </li>
+
+        <li class="three">
+            <h5>View Statements</h5>
+            Access to your statement is paperless.
+        </li>
+    </ol>
+}

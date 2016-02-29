@@ -184,6 +184,30 @@ namespace Wams.Web.Controllers
 
             return View(model);
         }
+
+        public ActionResult ViewMemberOutstanding()
+        {
+            if (!this.Request.IsAuthenticated)
+            {
+                return this.RedirectToAction("Login", "Auth");
+            }
+
+            var dues = this.accountLogic.ViewAllMemberDues(this.User.Id);
+            
+            if (dues == null)
+            {
+                return View("BaseResponse",
+                    new BaseResponse
+                    {
+                        Status = BaseResponseStatus.Failed,
+                        Message = "Unknown error occured.",
+                        HtmlString = new HtmlString("Try again.")
+                    });
+            }
+            var model = dues.Where(x => !x.Paid).ToList();
+            return View(model);
+        }
+
         #endregion
 
         #region Request Loan
