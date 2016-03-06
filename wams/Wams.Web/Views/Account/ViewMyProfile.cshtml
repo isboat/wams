@@ -2,6 +2,8 @@
 
 <div>
     <h4>My Profile</h4>
+
+    @Html.ActionLink("Edit My Profile", "EditMyProfile", new { memberId = User.Id }, new { @class = "btn btn-primary" })
     <hr />
     <div>
         <div class="thumbnail" style="width: 170px; margin-bottom: 10px;">
@@ -129,9 +131,6 @@
 
             </dl>*@
 
-            <p>
-                @Html.ActionLink("Edit", "EditMyProfile", new {memberId = User.Id}, new {@class = "btn btn-primary"})
-            </p>
         </div>
     </div>
 </div>

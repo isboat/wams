@@ -27,13 +27,17 @@ namespace Wams.BusinessLogic
 
         private readonly IAccountRepository accountRepository;
 
-        public AuthenticationLogic(IAccountRepository accountRepository)
+        private readonly ILogProvider logProvider;
+
+        public AuthenticationLogic(IAccountRepository accountRepository, ILogProvider logProvider)
         {
             this.accountRepository = accountRepository;
+            this.logProvider = logProvider;
         }
 
         public LoginResponse Login(string username, string password)
         {
+            this.logProvider.Error("Test error: " + username + DateTime.Now.ToShortDateString());
             var cacheKey = GlobalCachingProvider.Instance.GetCacheKey("AuthenticationLogic", "Login", username);
 
             if (GlobalCachingProvider.Instance.ItemExist(cacheKey))
@@ -58,9 +62,7 @@ namespace Wams.BusinessLogic
                 if (userAccount.UserLoginRole == 0)
                 {
                     response.AuthenticationStatus = AuthenticationStatus.Failed;
-                    response.Message = "Sorry, you can't login now, waiting for permission" + 
-                        " from the adminstration. You will get text message confirmation including" + 
-                        " your membership number";
+                    response.Message = "Your information has been received, waiting for approval.";
                     return response;
                 }
 
