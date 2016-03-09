@@ -1,25 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Wams.DataObjects;
 using Wams.Enums.Authentication;
 using Wams.Interfaces;
 using Wams.ViewModels.Authentication;
 
 namespace Wams.BusinessLogic
 {
-    using System.Security;
-    using System.Web;
     using System.Web.Script.Serialization;
     using System.Web.Security;
 
-    using Wams.BusinessLogic.AuthenticationModels;
-    using Wams.Caching;
-    using Wams.Common.Configuration;
-    using Wams.Common.Helpers;
-    using Wams.DAL.Interfaces;
+    using AuthenticationModels;
+    using Caching;
+    using Common.Configuration;
+    using DAL.Interfaces;
 
     public class AuthenticationLogic : IAuthentication
     {
@@ -27,17 +20,13 @@ namespace Wams.BusinessLogic
 
         private readonly IAccountRepository accountRepository;
 
-        private readonly ILogProvider logProvider;
-
-        public AuthenticationLogic(IAccountRepository accountRepository, ILogProvider logProvider)
+        public AuthenticationLogic(IAccountRepository accountRepository)
         {
             this.accountRepository = accountRepository;
-            this.logProvider = logProvider;
         }
 
         public LoginResponse Login(string username, string password)
         {
-            this.logProvider.Error("Test error: " + username + DateTime.Now.ToShortDateString());
             var cacheKey = GlobalCachingProvider.Instance.GetCacheKey("AuthenticationLogic", "Login", username);
 
             if (GlobalCachingProvider.Instance.ItemExist(cacheKey))

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Wams.Common.Logging;
 
 namespace Wams.DAL.Repositories
 {
@@ -17,10 +18,19 @@ namespace Wams.DAL.Repositories
 
     public class AccountRepository :BaseRepository, IAccountRepository
     {
+        private readonly ILogProvider logProvider;
+
+        public AccountRepository(ILogProvider logProvider)
+        {
+            this.logProvider = logProvider;
+        }
+
         public BaseUserInfo Login(string email, string password)
         {
             try
             {
+                this.logProvider.Info(string.Format("AccountRepository, Login email:{0}", email));
+
                 using (var connection = new MySqlConnection(this.ConString))
                 {
                     using (var cmd = new MySqlCommand("login", connection))
@@ -72,12 +82,15 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
-                throw ex;
+                this.logProvider.Error(string.Format("AccountRepository, Login email:{0}", email), ex);
+                throw;
             }
         }
 
         public UserAccount GetAccountInfo(int accountid)
         {
+            this.logProvider.Info(string.Format("AccountRepository, GetAccountInfo accountid:{0}", accountid));
+
             try
             {
                 using (var connection = new MySqlConnection(this.ConString))
@@ -117,12 +130,14 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
-                throw ex;
+                this.logProvider.Error(string.Format("AccountRepository, GetAccountInfo accountid:{0}", accountid), ex);
+                throw;
             }
         }
 
         public List<UserAccount> GetAllUserAccounts()
         {
+            this.logProvider.Info("AccountRepository, GetAllUserAccounts");
             try
             {
                 using (var connection = new MySqlConnection(this.ConString))
@@ -160,6 +175,7 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error("AccountRepository, GetAllUserAccounts", ex);
                 throw;
             }
         }
@@ -175,6 +191,9 @@ namespace Wams.DAL.Repositories
         {
             try
             {
+                this.logProvider.Info(string.Format("AccountRepository, CreateApplication firstname:{0}, lastname:{1}, dob:{2}, email:{3}, address:{4}",
+                    firstname, lastname, dob, email, address));
+
                 using (var connection = new MySqlConnection(this.ConString))
                 {
                     using (var cmd = new MySqlCommand("createaccount", connection))
@@ -231,6 +250,8 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error(string.Format("AccountRepository, CreateApplication firstname:{0}, lastname:{1}, dob:{2}, email:{3}, address:{4}",
+                    firstname, lastname, dob, email, address), ex);
                 throw;
             }
         }
@@ -241,6 +262,9 @@ namespace Wams.DAL.Repositories
             {
                 return -1;
             }
+
+            this.logProvider.Info(string.Format("AccountRepository, UpdateAccountInfo firstname:{0}, lastname:{1}, dob:{2}, email:{3}, membershipType:{4}",
+                userAccount.FirstName, userAccount.LastName, userAccount.DateOfBirth, userAccount.EmailAddress, userAccount.MembershipType));
 
             try
             {
@@ -291,6 +315,9 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error(string.Format("AccountRepository, UpdateAccountInfo firstname:{0}, lastname:{1}, dob:{2}, email:{3}, membershipType:{4}",
+                    userAccount.FirstName, userAccount.LastName, userAccount.DateOfBirth, userAccount.EmailAddress, userAccount.MembershipType), ex);
+
                 throw;
             }
         }
@@ -299,6 +326,9 @@ namespace Wams.DAL.Repositories
         {
             try
             {
+
+                this.logProvider.Info(string.Format("AccountRepository, UpdateProfilePicUrl accountId:{0}, url:{1}", accountId, url));
+
                 using (var connection = new MySqlConnection(this.ConString))
                 {
                     using (var cmd = new MySqlCommand("updateprofileurl", connection))
@@ -320,6 +350,7 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error(string.Format("AccountRepository, UpdateProfilePicUrl accountId:{0}, url:{1}", accountId, url), ex);
                 throw;
             }
         }
@@ -328,6 +359,8 @@ namespace Wams.DAL.Repositories
         {
             try
             {
+                this.logProvider.Info(string.Format("AccountRepository, ChangePassword accountId:{0}, newPassword:{1}", accountKey, newPassword));
+
                 using (var connection = new MySqlConnection(this.ConString))
                 {
                     using (var cmd = new MySqlCommand("updatepassword", connection))
@@ -349,6 +382,7 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error(string.Format("AccountRepository, ChangePassword accountId:{0}, newPassword:{1}", accountKey, newPassword), ex);
                 throw;
             }
         }
@@ -387,6 +421,9 @@ namespace Wams.DAL.Repositories
         {
             try
             {
+                this.logProvider.Info(string.Format("AccountRepository, AddMemberDues memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, duesMonth:{5}, duesYear:{6}, duesMemberName:{7}", 
+                    dues.MemberId, dues.AddedBy, dues.AddedById, dues.AddedDate, dues.Amount, dues.DuesMonth, dues.DuesYear, dues.MemberName));
+
                 using (var connection = new MySqlConnection(this.ConString))
                 {
                     using (var cmd = new MySqlCommand("adddues", connection))
@@ -427,6 +464,9 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error(string.Format("AccountRepository, AddMemberDues memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, duesMonth:{5}, duesYear:{6}, duesMemberName:{7}",
+                    dues.MemberId, dues.AddedBy, dues.AddedById, dues.AddedDate, dues.Amount, dues.DuesMonth, dues.DuesYear, dues.MemberName), ex);
+
                 return -1;
             }
         }
@@ -435,6 +475,8 @@ namespace Wams.DAL.Repositories
         {
             try
             {
+                this.logProvider.Info(string.Format("AccountRepository, ViewAllMemberDues memberId:{0}}", accountId));
+
                 using (var connection = new MySqlConnection(this.ConString))
                 {
                     var query = string.Format("select * from dues where member_id = {0}", accountId);
@@ -469,6 +511,7 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error(string.Format("AccountRepository, ViewAllMemberDues memberId:{0}}", accountId), ex);
                 throw;
             }
         }
@@ -477,6 +520,8 @@ namespace Wams.DAL.Repositories
         {
             try
             {
+                this.logProvider.Info(string.Format("AccountRepository, GetMemberDues duesId:{0}}", duesid));
+
                 using (var connection = new MySqlConnection(this.ConString))
                 {
                     var query = string.Format("select * from dues where duesid = {0} limit 1", duesid);
@@ -510,6 +555,7 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error(string.Format("AccountRepository, GetMemberDues duesId:{0}}", duesid), ex);
                 throw;
             }
         }
@@ -518,6 +564,9 @@ namespace Wams.DAL.Repositories
         {
             try
             {
+                this.logProvider.Info(string.Format("AccountRepository, UpdateMemberDues memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, duesMonth:{5}, duesYear:{6}, duesMemberName:{7}",
+                    dues.MemberId, dues.AddedBy, dues.AddedById, dues.AddedDate, dues.Amount, dues.DuesMonth, dues.DuesYear, dues.MemberName));
+
                 using (var connection = new MySqlConnection(this.ConString))
                 {
                     using (var cmd = new MySqlCommand("updatedues", connection))
@@ -555,6 +604,8 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error(string.Format("AccountRepository, UpdateMemberDues memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, duesMonth:{5}, duesYear:{6}, duesMemberName:{7}",
+                    dues.MemberId, dues.AddedBy, dues.AddedById, dues.AddedDate, dues.Amount, dues.DuesMonth, dues.DuesYear, dues.MemberName), ex);
                 return -1;
             }
         }
@@ -572,6 +623,9 @@ namespace Wams.DAL.Repositories
 
             try
             {
+                this.logProvider.Info(string.Format("AccountRepository, RequestLoan memberId:{0}, amount:{1}, granted:{2}, memberName:{3}, pendingLoanId:{4}, reason:{5}",
+                    pending.MemberId, pending.Amount, pending.Granted, pending.MemberName, pending.PendingLoanId, pending.Reason));
+
                 using (var connection = new MySqlConnection(this.ConString))
                 {
                     using (var cmd = new MySqlCommand("addloanrequest", connection))
@@ -598,6 +652,9 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error(string.Format("AccountRepository, RequestLoan memberId:{0}, amount:{1}, granted:{2}, memberName:{3}, pendingLoanId:{4}, reason:{5}",
+                    pending.MemberId, pending.Amount, pending.Granted, pending.MemberName, pending.PendingLoanId, pending.Reason), ex);
+
                 throw;
             }
         }
@@ -606,6 +663,8 @@ namespace Wams.DAL.Repositories
         {
             try
             {
+                this.logProvider.Info("AccountRepository, GetAllPendingdLoans");
+
                 using (var connection = new MySqlConnection(this.ConString))
                 {
                     var query = string.Format("select * from loans where granted = 0;");
@@ -637,6 +696,7 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error("AccountRepository, GetAllPendingdLoans", ex);
                 throw;
             }
         }
@@ -654,6 +714,9 @@ namespace Wams.DAL.Repositories
 
             try
             {
+                this.logProvider.Info(string.Format("AccountRepository, BenefitRequest memberId:{0}, BenefitDate:{1}, granted:{2}, BenefitType:{3}, MemberName:{4}",
+                    pending.MemberId, pending.BenefitDate, pending.Granted, pending.BenefitType, pending.MemberName));
+
                 using (var connection = new MySqlConnection(this.ConString))
                 {
                     using (var cmd = new MySqlCommand("addbenefitrequest", connection))
@@ -683,6 +746,9 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error(string.Format("AccountRepository, BenefitRequest memberId:{0}, BenefitDate:{1}, granted:{2}, BenefitType:{3}, MemberName:{4}",
+                    pending.MemberId, pending.BenefitDate, pending.Granted, pending.BenefitType, pending.MemberName), ex);
+
                 throw;
             } 
         }
@@ -691,9 +757,11 @@ namespace Wams.DAL.Repositories
         {
             try
             {
+                this.logProvider.Info("AccountRepository, GetAllPendingdBenefits");
+
                 using (var connection = new MySqlConnection(this.ConString))
                 {
-                    var query = string.Format("select * from benefits where granted = 0;");
+                    var query = "select * from benefits where granted = 0;";
 
                     using (var cmd = new MySqlCommand(query, connection))
                     {
@@ -723,6 +791,8 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error("AccountRepository, GetAllPendingdBenefits", ex);
+
                 throw;
             } 
         }
@@ -731,6 +801,8 @@ namespace Wams.DAL.Repositories
         {
             try
             {
+                this.logProvider.Info(string.Format("AccountRepository, GetPendingdBenefits id:{0}", id));
+
                 using (var connection = new MySqlConnection(this.ConString))
                 {
                     var query = string.Format("select * from benefits where benefitid = {0} limit 1", id);
@@ -762,6 +834,7 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error(string.Format("AccountRepository, GetPendingdBenefits id:{0}", id), ex);
                 throw;
             }
         }
@@ -770,6 +843,9 @@ namespace Wams.DAL.Repositories
         {
             try
             {
+                this.logProvider.Info(string.Format("AccountRepository, UpdateBenefit memberId:{0}, BenefitDate:{1}, granted:{2}, BenefitType:{3}, MemberName:{4}",
+                    request.MemberId, request.BenefitDate, request.Granted, request.BenefitType, request.MemberName));
+
                 using (var connection = new MySqlConnection(this.ConString))
                 {
                     using (var cmd = new MySqlCommand("updatebenefit", connection))
@@ -807,6 +883,9 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                this.logProvider.Error(string.Format("AccountRepository, UpdateBenefit memberId:{0}, BenefitDate:{1}, granted:{2}, BenefitType:{3}, MemberName:{4}",
+                    request.MemberId, request.BenefitDate, request.Granted, request.BenefitType, request.MemberName), ex);
+
                 return -1;
             }
         }

@@ -51,6 +51,10 @@
     <Compile Include="Repositories\DataAccessHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Wams.Common\Wams.Common.csproj">
+      <Project>{BC4D0AEE-6FFB-43F3-8DB3-B5AE737A0AA2}</Project>
+      <Name>Wams.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Wams.DataObjects\Wams.DataObjects.csproj">
       <Project>{51B8B4C8-627C-4E9C-B6BF-FC2C2438C247}</Project>
       <Name>Wams.DataObjects</Name>

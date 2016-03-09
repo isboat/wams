@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Wams.Interfaces
+namespace Wams.Common.Logging
 {
     public interface ILogProvider
     {

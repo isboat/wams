@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Wams.Interfaces;
 
-namespace Wams.BusinessLogic
+namespace Wams.Common.Logging
 {
     public class LogProvider : ILogProvider
     {
@@ -18,18 +17,24 @@ namespace Wams.BusinessLogic
 
         public void Error(string error)
         {
+#if !DEBUG
             log.Error(error);
+#endif
         }
 
 
         public void Error(string message, Exception exception)
         {
+#if !DEBUG
             log.Error(message, exception);
+#endif
         }
 
         public void Info(string message)
         {
+#if !DEBUG
             log.Info(message);
+#endif
         }
     }
 }
