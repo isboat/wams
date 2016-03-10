@@ -24,5 +24,8 @@ namespace Wams.ViewModels.Account
 
         [DisplayName("Member's name")]
         public string MemberName { get; set; }
+
+        [DisplayName("Tick to grant")]
+        public bool Granted { get; set; }
     }
 }

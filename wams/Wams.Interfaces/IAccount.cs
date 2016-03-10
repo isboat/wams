@@ -48,5 +48,9 @@ namespace Wams.Interfaces
         BenefitRequest GetBenefit(int id);
 
         BaseResponse UpdateBenefit(BenefitRequest request);
+        
+        LoanRequest GetLoan(int loanid);
+        
+        BaseResponse UpdateLoan(LoanRequest request);
     }
 }

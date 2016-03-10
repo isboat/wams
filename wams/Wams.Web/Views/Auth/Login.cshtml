@@ -22,7 +22,6 @@
             <div class="col-md-10">
                 @Html.PasswordFor(model => model.Password, new { @class = "form-control"})
                 @Html.ValidationMessageFor(model => model.Password, "", new {@class = "text-danger"})
-                @Html.ActionLink("Forgot?", "#", "#", new { @class = "toplink" })
                 @*@Html.ActionLink("Forgot?", "ForgotPassword", "Profile", new { @class = "toplink" })*@
             </div>
         </div>

@@ -189,6 +189,7 @@
     <Content Include="Views\Admin\ViewBenefitRequests.cshtml" />
     <Content Include="Views\Admin\EditBenefit.cshtml" />
     <Content Include="Views\Account\ViewMemberOutstanding.cshtml" />
+    <Content Include="Views\Admin\EditLoan.cshtml" />
     <None Include="Views\Base\AboutUs.cshtml" />
     <None Include="Views\Base\ContactUs.cshtml" />
     <None Include="Views\Base\CookiePolicy.cshtml" />

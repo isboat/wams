@@ -470,6 +470,60 @@ namespace Wams.BusinessLogic
             }
         }
 
+        public LoanRequest GetLoan(int loanid)
+        {
+            try
+            {
+                var pending = this.accountRepository.GetPendingdLoan(loanid);
+                if (pending == null)
+                {
+                    return null;
+                }
+
+                return new LoanRequest
+                {
+                    MemberId = pending.MemberId,
+                    MemberName = pending.MemberName,
+                    Reason = pending.Reason,
+                    PendingLoanId = pending.PendingLoanId,
+                    Amount = pending.Amount,
+                    Granted = pending.Granted
+                };
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public BaseResponse UpdateLoan(LoanRequest request)
+        {
+            var baseResponse = new BaseResponse();
+            try
+            {
+                var rows = this.accountRepository.UpdateLoan(new PendingLoan
+                {
+                    PendingLoanId = request.PendingLoanId,
+                    MemberId = request.MemberId,
+                    MemberName = request.MemberName,
+                    Reason = request.Reason,
+                    Amount = request.Amount,
+                    Granted = request.Granted
+                });
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+
+            }
+            catch (Exception exception)
+            {
+                //log exception.Message here
+                return baseResponse;
+            }
+        }
+
         #endregion
     }
 }

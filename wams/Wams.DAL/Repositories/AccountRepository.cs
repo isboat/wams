@@ -475,7 +475,7 @@ namespace Wams.DAL.Repositories
         {
             try
             {
-                this.logProvider.Info(string.Format("AccountRepository, ViewAllMemberDues memberId:{0}}", accountId));
+                this.logProvider.Info(string.Format("AccountRepository, ViewAllMemberDues memberId:{0}", accountId));
 
                 using (var connection = new MySqlConnection(this.ConString))
                 {
@@ -511,7 +511,7 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
-                this.logProvider.Error(string.Format("AccountRepository, ViewAllMemberDues memberId:{0}}", accountId), ex);
+                this.logProvider.Error(string.Format("AccountRepository, ViewAllMemberDues memberId:{0}", accountId), ex);
                 throw;
             }
         }
@@ -520,7 +520,7 @@ namespace Wams.DAL.Repositories
         {
             try
             {
-                this.logProvider.Info(string.Format("AccountRepository, GetMemberDues duesId:{0}}", duesid));
+                this.logProvider.Info(string.Format("AccountRepository, GetMemberDues duesId:{0}", duesid));
 
                 using (var connection = new MySqlConnection(this.ConString))
                 {
@@ -555,7 +555,7 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
-                this.logProvider.Error(string.Format("AccountRepository, GetMemberDues duesId:{0}}", duesid), ex);
+                this.logProvider.Error(string.Format("AccountRepository, GetMemberDues duesId:{0}", duesid), ex);
                 throw;
             }
         }
@@ -667,7 +667,7 @@ namespace Wams.DAL.Repositories
 
                 using (var connection = new MySqlConnection(this.ConString))
                 {
-                    var query = string.Format("select * from loans where granted = 0;");
+                    var query = "select * from loans where granted = 0;";
 
                     using (var cmd = new MySqlCommand(query, connection))
                     {
@@ -854,8 +854,8 @@ namespace Wams.DAL.Repositories
 
                         connection.Open();
 
-                        cmd.Parameters.AddWithValue("@benefitid", request.BenefitId);
-                        cmd.Parameters["@benefitid"].Direction = ParameterDirection.Input;
+                        cmd.Parameters.AddWithValue("@id", request.BenefitId);
+                        cmd.Parameters["@id"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@benefitdate", request.BenefitDate);
                         cmd.Parameters["@benefitdate"].Direction = ParameterDirection.Input;
@@ -885,6 +885,95 @@ namespace Wams.DAL.Repositories
             {
                 this.logProvider.Error(string.Format("AccountRepository, UpdateBenefit memberId:{0}, BenefitDate:{1}, granted:{2}, BenefitType:{3}, MemberName:{4}",
                     request.MemberId, request.BenefitDate, request.Granted, request.BenefitType, request.MemberName), ex);
+
+                return -1;
+            }
+        }
+
+        public PendingLoan GetPendingdLoan(int loanid)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, GetPendingdLoan id:{0}", loanid));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = string.Format("select * from loans where granted = 0 and loanid = {0} limit 1", loanid);
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        var record = cmd.ExecuteReader(CommandBehavior.SingleRow);
+
+                        if (record.Read())
+                        {
+                            return new PendingLoan
+                            {
+                                PendingLoanId = Convert.ToInt32(record["loanid"].ToString()),
+                                MemberId = Convert.ToInt32(record["member_id"].ToString()),
+                                MemberName = record["member_name"].ToString(),
+                                Amount = Convert.ToDecimal(record["amount"].ToString()),
+                                Reason = record["reason"].ToString(),
+                                Granted = Convert.ToInt32(record["granted"].ToString()) == 1,
+                            };
+                        }
+
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, GetPendingdLoan id:{0}", loanid), ex);
+                throw;
+            }
+        }
+
+        public int UpdateLoan(PendingLoan request)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, UpdateLoan memberId:{0}, amount:{1}, granted:{2}, memberid:{3}, MemberName:{4}",
+                    request.MemberId, request.Amount, request.Granted, request.MemberId, request.MemberName));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    using (var cmd = new MySqlCommand("updateloan", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        connection.Open();
+
+                        cmd.Parameters.AddWithValue("@id", request.PendingLoanId);
+                        cmd.Parameters["@id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@amount", request.Amount);
+                        cmd.Parameters["@amount"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@memname", request.MemberName);
+                        cmd.Parameters["@memname"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@reason", request.Reason);
+                        cmd.Parameters["@reason"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@memid", request.MemberId);
+                        cmd.Parameters["@memid"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@granted", request.Granted ? 1 : 0);
+                        cmd.Parameters["@granted"].Direction = ParameterDirection.Input;
+
+                        var results = cmd.ExecuteNonQuery();
+
+                        return results;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, UpdateLoan memberId:{0}, amount:{1}, granted:{2}, memberid:{3}, MemberName:{4}",
+                    request.MemberId, request.Amount, request.Granted, request.MemberId, request.MemberName), ex);
 
                 return -1;
             }

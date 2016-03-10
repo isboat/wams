@@ -36,7 +36,7 @@ else {
             @Html.DisplayFor(modelItem => item.MemberName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "EditLoan", new { id = item.PendingLoanId })
+            @Html.ActionLink("Edit", "EditLoan", new { loanid = item.PendingLoanId })
         </td>
     </tr>
 }
