@@ -22,7 +22,7 @@ namespace Wams.DAL.Repositories
 
         public static DateTime ToDateTime(IDataRecord row, string column)
         {
-            return Convert.ToDateTime(row[column]);
+            return DateTime.ParseExact(row[column].ToString(), "dd/MM/yyyy HH:mm:ss", null);
         }
 
         public static string ToStr(IDataRecord row, string column)

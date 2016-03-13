@@ -15,6 +15,7 @@ namespace Wams.DAL.Repositories
     using Wams.DataObjects.Accounts;
     using Wams.DAL.Interfaces;
     using Wams.DataObjects;
+    using System.Globalization;
 
     public class AccountRepository :BaseRepository, IAccountRepository
     {
@@ -162,7 +163,7 @@ namespace Wams.DAL.Repositories
                             records.Add(new UserAccount
                             {
                                 AccountId = Convert.ToInt32(record["member_id"].ToString()),
-                                DateOfBirth = Convert.ToDateTime(record["date_of_birth"].ToString()),
+                                DateOfBirth = DateTime.ParseExact(record["date_of_birth"].ToString(), "dd/MM/yyyy HH:mm:ss", null),
                                 EmailAddress = record["email_address"].ToString(),
                                 FirstName = record["first_name"].ToString(),
                                 LastName = record["last_name"].ToString(),
@@ -216,7 +217,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_gender", gender);
                         cmd.Parameters["@p_gender"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_dob", dob);
+                        cmd.Parameters.AddWithValue("@p_dob", dob.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture));
                         cmd.Parameters["@p_dob"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_email", email);
@@ -293,7 +294,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_gender", userAccount.Gender);
                         cmd.Parameters["@p_gender"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_dob", userAccount.DateOfBirth);
+                        cmd.Parameters.AddWithValue("@p_dob", userAccount.DateOfBirth.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture));
                         cmd.Parameters["@p_dob"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_email", userAccount.EmailAddress);
@@ -452,7 +453,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_year", dues.DuesYear);
                         cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate.ToString());
+                        cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture));
                         cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
                         
                         cmd.Parameters.AddWithValue("@p_added_by", dues.AddedBy);
@@ -507,7 +508,7 @@ namespace Wams.DAL.Repositories
                                 Amount = Convert.ToDecimal(record["amount"].ToString()),
                                 DuesMonth = record["dues_month"].ToString(),
                                 DuesYear = Convert.ToInt32(record["dues_year"].ToString()),
-                                AddedDate = DateTime.Parse(record["added_date"].ToString()),
+                                AddedDate = DateTime.ParseExact(record["added_date"].ToString(), "dd/MM/yyyy HH:mm:ss", null),
                                 AddedBy = record["added_by"].ToString(),
                                 AddedById = Convert.ToInt32(record["added_by_id"].ToString())
                             });
@@ -551,7 +552,7 @@ namespace Wams.DAL.Repositories
                                 Amount = Convert.ToDecimal(record["amount"].ToString()),
                                 DuesMonth = record["dues_month"].ToString(),
                                 DuesYear = Convert.ToInt32(record["dues_year"].ToString()),
-                                AddedDate = Convert.ToDateTime(record["added_date"].ToString()),
+                                AddedDate = DateTime.ParseExact(record["added_date"].ToString(), "dd/MM/yyyy HH:mm:ss", null),
                                 AddedBy = record["added_by"].ToString(),
                                 AddedById = Convert.ToInt32(record["added_by_id"].ToString())
                             };
@@ -592,7 +593,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_year", dues.DuesYear);
                         cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate.ToString());
+                        cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate.ToString("dd/MM/yyyy HH:mm:ss"));
                         cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_added_by", dues.AddedBy);
@@ -649,7 +650,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_year", investment.DuesYear);
                         cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_added_date", investment.AddedDate.ToString());
+                        cmd.Parameters.AddWithValue("@p_added_date", investment.AddedDate.ToString("dd/MM/yyyy HH:mm:ss"));
                         cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_added_by", investment.AddedBy);
@@ -704,7 +705,7 @@ namespace Wams.DAL.Repositories
                                 Amount = Convert.ToDecimal(record["amount"].ToString()),
                                 DuesMonth = record["invmt_month"].ToString(),
                                 DuesYear = Convert.ToInt32(record["invmt_year"].ToString()),
-                                AddedDate = DateTime.Parse(record["added_date"].ToString()),
+                                AddedDate = DateTime.ParseExact(record["added_date"].ToString(), "dd/MM/yyyy HH:mm:ss", null),
                                 AddedBy = record["added_by"].ToString(),
                                 AddedById = Convert.ToInt32(record["added_by_id"].ToString())
                             });
@@ -748,7 +749,7 @@ namespace Wams.DAL.Repositories
                                 Amount = Convert.ToDecimal(record["amount"].ToString()),
                                 DuesMonth = record["invmt_month"].ToString(),
                                 DuesYear = Convert.ToInt32(record["invmt_year"].ToString()),
-                                AddedDate = Convert.ToDateTime(record["added_date"].ToString()),
+                                AddedDate = DateTime.ParseExact(record["added_date"].ToString(), "dd/MM/yyyy HH:mm:ss", null),
                                 AddedBy = record["added_by"].ToString(),
                                 AddedById = Convert.ToInt32(record["added_by_id"].ToString())
                             };
@@ -789,7 +790,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_year", investment.DuesYear);
                         cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_added_date", investment.AddedDate.ToString());
+                        cmd.Parameters.AddWithValue("@p_added_date", investment.AddedDate.ToString("dd/MM/yyyy HH:mm:ss"));
                         cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_added_by", investment.AddedBy);
