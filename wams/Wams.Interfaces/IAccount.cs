@@ -4,6 +4,7 @@ using System.ServiceModel;
 using Wams.ViewModels;
 using Wams.ViewModels.Account;
 using Wams.ViewModels.MemberDues;
+using Wams.ViewModels.MemberInvmt;
 using Wams.ViewModels.Registration;
 
 namespace Wams.Interfaces
@@ -34,6 +35,18 @@ namespace Wams.Interfaces
         MemberDuesViewModel GetMemberDues(int duesid);
 
         BaseResponse UpdateMemberDues(EditMemberDuesRequest model);
+
+        #endregion
+
+        #region Investment
+
+        BaseResponse AddMemberInvmt(AddMemberInvmtRequest request);
+
+        List<MemberInvmtViewModel> ViewAllMemberInvestments(int memberId);
+
+        MemberInvmtViewModel GetMemberInvmt(int invmtid);
+
+        BaseResponse UpdateMemberInvmt(EditMemberInvmtRequest model);
 
         #endregion
 

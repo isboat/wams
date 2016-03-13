@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Wams.ViewModels.MemberInvmt.MemberInvmtViewModel>
+
+<p>
+    @Html.ActionLink("Request for withdrawal", "InvestmentWithdrawal", null, new {@class = "btn btn-info"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DuesMonth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DuesYear)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Paid)
+        </th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr class="@if (!item.Paid) { <text>alert-danger</text> }">
+        <td>
+            @if (!item.Paid)
+            {
+                <span>&#x20b5; <span class="alert-danger">@Html.DisplayFor(modelItem => item.Amount)</span></span>
+
+            }
+            else
+            {
+                <span>&#x20b5; @Html.DisplayFor(modelItem => item.Amount) ghc</span>
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DuesMonth)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DuesYear)
+        </td>
+        <td>
+            @if (!item.Paid)
+            {
+                <span class="alert-danger">Unpaid</span>
+            }
+        </td>
+    </tr>
+}
+
+</table>

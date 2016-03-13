@@ -279,6 +279,40 @@ namespace Wams.Web.Controllers
 
         #endregion
 
+        #region Investments
+        
+        public ActionResult ViewMemberInvestments()
+        {
+            try
+            {
+                if (!this.Request.IsAuthenticated)
+                {
+                    return this.RedirectToAction("Login", "Auth");
+                }
+
+                var model = this.accountLogic.ViewAllMemberInvestments(this.User.Id);
+
+                if (model == null)
+                {
+                    return View("BaseResponse",
+                        new BaseResponse
+                        {
+                            Status = BaseResponseStatus.Failed,
+                            Message = "Unknown error occured.",
+                            HtmlString = new HtmlString("Try again.")
+                        });
+                }
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(this.Request.RawUrl, ex);
+                throw;
+            }
+        }
+        #endregion
+
         #region Request Loan
 
         public ActionResult RequestLoan() 

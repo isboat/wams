@@ -59,6 +59,9 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.Add(new MySqlParameter("@loginrole_out", MySqlDbType.Int32));
                         cmd.Parameters["@loginrole_out"].Direction = ParameterDirection.Output;
 
+                        cmd.Parameters.Add(new MySqlParameter("@caninvest_out", MySqlDbType.Int32));
+                        cmd.Parameters["@caninvest_out"].Direction = ParameterDirection.Output;
+
                         cmd.ExecuteNonQuery();
 
                         var id = cmd.Parameters["@id_out"].Value.ToString();
@@ -71,7 +74,8 @@ namespace Wams.DAL.Repositories
                                        FirstName = cmd.Parameters["@fn_out"].Value.ToString(),
                                        LastName = cmd.Parameters["@ln_out"].Value.ToString(),
                                        MembershipType = cmd.Parameters["@memtype_out"].Value.ToString(),
-                                       UserLoginRole = Convert.ToInt32(cmd.Parameters["@loginrole_out"].Value.ToString())
+                                       UserLoginRole = Convert.ToInt32(cmd.Parameters["@loginrole_out"].Value.ToString()),
+                                       CanInvest = Convert.ToInt32(cmd.Parameters["@caninvest_out"].Value.ToString()) == 1
                                    };
                         }
 
@@ -120,7 +124,8 @@ namespace Wams.DAL.Repositories
                                        EmergencyTel = record["emergency_contact_number"].ToString(),
                                        MembershipType = record["membershiptype"].ToString(),
                                        UserLoginRole = Convert.ToInt32(record["loginrole"].ToString()),
-                                       ProfilePicUrl = record["picurl"].ToString()
+                                       ProfilePicUrl = record["picurl"].ToString(),
+                                       CanInvest = Convert.ToInt32(record["canInvest"].ToString()) == 1
                                    };
                         }
 
@@ -308,6 +313,9 @@ namespace Wams.DAL.Repositories
 
                         cmd.Parameters.AddWithValue("@p_loginrole", userAccount.UserLoginRole);
                         cmd.Parameters["@p_loginrole"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_caninvest", userAccount.CanInvest ? 1 : 0);
+                        cmd.Parameters["@p_caninvest"].Direction = ParameterDirection.Input;
 
                         return cmd.ExecuteNonQuery();
                     }
@@ -606,6 +614,203 @@ namespace Wams.DAL.Repositories
             {
                 this.logProvider.Error(string.Format("AccountRepository, UpdateMemberDues memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, duesMonth:{5}, duesYear:{6}, duesMemberName:{7}",
                     dues.MemberId, dues.AddedBy, dues.AddedById, dues.AddedDate, dues.Amount, dues.DuesMonth, dues.DuesYear, dues.MemberName), ex);
+                return -1;
+            }
+        }
+
+        #endregion
+
+        #region Investments
+
+        public int AddMemberInvmt(MemberInvmt investment)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, AddMemberInvmt memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, invmtMonth:{5}, invmtYear:{6}, invmtMemberName:{7}",
+                    investment.MemberId, investment.AddedBy, investment.AddedById, investment.AddedDate, investment.Amount, investment.DuesMonth, investment.DuesYear, investment.MemberName));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    using (var cmd = new MySqlCommand("addinvmt", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        connection.Open();
+
+                        cmd.Parameters.AddWithValue("@p_mem_id", investment.MemberId);
+                        cmd.Parameters["@p_mem_id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_mem_name", investment.MemberName);
+                        cmd.Parameters["@p_mem_name"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_month", investment.DuesMonth);
+                        cmd.Parameters["@p_month"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_year", investment.DuesYear);
+                        cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_date", investment.AddedDate.ToString());
+                        cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_by", investment.AddedBy);
+                        cmd.Parameters["@p_added_by"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_by_id", investment.AddedById);
+                        cmd.Parameters["@p_added_by_id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_amount", investment.Amount.ToString());
+                        cmd.Parameters["@p_amount"].Direction = ParameterDirection.Input;
+
+                        var results = cmd.ExecuteNonQuery();
+
+                        return results;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, AddMemberInvmt memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, invmtMonth:{5}, invmtYear:{6}, invmtMemberName:{7}",
+                    investment.MemberId, investment.AddedBy, investment.AddedById, investment.AddedDate, investment.Amount, investment.DuesMonth, investment.DuesYear, investment.MemberName), ex);
+
+                return -1;
+            }
+        }
+
+        public List<MemberInvmt> ViewAllMemberInvestments(int accountId)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, ViewAllMemberInvestments memberId:{0}", accountId));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = string.Format("select * from investments where member_id = {0}", accountId);
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        var record = cmd.ExecuteReader();
+
+                        var records = new List<MemberInvmt>();
+                        while (record.Read())
+                        {
+                            records.Add(new MemberInvmt
+                            {
+                                InvmtId = Convert.ToInt32(record["invmtid"].ToString()),
+                                MemberId = Convert.ToInt32(record["member_id"].ToString()),
+                                MemberName = record["member_name"].ToString(),
+                                Amount = Convert.ToDecimal(record["amount"].ToString()),
+                                DuesMonth = record["invmt_month"].ToString(),
+                                DuesYear = Convert.ToInt32(record["invmt_year"].ToString()),
+                                AddedDate = DateTime.Parse(record["added_date"].ToString()),
+                                AddedBy = record["added_by"].ToString(),
+                                AddedById = Convert.ToInt32(record["added_by_id"].ToString())
+                            });
+                        }
+
+                        return records;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, ViewAllMemberInvestments memberId:{0}", accountId), ex);
+                throw;
+            }
+        }
+
+        public MemberInvmt GetMemberInvmt(int invmtid)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, GetMemberInvmt invmtId:{0}", invmtid));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = string.Format("select * from investments where invmtid = {0} limit 1", invmtid);
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        var record = cmd.ExecuteReader(CommandBehavior.SingleRow);
+
+                        if (record.Read())
+                        {
+                            return new MemberInvmt
+                            {
+                                InvmtId = Convert.ToInt32(record["invmtid"].ToString()),
+                                MemberId = Convert.ToInt32(record["member_id"].ToString()),
+                                MemberName = record["member_name"].ToString(),
+                                Amount = Convert.ToDecimal(record["amount"].ToString()),
+                                DuesMonth = record["invmt_month"].ToString(),
+                                DuesYear = Convert.ToInt32(record["invmt_year"].ToString()),
+                                AddedDate = Convert.ToDateTime(record["added_date"].ToString()),
+                                AddedBy = record["added_by"].ToString(),
+                                AddedById = Convert.ToInt32(record["added_by_id"].ToString())
+                            };
+                        }
+
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, GetMemberInvmt invmtId:{0}", invmtid), ex);
+                throw;
+            }
+        }
+
+        public int UpdateMemberInvmt(MemberInvmt investment)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, UpdateMemberInvmt memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, invmtMonth:{5}, invmtYear:{6}, invmtMemberName:{7}",
+                    investment.MemberId, investment.AddedBy, investment.AddedById, investment.AddedDate, investment.Amount, investment.DuesMonth, investment.DuesYear, investment.MemberName));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    using (var cmd = new MySqlCommand("updateinvmt", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        connection.Open();
+
+                        cmd.Parameters.AddWithValue("@p_invmt_id", investment.InvmtId);
+                        cmd.Parameters["@p_invmt_id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_month", investment.DuesMonth);
+                        cmd.Parameters["@p_month"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_year", investment.DuesYear);
+                        cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_date", investment.AddedDate.ToString());
+                        cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_by", investment.AddedBy);
+                        cmd.Parameters["@p_added_by"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_by_id", investment.AddedById);
+                        cmd.Parameters["@p_added_by_id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_amount", investment.Amount.ToString());
+                        cmd.Parameters["@p_amount"].Direction = ParameterDirection.Input;
+
+                        var results = cmd.ExecuteNonQuery();
+
+                        return results;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, UpdateMemberInvmt memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, invmtMonth:{5}, invmtYear:{6}, invmtMemberName:{7}",
+                    investment.MemberId, investment.AddedBy, investment.AddedById, investment.AddedDate, investment.Amount, investment.DuesMonth, investment.DuesYear, investment.MemberName), ex);
                 return -1;
             }
         }

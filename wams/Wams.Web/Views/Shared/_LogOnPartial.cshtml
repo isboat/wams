@@ -23,7 +23,10 @@
             <ul class="dropdown-menu">
                 <li>@Html.ActionLink("Dues statement", "ViewMemberDues", "Account")</li>
                 <li>@Html.ActionLink("Outstanding dues", "ViewMemberOutstanding", "Account")</li>
-                <li>@Html.ActionLink("Investment statement", "ViewMemberDues", "Account")</li>
+                @if (User.CanInvest)
+                {
+                    <li>@Html.ActionLink("Investment statement", "ViewMemberInvestments", "Account")</li>
+                }
 
             </ul>
         </li>

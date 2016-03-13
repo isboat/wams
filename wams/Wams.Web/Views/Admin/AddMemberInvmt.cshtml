@@ -1,0 +1,53 @@
+﻿@model Wams.ViewModels.MemberInvmt.AddMemberInvmtRequest
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.MemberId)
+    @Html.HiddenFor(model => model.AddedBy)
+    @Html.HiddenFor(model => model.AddedById)
+    @Html.HiddenFor(model => model.AddedDate)
+    @Html.HiddenFor(model => model.MemberFullName)
+
+    <div class="form-horizontal">
+        <h4>Add Investment for @Model.MemberFullName</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Amount">Amount &#x20B5</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.InvmtMonth, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.InvmtMonth, Model.InvmtMonthOptions, "Select one", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.InvmtMonth, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.InvmtYear, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.InvmtYear, Model.InvmtYearOptions, "Select one", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.InvmtYear, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add Investment" class="btn btn-warning" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to member's profile", "UserDetails", "Admin", new { id = Model.MemberId }, null)
+</div>
+

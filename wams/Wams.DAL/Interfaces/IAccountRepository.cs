@@ -51,6 +51,18 @@ namespace Wams.DAL.Interfaces
 
         #endregion
 
+        #region Investment
+
+        int AddMemberInvmt(MemberInvmt investment);
+
+        List<MemberInvmt> ViewAllMemberInvestments(int accountId);
+
+        MemberInvmt GetMemberInvmt(int duesid);
+
+        int UpdateMemberInvmt(MemberInvmt investment);
+
+        #endregion
+
         int RequestLoan(PendingLoan pending);
 
         List<PendingLoan> GetAllPendingdLoans();

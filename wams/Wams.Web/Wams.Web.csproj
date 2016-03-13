@@ -190,6 +190,10 @@
     <Content Include="Views\Admin\EditBenefit.cshtml" />
     <Content Include="Views\Account\ViewMemberOutstanding.cshtml" />
     <Content Include="Views\Admin\EditLoan.cshtml" />
+    <Content Include="Views\Account\ViewMemberInvestments.cshtml" />
+    <Content Include="Views\Admin\AddMemberInvmt.cshtml" />
+    <Content Include="Views\Admin\ViewMemberInvmt.cshtml" />
+    <Content Include="Views\Admin\EditMemberInvmt.cshtml" />
     <None Include="Views\Base\AboutUs.cshtml" />
     <None Include="Views\Base\ContactUs.cshtml" />
     <None Include="Views\Base\CookiePolicy.cshtml" />

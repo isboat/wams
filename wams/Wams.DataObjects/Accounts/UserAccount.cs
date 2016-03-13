@@ -27,6 +27,8 @@ namespace Wams.DataObjects.Accounts
 
         public int UserLoginRole { get; set; }
 
+        public bool CanInvest { get; set; }
+
         public string EmailAddress { get; set; }
 
         public string FirstName { get; set; }

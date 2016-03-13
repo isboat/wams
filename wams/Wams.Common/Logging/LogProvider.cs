@@ -26,7 +26,7 @@ namespace Wams.Common.Logging
         public void Error(string message, Exception exception)
         {
 #if !DEBUG
-            log.Error(message, exception);
+            log.Error(string.Format("{0} {1} {2}", message, exception, exception.Message));
 #endif
         }
 

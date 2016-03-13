@@ -46,7 +46,8 @@ namespace Wams.Web
                         LastName = serializeModel.LastName,
                         Email = serializeModel.Email,
                         UserLoginRole = serializeModel.UserLoginRole,
-                        MembershipType = serializeModel.MembershipType
+                        MembershipType = serializeModel.MembershipType,
+                        CanInvest = serializeModel.CanInvest                        
                     };
 
                     HttpContext.Current.User = newUser;

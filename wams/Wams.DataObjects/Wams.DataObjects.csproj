@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Accounts\Loan.cs" />
     <Compile Include="Accounts\MemberDues.cs" />
+    <Compile Include="Accounts\MemberInvmt.cs" />
     <Compile Include="Accounts\UserAccount.cs" />
     <Compile Include="PendingBenefitRequest.cs" />
     <Compile Include="PendingLoan.cs" />

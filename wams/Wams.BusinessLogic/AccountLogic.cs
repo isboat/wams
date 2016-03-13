@@ -15,6 +15,7 @@ namespace Wams.BusinessLogic
     using Wams.DAL.Interfaces;
     using Wams.Enums.Registration;
     using Wams.DataObjects;
+    using Wams.ViewModels.MemberInvmt;
 
     public class AccountLogic : IAccount
     {
@@ -72,7 +73,8 @@ namespace Wams.BusinessLogic
                       EmergencyTel = userProfile.EmergencyTel,
                       UserLoginRole = userProfile.UserLoginRole,
                       MembershipType = userProfile.MembershipType,
-                      ProfilePicUrl = userProfile.ProfilePicUrl
+                      ProfilePicUrl = userProfile.ProfilePicUrl,
+                      CanInvest = userProfile.CanInvest
                   }
                 : null;
         }
@@ -97,7 +99,8 @@ namespace Wams.BusinessLogic
                         Biography = profile.Biography,
                         EmergencyTel = profile.EmergencyTel,
                         MembershipType = profile.MembershipType,
-                        UserLoginRole = profile.UserLoginRole
+                        UserLoginRole = profile.UserLoginRole,
+                        CanInvest = profile.CanInvest
                     });
 
             return response;
@@ -301,7 +304,140 @@ namespace Wams.BusinessLogic
                 return baseResponse;
             }
         }
-        
+
+        #endregion
+
+        #region Member's investment
+
+        public List<MemberInvmtViewModel> ViewAllMemberInvestments(int accountId)
+        {
+            try
+            {
+                var list = this.accountRepository.ViewAllMemberInvestments(accountId);
+
+                var uptodateMonths = this.UptoDateMonths();
+
+                var response = new List<MemberInvmtViewModel>();
+
+                foreach (var month in uptodateMonths)
+                {
+                    var vm = new MemberInvmtViewModel { DuesMonth = month.Month, DuesYear = month.Year.ToString() };
+
+                    list.ForEach(x =>
+                    {
+
+                        if (x.DuesMonth == month.Month && x.DuesYear == month.Year)
+                        {
+                            vm.Paid = true;
+                            vm.InvmtId = x.InvmtId;
+                            vm.MemberId = x.MemberId;
+                            vm.MemberName = x.MemberName;
+                            vm.DuesYear = x.DuesYear.ToString();
+                            vm.Amount = x.Amount;
+                            vm.AddedBy = x.AddedBy;
+                            vm.AddedDate = x.AddedDate.ToShortDateString();
+                            vm.AddedById = x.AddedById;
+                        }
+                    });
+
+                    response.Add(vm);
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                //log ex.Message;
+                return null;
+            }
+        }
+
+        public BaseResponse AddMemberInvmt(AddMemberInvmtRequest request)
+        {
+            var baseResponse = new BaseResponse();
+            try
+            {
+                var rows = this.accountRepository.AddMemberInvmt(new MemberInvmt
+                {
+                    MemberId = request.MemberId,
+                    MemberName = request.MemberFullName,
+                    Amount = request.Amount,
+                    DuesMonth = request.InvmtMonth,
+                    DuesYear = request.InvmtYear,
+                    AddedDate = request.AddedDate,
+                    AddedBy = request.AddedBy,
+                    AddedById = request.AddedById,
+                });
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+
+            }
+            catch (Exception exception)
+            {
+                //log exception.Message here
+                return baseResponse;
+            }
+        }
+
+        public MemberInvmtViewModel GetMemberInvmt(int invmtid)
+        {
+            try
+            {
+                var investment = this.accountRepository.GetMemberInvmt(invmtid);
+
+                return investment == null ?
+                    null :
+                    new MemberInvmtViewModel
+                    {
+                        InvmtId = investment.InvmtId,
+                        MemberId = investment.MemberId,
+                        MemberName = investment.MemberName,
+                        DuesMonth = investment.DuesMonth,
+                        DuesYear = investment.DuesYear.ToString(),
+                        Amount = investment.Amount,
+                        AddedBy = investment.AddedBy,
+                        AddedDate = investment.AddedDate.ToShortDateString(),
+                        AddedById = investment.AddedById
+                    };
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public BaseResponse UpdateMemberInvmt(EditMemberInvmtRequest request)
+        {
+            var baseResponse = new BaseResponse();
+            try
+            {
+                var rows = this.accountRepository.UpdateMemberInvmt(new MemberInvmt
+                {
+                    InvmtId = request.InvmtId,
+                    MemberId = request.MemberId,
+                    MemberName = request.MemberFullName,
+                    Amount = request.Amount,
+                    DuesMonth = request.InvmtMonth,
+                    DuesYear = request.InvmtYear,
+                    AddedDate = request.AddedDate,
+                    AddedBy = request.AddedBy,
+                    AddedById = request.AddedById,
+                });
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+
+            }
+            catch (Exception exception)
+            {
+                //log exception.Message here
+                return baseResponse;
+            }
+        }
+
         #endregion
 
         #region Request Loan

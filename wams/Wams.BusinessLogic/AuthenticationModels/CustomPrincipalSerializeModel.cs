@@ -14,5 +14,6 @@ namespace Wams.BusinessLogic.AuthenticationModels
         public string LastName { get; set; }
         public int UserLoginRole { get; set; }
         public string MembershipType { get; set; }
+        public bool CanInvest { get; set; }
     }
 }

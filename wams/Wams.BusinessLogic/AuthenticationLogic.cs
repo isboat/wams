@@ -45,6 +45,7 @@ namespace Wams.BusinessLogic
                 serializeModel.Email = userAccount.EmailAddress;
                 serializeModel.UserLoginRole = userAccount.UserLoginRole;
                 serializeModel.MembershipType = userAccount.MembershipType;
+                serializeModel.CanInvest = userAccount.CanInvest;
 
                 var response = new LoginResponse();
 

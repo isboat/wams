@@ -7,6 +7,7 @@ using Wams.Common.IoC;
 using Wams.Interfaces;
 using Wams.ViewModels.Account;
 using Wams.ViewModels.MemberDues;
+using Wams.ViewModels.MemberInvmt;
 using Wams.Web.Models;
 
 namespace Wams.Web.Controllers
@@ -210,6 +211,154 @@ namespace Wams.Web.Controllers
                 }
 
                 var result = this.accountLogic.UpdateMemberDues(model);
+
+                var response = new BaseResponse
+                {
+                    Status = result.Success ? BaseResponseStatus.Success : BaseResponseStatus.Failed,
+                    Message = result.Message,
+                    HtmlString = result.Success ?
+                        new HtmlString(string.Format("Member's due updated. <a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", model.MemberId)) :
+                        new HtmlString(string.Format("<a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", model.MemberId))
+                };
+
+                return View("BaseResponse", response);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
+        #endregion
+
+        #region Member's Investment
+
+        //
+        public ActionResult AddMemberInvmt(int id)
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1 && id > 0)
+            {
+                var member = this.accountLogic.GetMemberProfile(id);
+                var model = new AddMemberInvmtRequest
+                {
+                    MemberId = id,
+                    MemberFullName = string.Format("{0} {1}", member.FirstName, member.LastName),
+                    AddedBy = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
+                    AddedById = this.User.Id,
+                    AddedDate = DateTime.Now,
+                    InvmtMonthOptions = UIHelper.GetMonthOptions(),
+                    InvmtYearOptions = UIHelper.GetYearOptions()
+                };
+
+                return View(model);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult AddMemberInvmt(AddMemberInvmtRequest request)
+        {
+            if (!this.Request.IsAuthenticated || this.User.UserLoginRole < 2)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            if (request == null)
+            {
+                return this.RedirectToAction("Error");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                request.InvmtMonthOptions = UIHelper.GetMonthOptions();
+                request.InvmtYearOptions = UIHelper.GetYearOptions();
+
+                return View(request);
+            }
+
+            var response = this.accountLogic.AddMemberInvmt(request);
+
+            var model = new BaseResponse
+            {
+                Status = response.Success ? BaseResponseStatus.Success : BaseResponseStatus.Failed,
+                Message = response.Message,
+                HtmlString = response.Success ?
+                    new HtmlString(string.Format("Member's due added. <a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", request.MemberId)) :
+                    new HtmlString(string.Format("<a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", request.MemberId))
+            };
+
+            return View("BaseResponse", model);
+        }
+
+        public ActionResult ViewMemberInvmt(int id)
+        {
+            if (!this.Request.IsAuthenticated || this.User.UserLoginRole < 2)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            var model = this.accountLogic.ViewAllMemberInvestments(id);
+
+            if (model == null)
+            {
+                return View("BaseResponse",
+                    new BaseResponse
+                    {
+                        Status = BaseResponseStatus.Failed,
+                        Message = "Unknown error occured.",
+                        HtmlString = new HtmlString("Try again.")
+                    });
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult EditMemberInvmt(int invmtid)
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            {
+                var model = this.accountLogic.GetMemberInvmt(invmtid);
+
+                var req = new EditMemberInvmtRequest
+                {
+                    MemberId = model.MemberId,
+                    InvmtId = model.InvmtId,
+                    Amount = model.Amount,
+                    MemberFullName = model.MemberName,
+                    AddedBy = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
+                    AddedById = this.User.Id,
+                    AddedDate = DateTime.Now,
+                    InvmtMonth = model.DuesMonth,
+                    InvmtYear = Convert.ToInt32(model.DuesYear),
+                    InvmtMonthOptions = UIHelper.GetMonthOptions(),
+                    InvmtYearOptions = UIHelper.GetYearOptions()
+                };
+
+                return View(req);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult EditMemberInvmt(EditMemberInvmtRequest model)
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            {
+                if (model == null)
+                {
+                    return this.RedirectToAction("Error");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    model.InvmtMonthOptions = UIHelper.GetMonthOptions();
+                    model.InvmtYearOptions = UIHelper.GetYearOptions();
+
+                    return View(model);
+                }
+
+                var result = this.accountLogic.UpdateMemberInvmt(model);
 
                 var response = new BaseResponse
                 {

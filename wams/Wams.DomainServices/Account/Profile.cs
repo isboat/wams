@@ -38,5 +38,8 @@ namespace Wams.ViewModels.Account
 
         [DisplayName("Login Level")]
         public int UserLoginRole { get; set; }
+
+        [DisplayName("Enable Investment")]
+        public bool CanInvest { get; set; }
     }
 }
