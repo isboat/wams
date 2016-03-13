@@ -26,7 +26,8 @@ namespace Wams.Common.Logging
         public void Error(string message, Exception exception)
         {
 #if !DEBUG
-            log.Error(string.Format("{0} {1} {2}", message, exception, exception.Message));
+            var str = string.Format("{0} {1}", message, ToStr(exception));
+            log.Error(str);
 #endif
         }
 
@@ -35,6 +36,16 @@ namespace Wams.Common.Logging
 #if !DEBUG
             log.Info(message);
 #endif
+        }
+
+        private string ToStr(Exception ex)
+        {
+            var str = string.Format("{0} {1}", ex, ex.Message);
+            if (ex.InnerException != null)
+            {
+                str += ". InnerException: " + ToStr(ex.InnerException);
+            }
+            return str;
         }
     }
 }
