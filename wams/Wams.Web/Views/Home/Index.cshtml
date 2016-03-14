@@ -45,7 +45,12 @@ else if (this.Request.IsAuthenticated && this.User.UserLoginRole >= 1)
 }
 else
 {
-
+    <ul class="bxslider">
+        <li><img src="/images/hill_trees.jpg" /></li>
+        <li><img src="/images/me_trees.jpg" /></li>
+        <li><img src="/images/houses.jpg" /></li>
+    </ul>
+    
     <div class="alert alert-success">
         <strong>Welcome to UWWAG</strong> online account
     </div>
@@ -69,4 +74,13 @@ else
         <li>Request Benefits and Loans</li>
         Access and request for loans and benefits easily online.
     </ol>
+
+    <script type="text/javascript">
+        $(function() {
+            $('.bxslider').bxSlider({
+                auto: true
+            });
+        });
+        
+    </script>
 }

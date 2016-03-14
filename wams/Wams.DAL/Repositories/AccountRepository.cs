@@ -17,7 +17,7 @@ namespace Wams.DAL.Repositories
     using Wams.DataObjects;
     using System.Globalization;
 
-    public class AccountRepository :BaseRepository, IAccountRepository
+    public class AccountRepository : BaseRepository, IAccountRepository
     {
         private readonly ILogProvider logProvider;
 
@@ -69,15 +69,15 @@ namespace Wams.DAL.Repositories
                         if (!string.IsNullOrEmpty(id))
                         {
                             return new BaseUserInfo
-                                   {
-                                       AccountId = Convert.ToInt32(id),
-                                       EmailAddress = email,
-                                       FirstName = cmd.Parameters["@fn_out"].Value.ToString(),
-                                       LastName = cmd.Parameters["@ln_out"].Value.ToString(),
-                                       MembershipType = cmd.Parameters["@memtype_out"].Value.ToString(),
-                                       UserLoginRole = Convert.ToInt32(cmd.Parameters["@loginrole_out"].Value.ToString()),
-                                       CanInvest = Convert.ToInt32(cmd.Parameters["@caninvest_out"].Value.ToString()) == 1
-                                   };
+                            {
+                                AccountId = Convert.ToInt32(id),
+                                EmailAddress = email,
+                                FirstName = cmd.Parameters["@fn_out"].Value.ToString(),
+                                LastName = cmd.Parameters["@ln_out"].Value.ToString(),
+                                MembershipType = cmd.Parameters["@memtype_out"].Value.ToString(),
+                                UserLoginRole = Convert.ToInt32(cmd.Parameters["@loginrole_out"].Value.ToString()),
+                                CanInvest = Convert.ToInt32(cmd.Parameters["@caninvest_out"].Value.ToString()) == 1
+                            };
                         }
 
                     }
@@ -113,21 +113,21 @@ namespace Wams.DAL.Repositories
                         if (record.Read())
                         {
                             return new UserAccount
-                                   {
-                                       AccountId = accountid,
-                                       DateOfBirth = Convert.ToDateTime(record["date_of_birth"].ToString()),
-                                       EmailAddress = record["email_address"].ToString(),
-                                       FirstName = record["first_name"].ToString(),
-                                       LastName = record["last_name"].ToString(),
-                                       Gender = record["gender"].ToString(),
-                                       Biography = record["biography"].ToString(),
-                                       Telephone = record["phone_number"].ToString(),
-                                       EmergencyTel = record["emergency_contact_number"].ToString(),
-                                       MembershipType = record["membershiptype"].ToString(),
-                                       UserLoginRole = Convert.ToInt32(record["loginrole"].ToString()),
-                                       ProfilePicUrl = record["picurl"].ToString(),
-                                       CanInvest = Convert.ToInt32(record["canInvest"].ToString()) == 1
-                                   };
+                            {
+                                AccountId = accountid,
+                                DateOfBirth = DateTime.ParseExact(record["date_of_birth"].ToString(), "dd/MM/yyyy", null),
+                                EmailAddress = record["email_address"].ToString(),
+                                FirstName = record["first_name"].ToString(),
+                                LastName = record["last_name"].ToString(),
+                                Gender = record["gender"].ToString(),
+                                Biography = record["biography"].ToString(),
+                                Telephone = record["phone_number"].ToString(),
+                                EmergencyTel = record["emergency_contact_number"].ToString(),
+                                MembershipType = record["membershiptype"].ToString(),
+                                UserLoginRole = Convert.ToInt32(record["loginrole"].ToString()),
+                                ProfilePicUrl = record["picurl"].ToString(),
+                                CanInvest = Convert.ToInt32(record["canInvest"].ToString()) == 1
+                            };
                         }
 
                         return null;
@@ -163,7 +163,7 @@ namespace Wams.DAL.Repositories
                             records.Add(new UserAccount
                             {
                                 AccountId = Convert.ToInt32(record["member_id"].ToString()),
-                                DateOfBirth = DateTime.ParseExact(record["date_of_birth"].ToString(), "dd/MM/yyyy HH:mm:ss", null),
+                                DateOfBirth = DateTime.ParseExact(record["date_of_birth"].ToString(), "dd/MM/yyyy", null),
                                 EmailAddress = record["email_address"].ToString(),
                                 FirstName = record["first_name"].ToString(),
                                 LastName = record["last_name"].ToString(),
@@ -217,7 +217,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_gender", gender);
                         cmd.Parameters["@p_gender"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_dob", dob.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture));
+                        cmd.Parameters.AddWithValue("@p_dob", dob.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture));
                         cmd.Parameters["@p_dob"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_email", email);
@@ -294,7 +294,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_gender", userAccount.Gender);
                         cmd.Parameters["@p_gender"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_dob", userAccount.DateOfBirth.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture));
+                        cmd.Parameters.AddWithValue("@p_dob", userAccount.DateOfBirth.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture));
                         cmd.Parameters["@p_dob"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_email", userAccount.EmailAddress);
@@ -430,7 +430,7 @@ namespace Wams.DAL.Repositories
         {
             try
             {
-                this.logProvider.Info(string.Format("AccountRepository, AddMemberDues memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, duesMonth:{5}, duesYear:{6}, duesMemberName:{7}", 
+                this.logProvider.Info(string.Format("AccountRepository, AddMemberDues memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, duesMonth:{5}, duesYear:{6}, duesMemberName:{7}",
                     dues.MemberId, dues.AddedBy, dues.AddedById, dues.AddedDate, dues.Amount, dues.DuesMonth, dues.DuesYear, dues.MemberName));
 
                 using (var connection = new MySqlConnection(this.ConString))
@@ -455,7 +455,7 @@ namespace Wams.DAL.Repositories
 
                         cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture));
                         cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
-                        
+
                         cmd.Parameters.AddWithValue("@p_added_by", dues.AddedBy);
                         cmd.Parameters["@p_added_by"].Direction = ParameterDirection.Input;
 
@@ -542,7 +542,7 @@ namespace Wams.DAL.Repositories
 
                         var record = cmd.ExecuteReader(CommandBehavior.SingleRow);
 
-                        if(record.Read())
+                        if (record.Read())
                         {
                             return new MemberDues
                             {
@@ -593,7 +593,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_year", dues.DuesYear);
                         cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate.ToString("dd/MM/yyyy HH:mm:ss"));
+                        cmd.Parameters.AddWithValue("@p_added_date", dues.AddedDate.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture));
                         cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_added_by", dues.AddedBy);
@@ -650,7 +650,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_year", investment.DuesYear);
                         cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_added_date", investment.AddedDate.ToString("dd/MM/yyyy HH:mm:ss"));
+                        cmd.Parameters.AddWithValue("@p_added_date", investment.AddedDate.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture));
                         cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_added_by", investment.AddedBy);
@@ -790,7 +790,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_year", investment.DuesYear);
                         cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_added_date", investment.AddedDate.ToString("dd/MM/yyyy HH:mm:ss"));
+                        cmd.Parameters.AddWithValue("@p_added_date", investment.AddedDate.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture));
                         cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_added_by", investment.AddedBy);
@@ -799,7 +799,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_added_by_id", investment.AddedById);
                         cmd.Parameters["@p_added_by_id"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_amount", investment.Amount.ToString());
+                        cmd.Parameters.AddWithValue("@p_amount", investment.Amount.ToString(CultureInfo.InvariantCulture));
                         cmd.Parameters["@p_amount"].Direction = ParameterDirection.Input;
 
                         var results = cmd.ExecuteNonQuery();
@@ -956,7 +956,7 @@ namespace Wams.DAL.Repositories
                     pending.MemberId, pending.BenefitDate, pending.Granted, pending.BenefitType, pending.MemberName), ex);
 
                 throw;
-            } 
+            }
         }
 
         public List<PendingBenefitRequest> GetAllPendingdBenefits()
@@ -1000,7 +1000,7 @@ namespace Wams.DAL.Repositories
                 this.logProvider.Error("AccountRepository, GetAllPendingdBenefits", ex);
 
                 throw;
-            } 
+            }
         }
 
         public PendingBenefitRequest GetPendingdBenefits(int id)
@@ -1192,13 +1192,13 @@ namespace Wams.DAL.Repositories
         private UserAccount CreateUserAccount(IDataRecord row)
         {
             return new UserAccount
-                   {
-                       AccountId = DataAccessHelper.ToInt(row, "member_id"),
-                       DateOfBirth = DataAccessHelper.ToDateTime(row, "date_of_birth"),
-                       EmailAddress = DataAccessHelper.ToStr(row, "email_address"),
-                       FirstName = DataAccessHelper.ToStr(row, "first_name"),
-                       LastName = DataAccessHelper.ToStr(row, "last_name")
-                   };
+            {
+                AccountId = DataAccessHelper.ToInt(row, "member_id"),
+                DateOfBirth = DataAccessHelper.ToDateTime(row, "date_of_birth"),
+                EmailAddress = DataAccessHelper.ToStr(row, "email_address"),
+                FirstName = DataAccessHelper.ToStr(row, "first_name"),
+                LastName = DataAccessHelper.ToStr(row, "last_name")
+            };
         }
 
         #endregion
