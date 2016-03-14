@@ -375,6 +375,71 @@ namespace Wams.Web.Controllers
             return this.RedirectToAction("Index", "Home");
         }
 
+        public ActionResult ViewInvestmentRequests()
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            {
+                var model = this.accountLogic.GetAllInvestmentRequests();
+                return View(model);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult EditInvestmentRequest(int id)
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            {
+                var model = this.accountLogic.GetInvestmentWithdrawRequest(id);
+
+                var req = new WithdrawInvestmentRequest
+                {
+                    MemberId = model.MemberId,
+                    WithdrawInvmtReqId = model.WithdrawInvmtReqId,
+                    Amount = model.Amount,
+                    MemberName = model.MemberName,
+                    Granted = model.Granted,
+                    RequestDate = model.RequestDate
+                };
+
+                return View(req);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult EditInvestmentRequest(WithdrawInvestmentRequest model)
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            {
+                if (model == null)
+                {
+                    return this.RedirectToAction("Error");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                var result = this.accountLogic.UpdateInvestmentRequest(model);
+
+                var response = new BaseResponse
+                {
+                    Status = result.Success ? BaseResponseStatus.Success : BaseResponseStatus.Failed,
+                    Message = result.Message,
+                    HtmlString = result.Success ?
+                        new HtmlString(string.Format("Member's investment request is updated. <a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", model.MemberId)) :
+                        new HtmlString(string.Format("<a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", model.MemberId))
+                };
+
+                return View("BaseResponse", response);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
         #endregion
 
         #region Loan Requests

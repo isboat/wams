@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Wams.ViewModels.Account
 {
-    public class BenefitRequest
+    public class BenefitRequest : BaseRequest
     {
         public int BenefitId { get; set; }
 
@@ -19,20 +19,7 @@ namespace Wams.ViewModels.Account
 
         public IEnumerable<SelectListItem> BenefitTypeOptions { get; set; }
 
-        [DisplayName("Request date")]
-        [Required]
-        public string BenefitDate { get; set; }
-
         [Required]
         public string Message { get; set; }
-
-        public int MemberId { get; set; }
-
-        public string Address { get; set; }
-
-        public string MemberName { get; set; }
-
-        [DisplayName("Tick to Grant")]
-        public bool Granted { get; set; }
     }
 }

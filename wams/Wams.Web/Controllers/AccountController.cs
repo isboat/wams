@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Wams.ViewModels.Account;
+using Wams.ViewModels.MemberInvmt;
 using Wams.ViewModels.Registration;
 
 namespace Wams.Web.Controllers
@@ -304,6 +305,71 @@ namespace Wams.Web.Controllers
                 }
 
                 return View(model);
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(this.Request.RawUrl, ex);
+                throw;
+            }
+        }
+
+        public ActionResult WithdrawInvestment()
+        {
+            try
+            {
+                if (!this.Request.IsAuthenticated)
+                {
+                    return this.RedirectToAction("Login", "Auth");
+                }
+
+                return View(new WithdrawInvestmentRequest());
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(this.Request.RawUrl, ex);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult WithdrawInvestment(WithdrawInvestmentRequest request)
+        {
+            try
+            {
+                if (!this.Request.IsAuthenticated)
+                {
+                    return this.RedirectToAction("Login", "Auth");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return View(request);
+                }
+
+                request.MemberId = this.User.Id;
+                request.MemberName = string.Format("{0} {1}", this.User.FirstName, this.User.LastName);
+
+                var model = this.accountLogic.RequestInvestmentWithdrawal(request);
+
+                if (model == null)
+                {
+                    return this.RedirectToAction("Error");
+                }
+
+                return View("BaseResponse",
+                    !model.Success ?
+                        new BaseResponse
+                        {
+                            Status = BaseResponseStatus.Failed,
+                            Message = "Unknown error occured.",
+                            HtmlString = new HtmlString("Try again." + model.Message)
+                        } :
+                        new BaseResponse
+                        {
+                            Status = BaseResponseStatus.Success,
+                            Message = "Your investment withdrawal is requested successfully. Customer services will contact you soon.",
+                            HtmlString = new HtmlString("Update your contact information if they're not update to date.")
+                        });
             }
             catch (Exception ex)
             {

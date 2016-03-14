@@ -202,6 +202,9 @@
     <Content Include="Views\Admin\AddMemberInvmt.cshtml" />
     <Content Include="Views\Admin\ViewMemberInvmt.cshtml" />
     <Content Include="Views\Admin\EditMemberInvmt.cshtml" />
+    <Content Include="Views\Account\WithdrawInvestment.cshtml" />
+    <Content Include="Views\Admin\ViewInvestmentRequests.cshtml" />
+    <Content Include="Views\Admin\EditInvestmentRequest.cshtml" />
     <None Include="Views\Base\AboutUs.cshtml" />
     <None Include="Views\Base\ContactUs.cshtml" />
     <None Include="Views\Base\CookiePolicy.cshtml" />

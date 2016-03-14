@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Wams.ViewModels.MemberInvmt.WithdrawInvestmentRequest>
+@if (!Model.Any())
+{
+    <br/>
+    <div class="alert alert-warning">
+        No loans request available yet.
+    </div>
+}
+else
+{
+    <h4>List of investment withdrawals</h4>
+    <br/>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RequestDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequestDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MemberName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditInvestmentRequest", new { id = item.WithdrawInvmtReqId })
+                </td>
+            </tr>
+        }
+
+    </table>
+}

@@ -69,15 +69,15 @@
         var search = function (searchTerm) {
             var criteria = $("#searchBy").val();
             if (!criteria) {
-                alert("Please select by...")
+                alert("Please select by...");
                 return;
             }
 
-            $("." + criteria).each(function (index, element) {
-                if ($(this).html().trim().toLowerCase().indexOf(searchTerm) == -1) {
+            $("." + criteria).each(function(index, element) {
+                if ($(this).html().trim().toLowerCase().indexOf(searchTerm.toLowerCase()) === -1) {
                     $(this).parents("tr").hide();
                 }
-            })
+            });
         }
 
         $("#search").on("keyup", function () {

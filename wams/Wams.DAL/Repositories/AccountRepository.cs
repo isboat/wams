@@ -816,6 +816,158 @@ namespace Wams.DAL.Repositories
             }
         }
 
+        public int RequestInvestmentWithdrawal(PendingBase pending)
+        {
+            if (pending == null)
+            {
+                return -1;
+            }
+
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, RequestInvestmentWithdrawal memberId:{0}, amount:{1}, granted:{2}, memberName:{3}",
+                    pending.MemberId, pending.Amount, pending.Granted, pending.MemberName));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var cmdText = string.Format("INSERT INTO investmentrequest(member_id, member_name, amount, request_date, granted) VALUES({0}, '{1}', {2}, {3}, {4})",
+                        pending.MemberId, pending.MemberName, pending.Amount, pending.RequestDate, 0);
+
+                    using (var cmd = new MySqlCommand(cmdText, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+
+                        connection.Open();
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, RequestInvestmentWithdrawal memberId:{0}, amount:{1}, granted:{2}, memberName:{3}",
+                    pending.MemberId, pending.Amount, pending.Granted, pending.MemberName), ex);
+
+                throw;
+            }
+        }
+
+        public List<PendingBase> GetAllInvestmentRequests()
+        {
+            try
+            {
+                this.logProvider.Info("AccountRepository, GetAllInvestmentRequests");
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = "select * from investmentrequest where granted = 0;";
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        var record = cmd.ExecuteReader();
+
+                        var records = new List<PendingBase>();
+                        while (record.Read())
+                        {
+                            records.Add(new PendingBase
+                            {
+                                PendingId = Convert.ToInt32(record["id"].ToString()),
+                                MemberId = Convert.ToInt32(record["member_id"].ToString()),
+                                MemberName = record["member_name"].ToString(),
+                                RequestDate = record["request_date"].ToString(),
+                                Amount = Convert.ToDecimal(record["amount"].ToString()),
+                                Granted = Convert.ToInt32(record["granted"].ToString()) == 1,
+                            });
+                        }
+
+                        return records;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error("AccountRepository, GetAllInvestmentRequests", ex);
+                throw;
+            }
+        }
+
+        public PendingBase GetInvestmentWithdrawRequest(int id)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, GetInvestmentWithdrawRequest id:{0}", id));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = string.Format("select * from investmentrequest where granted = 0 and id = {0} limit 1", id);
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        var record = cmd.ExecuteReader(CommandBehavior.SingleRow);
+
+                        if (record.Read())
+                        {
+                            return new PendingBase
+                            {
+                                PendingId = Convert.ToInt32(record["id"].ToString()),
+                                MemberId = Convert.ToInt32(record["member_id"].ToString()),
+                                MemberName = record["member_name"].ToString(),
+                                Amount = Convert.ToDecimal(record["amount"].ToString()),
+                                RequestDate = record["request_date"].ToString(),
+                                Granted = Convert.ToInt32(record["granted"].ToString()) == 1,
+                            };
+                        }
+
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, GetInvestmentWithdrawRequest id:{0}", id), ex);
+                throw;
+            }
+        }
+
+        public int UpdateInvestmentRequest(PendingBase request)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, UpdateInvestmentRequest memberId:{0}, amount:{1}, granted:{2}, memberid:{3}, MemberName:{4}",
+                    request.MemberId, request.Amount, request.Granted, request.MemberId, request.MemberName));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var updateStatement = string.Format("update investmentrequest set amount = {0}, granted = {1}, request_date = '{2}' where id = {3};",
+                        request.Amount, request.Granted ? 1 : 0, request.RequestDate, request.PendingId);
+
+                    using (var cmd = new MySqlCommand(updateStatement, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+
+                        connection.Open();
+
+                        var results = cmd.ExecuteNonQuery();
+
+                        return results;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, UpdateInvestmentRequest memberId:{0}, amount:{1}, granted:{2}, memberid:{3}, MemberName:{4}",
+                    request.MemberId, request.Amount, request.Granted, request.MemberId, request.MemberName), ex);
+
+                return -1;
+            }
+        }
+
         #endregion
 
         #region Request Loan
@@ -830,7 +982,7 @@ namespace Wams.DAL.Repositories
             try
             {
                 this.logProvider.Info(string.Format("AccountRepository, RequestLoan memberId:{0}, amount:{1}, granted:{2}, memberName:{3}, pendingLoanId:{4}, reason:{5}",
-                    pending.MemberId, pending.Amount, pending.Granted, pending.MemberName, pending.PendingLoanId, pending.Reason));
+                    pending.MemberId, pending.Amount, pending.Granted, pending.MemberName, pending.PendingId, pending.Reason));
 
                 using (var connection = new MySqlConnection(this.ConString))
                 {
@@ -859,7 +1011,7 @@ namespace Wams.DAL.Repositories
             catch (Exception ex)
             {
                 this.logProvider.Error(string.Format("AccountRepository, RequestLoan memberId:{0}, amount:{1}, granted:{2}, memberName:{3}, pendingLoanId:{4}, reason:{5}",
-                    pending.MemberId, pending.Amount, pending.Granted, pending.MemberName, pending.PendingLoanId, pending.Reason), ex);
+                    pending.MemberId, pending.Amount, pending.Granted, pending.MemberName, pending.PendingId, pending.Reason), ex);
 
                 throw;
             }
@@ -887,7 +1039,7 @@ namespace Wams.DAL.Repositories
                         {
                             records.Add(new PendingLoan
                             {
-                                PendingLoanId = Convert.ToInt32(record["loanid"].ToString()),
+                                PendingId = Convert.ToInt32(record["loanid"].ToString()),
                                 MemberId = Convert.ToInt32(record["member_id"].ToString()),
                                 MemberName = record["member_name"].ToString(),
                                 Amount = Convert.ToDecimal(record["amount"].ToString()),
@@ -907,6 +1059,95 @@ namespace Wams.DAL.Repositories
             }
         }
 
+        public PendingLoan GetPendingdLoan(int loanid)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, GetPendingdLoan id:{0}", loanid));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = string.Format("select * from loans where granted = 0 and loanid = {0} limit 1", loanid);
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        var record = cmd.ExecuteReader(CommandBehavior.SingleRow);
+
+                        if (record.Read())
+                        {
+                            return new PendingLoan
+                            {
+                                PendingId = Convert.ToInt32(record["loanid"].ToString()),
+                                MemberId = Convert.ToInt32(record["member_id"].ToString()),
+                                MemberName = record["member_name"].ToString(),
+                                Amount = Convert.ToDecimal(record["amount"].ToString()),
+                                Reason = record["reason"].ToString(),
+                                Granted = Convert.ToInt32(record["granted"].ToString()) == 1,
+                            };
+                        }
+
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, GetPendingdLoan id:{0}", loanid), ex);
+                throw;
+            }
+        }
+
+        public int UpdateLoan(PendingLoan request)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, UpdateLoan memberId:{0}, amount:{1}, granted:{2}, memberid:{3}, MemberName:{4}",
+                    request.MemberId, request.Amount, request.Granted, request.MemberId, request.MemberName));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    using (var cmd = new MySqlCommand("updateloan", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        connection.Open();
+
+                        cmd.Parameters.AddWithValue("@id", request.PendingId);
+                        cmd.Parameters["@id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@amount", request.Amount);
+                        cmd.Parameters["@amount"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@memname", request.MemberName);
+                        cmd.Parameters["@memname"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@reason", request.Reason);
+                        cmd.Parameters["@reason"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@memid", request.MemberId);
+                        cmd.Parameters["@memid"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@granted", request.Granted ? 1 : 0);
+                        cmd.Parameters["@granted"].Direction = ParameterDirection.Input;
+
+                        var results = cmd.ExecuteNonQuery();
+
+                        return results;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, UpdateLoan memberId:{0}, amount:{1}, granted:{2}, memberid:{3}, MemberName:{4}",
+                    request.MemberId, request.Amount, request.Granted, request.MemberId, request.MemberName), ex);
+
+                return -1;
+            }
+        }
+
         #endregion
 
         #region Benefit
@@ -921,7 +1162,7 @@ namespace Wams.DAL.Repositories
             try
             {
                 this.logProvider.Info(string.Format("AccountRepository, BenefitRequest memberId:{0}, BenefitDate:{1}, granted:{2}, BenefitType:{3}, MemberName:{4}",
-                    pending.MemberId, pending.BenefitDate, pending.Granted, pending.BenefitType, pending.MemberName));
+                    pending.MemberId, pending.RequestDate, pending.Granted, pending.BenefitType, pending.MemberName));
 
                 using (var connection = new MySqlConnection(this.ConString))
                 {
@@ -937,7 +1178,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@memname", pending.MemberName);
                         cmd.Parameters["@memname"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@benefitdate", pending.BenefitDate);
+                        cmd.Parameters.AddWithValue("@benefitdate", pending.RequestDate);
                         cmd.Parameters["@benefitdate"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@benefittype", pending.BenefitType);
@@ -953,7 +1194,7 @@ namespace Wams.DAL.Repositories
             catch (Exception ex)
             {
                 this.logProvider.Error(string.Format("AccountRepository, BenefitRequest memberId:{0}, BenefitDate:{1}, granted:{2}, BenefitType:{3}, MemberName:{4}",
-                    pending.MemberId, pending.BenefitDate, pending.Granted, pending.BenefitType, pending.MemberName), ex);
+                    pending.MemberId, pending.RequestDate, pending.Granted, pending.BenefitType, pending.MemberName), ex);
 
                 throw;
             }
@@ -981,12 +1222,12 @@ namespace Wams.DAL.Repositories
                         {
                             records.Add(new PendingBenefitRequest
                             {
-                                BenefitId = Convert.ToInt32(record["benefitid"].ToString()),
+                                PendingId = Convert.ToInt32(record["benefitid"].ToString()),
                                 MemberId = Convert.ToInt32(record["member_id"].ToString()),
                                 MemberName = record["member_name"].ToString(),
                                 Message = record["message"].ToString(),
                                 BenefitType = record["benefittype"].ToString(),
-                                BenefitDate = record["benefitdate"].ToString(),
+                                RequestDate = record["benefitdate"].ToString(),
                                 Granted = Convert.ToInt32(record["granted"].ToString()) == 1,
                             });
                         }
@@ -1024,12 +1265,12 @@ namespace Wams.DAL.Repositories
                         {
                             return new PendingBenefitRequest
                             {
-                                BenefitId = Convert.ToInt32(record["benefitid"].ToString()),
+                                PendingId = Convert.ToInt32(record["benefitid"].ToString()),
                                 MemberId = Convert.ToInt32(record["member_id"].ToString()),
                                 MemberName = record["member_name"].ToString(),
                                 Message = record["message"].ToString(),
                                 BenefitType = record["benefittype"].ToString(),
-                                BenefitDate = record["benefitdate"].ToString(),
+                                RequestDate = record["benefitdate"].ToString(),
                                 Granted = Convert.ToInt32(record["granted"].ToString()) == 1,
                             };
                         }
@@ -1050,7 +1291,7 @@ namespace Wams.DAL.Repositories
             try
             {
                 this.logProvider.Info(string.Format("AccountRepository, UpdateBenefit memberId:{0}, BenefitDate:{1}, granted:{2}, BenefitType:{3}, MemberName:{4}",
-                    request.MemberId, request.BenefitDate, request.Granted, request.BenefitType, request.MemberName));
+                    request.MemberId, request.RequestDate, request.Granted, request.BenefitType, request.MemberName));
 
                 using (var connection = new MySqlConnection(this.ConString))
                 {
@@ -1060,10 +1301,10 @@ namespace Wams.DAL.Repositories
 
                         connection.Open();
 
-                        cmd.Parameters.AddWithValue("@id", request.BenefitId);
+                        cmd.Parameters.AddWithValue("@id", request.PendingId);
                         cmd.Parameters["@id"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@benefitdate", request.BenefitDate);
+                        cmd.Parameters.AddWithValue("@benefitdate", request.RequestDate);
                         cmd.Parameters["@benefitdate"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@benefittype", request.BenefitType);
@@ -1090,96 +1331,7 @@ namespace Wams.DAL.Repositories
             catch (Exception ex)
             {
                 this.logProvider.Error(string.Format("AccountRepository, UpdateBenefit memberId:{0}, BenefitDate:{1}, granted:{2}, BenefitType:{3}, MemberName:{4}",
-                    request.MemberId, request.BenefitDate, request.Granted, request.BenefitType, request.MemberName), ex);
-
-                return -1;
-            }
-        }
-
-        public PendingLoan GetPendingdLoan(int loanid)
-        {
-            try
-            {
-                this.logProvider.Info(string.Format("AccountRepository, GetPendingdLoan id:{0}", loanid));
-
-                using (var connection = new MySqlConnection(this.ConString))
-                {
-                    var query = string.Format("select * from loans where granted = 0 and loanid = {0} limit 1", loanid);
-
-                    using (var cmd = new MySqlCommand(query, connection))
-                    {
-                        cmd.CommandType = CommandType.Text;
-                        connection.Open();
-
-                        var record = cmd.ExecuteReader(CommandBehavior.SingleRow);
-
-                        if (record.Read())
-                        {
-                            return new PendingLoan
-                            {
-                                PendingLoanId = Convert.ToInt32(record["loanid"].ToString()),
-                                MemberId = Convert.ToInt32(record["member_id"].ToString()),
-                                MemberName = record["member_name"].ToString(),
-                                Amount = Convert.ToDecimal(record["amount"].ToString()),
-                                Reason = record["reason"].ToString(),
-                                Granted = Convert.ToInt32(record["granted"].ToString()) == 1,
-                            };
-                        }
-
-                        return null;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                this.logProvider.Error(string.Format("AccountRepository, GetPendingdLoan id:{0}", loanid), ex);
-                throw;
-            }
-        }
-
-        public int UpdateLoan(PendingLoan request)
-        {
-            try
-            {
-                this.logProvider.Info(string.Format("AccountRepository, UpdateLoan memberId:{0}, amount:{1}, granted:{2}, memberid:{3}, MemberName:{4}",
-                    request.MemberId, request.Amount, request.Granted, request.MemberId, request.MemberName));
-
-                using (var connection = new MySqlConnection(this.ConString))
-                {
-                    using (var cmd = new MySqlCommand("updateloan", connection))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-
-                        connection.Open();
-
-                        cmd.Parameters.AddWithValue("@id", request.PendingLoanId);
-                        cmd.Parameters["@id"].Direction = ParameterDirection.Input;
-
-                        cmd.Parameters.AddWithValue("@amount", request.Amount);
-                        cmd.Parameters["@amount"].Direction = ParameterDirection.Input;
-
-                        cmd.Parameters.AddWithValue("@memname", request.MemberName);
-                        cmd.Parameters["@memname"].Direction = ParameterDirection.Input;
-
-                        cmd.Parameters.AddWithValue("@reason", request.Reason);
-                        cmd.Parameters["@reason"].Direction = ParameterDirection.Input;
-
-                        cmd.Parameters.AddWithValue("@memid", request.MemberId);
-                        cmd.Parameters["@memid"].Direction = ParameterDirection.Input;
-
-                        cmd.Parameters.AddWithValue("@granted", request.Granted ? 1 : 0);
-                        cmd.Parameters["@granted"].Direction = ParameterDirection.Input;
-
-                        var results = cmd.ExecuteNonQuery();
-
-                        return results;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                this.logProvider.Error(string.Format("AccountRepository, UpdateLoan memberId:{0}, amount:{1}, granted:{2}, memberid:{3}, MemberName:{4}",
-                    request.MemberId, request.Amount, request.Granted, request.MemberId, request.MemberName), ex);
+                    request.MemberId, request.RequestDate, request.Granted, request.BenefitType, request.MemberName), ex);
 
                 return -1;
             }

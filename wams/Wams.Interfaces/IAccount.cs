@@ -48,6 +48,19 @@ namespace Wams.Interfaces
 
         BaseResponse UpdateMemberInvmt(EditMemberInvmtRequest model);
 
+        /// <summary>
+        /// By user not admin
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        BaseResponse RequestInvestmentWithdrawal(WithdrawInvestmentRequest request);
+
+        WithdrawInvestmentRequest GetInvestmentWithdrawRequest(int id);
+        
+        List<WithdrawInvestmentRequest> GetAllInvestmentRequests();
+
+        BaseResponse UpdateInvestmentRequest(WithdrawInvestmentRequest model);
+
         #endregion
 
         BaseResponse RequestLoan(LoanRequest request);

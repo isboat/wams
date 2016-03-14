@@ -438,6 +438,111 @@ namespace Wams.BusinessLogic
             }
         }
 
+        public BaseResponse RequestInvestmentWithdrawal(WithdrawInvestmentRequest request)
+        {
+            var baseResponse = new BaseResponse();
+
+            try
+            {
+                var rows = this.accountRepository.RequestInvestmentWithdrawal(new PendingBase
+                {
+                    Amount = request.Amount,
+                    MemberId = request.MemberId,
+                    MemberName = request.MemberName,
+                    RequestDate = request.RequestDate
+                });
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+            }
+            catch (Exception ex)
+            {
+                return baseResponse;
+            }
+        }
+
+        public WithdrawInvestmentRequest GetInvestmentWithdrawRequest(int id)
+        {
+            try
+            {
+                var pending = this.accountRepository.GetInvestmentWithdrawRequest(id);
+                if (pending == null)
+                {
+                    return null;
+                }
+
+                return new WithdrawInvestmentRequest
+                {
+                    MemberId = pending.MemberId,
+                    MemberName = pending.MemberName,
+                    WithdrawInvmtReqId = pending.PendingId,
+                    Amount = pending.Amount,
+                    RequestDate = pending.RequestDate,
+                    Granted = pending.Granted
+                };
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public List<WithdrawInvestmentRequest> GetAllInvestmentRequests()
+        {
+            try
+            {
+                var pendingLoans = this.accountRepository.GetAllInvestmentRequests();
+                if (pendingLoans == null)
+                {
+                    return null;
+                }
+
+                return pendingLoans.Select(x =>
+                    new WithdrawInvestmentRequest
+                    {
+                        Amount = x.Amount,
+                        MemberId = x.MemberId,
+                        MemberName = x.MemberName,
+                        RequestDate = x.RequestDate,
+                        WithdrawInvmtReqId = x.PendingId
+                    }).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public BaseResponse UpdateInvestmentRequest(WithdrawInvestmentRequest request)
+        {
+            var baseResponse = new BaseResponse();
+            try
+            {
+                var rows = this.accountRepository.UpdateInvestmentRequest(new PendingBase
+                {
+                    PendingId = request.WithdrawInvmtReqId,
+                    MemberId = request.MemberId,
+                    MemberName = request.MemberName,
+                    RequestDate = request.RequestDate,
+                    Amount = request.Amount,
+                    Granted = request.Granted
+                });
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+
+            }
+            catch (Exception exception)
+            {
+                //log exception.Message here
+                return baseResponse;
+            }
+        }
+
         #endregion
 
         #region Request Loan
@@ -483,13 +588,67 @@ namespace Wams.BusinessLogic
                         MemberId = x.MemberId,
                         MemberName = x.MemberName,
                         Reason = x.Reason,
-                        PendingLoanId = x.PendingLoanId
+                        PendingLoanId = x.PendingId
                     }).ToList();
 
             }
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+
+        public LoanRequest GetLoan(int loanid)
+        {
+            try
+            {
+                var pending = this.accountRepository.GetPendingdLoan(loanid);
+                if (pending == null)
+                {
+                    return null;
+                }
+
+                return new LoanRequest
+                {
+                    MemberId = pending.MemberId,
+                    MemberName = pending.MemberName,
+                    Reason = pending.Reason,
+                    PendingLoanId = pending.PendingId,
+                    Amount = pending.Amount,
+                    Granted = pending.Granted
+                };
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public BaseResponse UpdateLoan(LoanRequest request)
+        {
+            var baseResponse = new BaseResponse();
+            try
+            {
+                var rows = this.accountRepository.UpdateLoan(new PendingLoan
+                {
+                    PendingId = request.PendingLoanId,
+                    MemberId = request.MemberId,
+                    MemberName = request.MemberName,
+                    Reason = request.Reason,
+                    Amount = request.Amount,
+                    Granted = request.Granted
+                });
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+
+            }
+            catch (Exception exception)
+            {
+                //log exception.Message here
+                return baseResponse;
             }
         }
 
@@ -508,7 +667,7 @@ namespace Wams.BusinessLogic
                     MemberId = request.MemberId,
                     MemberName = request.MemberName,
                     Message = request.Message,
-                    BenefitDate = request.BenefitDate,
+                    RequestDate = request.RequestDate,
                     BenefitType = request.BenefitType
                 });
 
@@ -538,8 +697,8 @@ namespace Wams.BusinessLogic
                         MemberId = x.MemberId,
                         MemberName = x.MemberName,
                         Message = x.Message,
-                        BenefitId = x.BenefitId,
-                        BenefitDate = x.BenefitDate,
+                        BenefitId = x.PendingId,
+                        RequestDate = x.RequestDate,
                         BenefitType = x.BenefitType
                     }).ToList();
 
@@ -565,8 +724,8 @@ namespace Wams.BusinessLogic
                         MemberId = pending.MemberId,
                         MemberName = pending.MemberName,
                         Message = pending.Message,
-                        BenefitId = pending.BenefitId,
-                        BenefitDate = pending.BenefitDate,
+                        BenefitId = pending.PendingId,
+                        RequestDate = pending.RequestDate,
                         BenefitType = pending.BenefitType,
                         Granted = pending.Granted
                     };
@@ -585,66 +744,12 @@ namespace Wams.BusinessLogic
             {
                 var rows = this.accountRepository.UpdateBenefit(new PendingBenefitRequest
                 {
-                    BenefitId = request.BenefitId,
+                    PendingId = request.BenefitId,
                     MemberId = request.MemberId,
                     MemberName = request.MemberName,
                     Message = request.Message,
-                    BenefitDate = request.BenefitDate,
+                    RequestDate = request.RequestDate,
                     BenefitType = request.BenefitType,
-                    Granted = request.Granted
-                });
-
-                baseResponse.Success = rows == 1;
-
-                return baseResponse;
-
-            }
-            catch (Exception exception)
-            {
-                //log exception.Message here
-                return baseResponse;
-            }
-        }
-
-        public LoanRequest GetLoan(int loanid)
-        {
-            try
-            {
-                var pending = this.accountRepository.GetPendingdLoan(loanid);
-                if (pending == null)
-                {
-                    return null;
-                }
-
-                return new LoanRequest
-                {
-                    MemberId = pending.MemberId,
-                    MemberName = pending.MemberName,
-                    Reason = pending.Reason,
-                    PendingLoanId = pending.PendingLoanId,
-                    Amount = pending.Amount,
-                    Granted = pending.Granted
-                };
-
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-
-        public BaseResponse UpdateLoan(LoanRequest request)
-        {
-            var baseResponse = new BaseResponse();
-            try
-            {
-                var rows = this.accountRepository.UpdateLoan(new PendingLoan
-                {
-                    PendingLoanId = request.PendingLoanId,
-                    MemberId = request.MemberId,
-                    MemberName = request.MemberName,
-                    Reason = request.Reason,
-                    Amount = request.Amount,
                     Granted = request.Granted
                 });
 
