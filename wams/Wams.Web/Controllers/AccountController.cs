@@ -57,8 +57,7 @@ namespace Wams.Web.Controllers
                     return this.View();
                 }
 
-                DateTime dob;
-                if (!ModelState.IsValid || !DateTime.TryParse(req.DateOfBirth, out dob))
+                if (!ModelState.IsValid)
                 {
                     req.MembershipTypeOptions = UIHelper.GetMembershipTypeOptions();
                     req.GenderOptions = UIHelper.GetGenderOptions();
@@ -71,7 +70,7 @@ namespace Wams.Web.Controllers
                         {
                             FirstName = req.FirstName,
                             LastName = req.LastName,
-                            DateOfBirth = dob,
+                            DateOfBirth = req.DateOfBirth,
                             EmailAddress = req.EmailAddress,
                             Address = req.Address,
                             Occupation = req.Occupation,

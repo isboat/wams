@@ -173,23 +173,6 @@ namespace Wams.BusinessLogic
                 }
 
                 return response;
-
-                //return list == null ? 
-                //    null :
-                //    list.Select(
-                //        x =>
-                //            new MemberDuesViewModel
-                //            {
-                //                DuesId = x.DuesId,
-                //                MemberId = x.MemberId,
-                //                MemberName = x.MemberName,
-                //                DuesMonth = x.DuesMonth,
-                //                DuesYear = x.DuesYear.ToString(),
-                //                Amount = x.Amount,
-                //                AddedBy = x.AddedBy,
-                //                AddedDate = x.AddedDate.ToShortDateString(),
-                //                AddedById = x.AddedById
-                //            }).ToList();
             }
             catch (Exception ex)
             {

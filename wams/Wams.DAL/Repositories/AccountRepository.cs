@@ -115,7 +115,7 @@ namespace Wams.DAL.Repositories
                             return new UserAccount
                             {
                                 AccountId = accountid,
-                                DateOfBirth = DateTime.ParseExact(record["date_of_birth"].ToString(), "dd/MM/yyyy", null),
+                                DateOfBirth = record["date_of_birth"].ToString(),
                                 EmailAddress = record["email_address"].ToString(),
                                 FirstName = record["first_name"].ToString(),
                                 LastName = record["last_name"].ToString(),
@@ -163,7 +163,7 @@ namespace Wams.DAL.Repositories
                             records.Add(new UserAccount
                             {
                                 AccountId = Convert.ToInt32(record["member_id"].ToString()),
-                                DateOfBirth = DateTime.ParseExact(record["date_of_birth"].ToString(), "dd/MM/yyyy", null),
+                                DateOfBirth = record["date_of_birth"].ToString(),
                                 EmailAddress = record["email_address"].ToString(),
                                 FirstName = record["first_name"].ToString(),
                                 LastName = record["last_name"].ToString(),
@@ -191,7 +191,7 @@ namespace Wams.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public int CreateApplication(string firstname, string lastname, string gender, DateTime dob,
+        public int CreateApplication(string firstname, string lastname, string gender, string dob,
             string email, string address, string occupation, string password, string membershipType,
             int userLoginRole)
         {
@@ -217,7 +217,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_gender", gender);
                         cmd.Parameters["@p_gender"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_dob", dob.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture));
+                        cmd.Parameters.AddWithValue("@p_dob", dob);
                         cmd.Parameters["@p_dob"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_email", email);
@@ -294,7 +294,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_gender", userAccount.Gender);
                         cmd.Parameters["@p_gender"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_dob", userAccount.DateOfBirth.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture));
+                        cmd.Parameters.AddWithValue("@p_dob", userAccount.DateOfBirth);
                         cmd.Parameters["@p_dob"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_email", userAccount.EmailAddress);
@@ -1346,7 +1346,7 @@ namespace Wams.DAL.Repositories
             return new UserAccount
             {
                 AccountId = DataAccessHelper.ToInt(row, "member_id"),
-                DateOfBirth = DataAccessHelper.ToDateTime(row, "date_of_birth"),
+                DateOfBirth = DataAccessHelper.ToStr(row, "date_of_birth"),
                 EmailAddress = DataAccessHelper.ToStr(row, "email_address"),
                 FirstName = DataAccessHelper.ToStr(row, "first_name"),
                 LastName = DataAccessHelper.ToStr(row, "last_name")

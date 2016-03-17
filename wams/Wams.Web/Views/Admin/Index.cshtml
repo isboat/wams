@@ -4,21 +4,22 @@
 </div>
 
 <div class="panel panel-info">
-    <div class="panel-heading">Membership settings</div>
+    <div class="panel-heading">Membership Actions </div>
     <div class="panel-body">
         @Html.ActionLink("View all users", "List", "Admin", null, new { @class = "btn btn-primary" })
 
-        @Html.ActionLink("View loan requests", "ViewLoanRequests", "Admin", null, new { @class = "btn btn-danger" })
+        @Html.ActionLink("View pending loan requests", "ViewLoanRequests", "Admin", null, new { @class = "btn btn-danger" })
 
-        @Html.ActionLink("View benefit requests", "ViewBenefitRequests", "Admin", null, new { @class = "btn btn-warning" })
+        @Html.ActionLink("View pending benefit requests", "ViewBenefitRequests", "Admin", null, new { @class = "btn btn-warning" })
 
-        @Html.ActionLink("View investment requests", "ViewInvestmentRequests", "Admin", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink("View pending investment requests", "ViewInvestmentRequests", "Admin", null, new { @class = "btn btn-primary" })
     </div>
 </div>
 
 <div class="panel panel-warning">
     <div class="panel-heading">Page Settings</div>
     <div class="panel-body">
-        @Html.ActionLink("Edit Contact Us", "", "", null, new { @class = "btn btn-warning" })
+        @*@Html.ActionLink("Edit Contact Us", "", "", null, new { @class = "btn btn-warning" })*@
+        <a class="btn btn-warning" href="#">Edit Contact Us</a>
     </div>
 </div>

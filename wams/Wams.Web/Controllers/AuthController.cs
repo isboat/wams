@@ -70,6 +70,52 @@ namespace Wams.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult AdminLogin()
+        {
+            if (this.Request.IsAuthenticated)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AdminLogin(LoginRequest request)
+        {
+            try
+            {
+                if (request == null || string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
+                {
+                    return this.View();
+                }
+
+                var response = this.authenticationLogic.Login(request.Username, request.Password, true);
+
+                if (response != null && response.AuthenticationStatus == AuthenticationStatus.Successful)
+                {
+                    var formAuthCookie = new HttpCookie(response.FormsAuthCookieName, response.FormsAuthCookieValue);
+                    this.Response.Cookies.Add(formAuthCookie);
+
+                    return this.RedirectToAction("Index", "Home");
+                }
+
+                var error = "username or password is incorrect";
+                if (response != null && !string.IsNullOrEmpty(response.Message))
+                {
+                    error = response.Message;
+                }
+
+                this.ModelState.AddModelError("Username", error);
+                return this.View();
+            }
+            catch (Exception ex)
+            {
+                return this.View();
+            }
+        }
+
         public ActionResult LogOff()
         {
             if (!this.Request.IsAuthenticated)

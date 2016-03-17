@@ -16,16 +16,19 @@ namespace Wams.BusinessLogic
 
     public class AuthenticationLogic : IAuthentication
     {
-        private readonly UpaCarConfiguration upaCarConfiguration = new UpaCarConfiguration();
+        //private readonly UpaCarConfiguration upaCarConfiguration = new UpaCarConfiguration();
 
         private readonly IAccountRepository accountRepository;
+
+        private readonly IAdminRepository adminRepository;
 
         public AuthenticationLogic(IAccountRepository accountRepository)
         {
             this.accountRepository = accountRepository;
+            this.adminRepository = adminRepository;
         }
 
-        public LoginResponse Login(string username, string password)
+        public LoginResponse Login(string username, string password, bool isAdmin = false)
         {
             var cacheKey = GlobalCachingProvider.Instance.GetCacheKey("AuthenticationLogic", "Login", username);
 
@@ -34,7 +37,9 @@ namespace Wams.BusinessLogic
                 return (LoginResponse)GlobalCachingProvider.Instance.GetItem(cacheKey);
             }
 
-            var userAccount = this.accountRepository.Login(username, password);
+            var userAccount = isAdmin ?
+                this.adminRepository.Login(username, password) :
+                this.accountRepository.Login(username, password);
             
             if (userAccount != null)
             {

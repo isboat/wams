@@ -19,7 +19,7 @@ namespace Wams.ViewModels.Account
         public string LastName { get; set; }
 
         [DisplayName("Date of birth")]
-        public DateTime DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
 
         [DisplayName("Email address")]
         public string EmailAddress { get; set; }

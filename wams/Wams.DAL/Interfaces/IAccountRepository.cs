@@ -21,7 +21,7 @@ namespace Wams.DAL.Interfaces
             string firstname, 
             string lastname, 
             string gender, 
-            DateTime dob, 
+            string dob, 
             string email,
             string address,
             string occupation,
