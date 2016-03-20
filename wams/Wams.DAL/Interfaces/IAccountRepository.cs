@@ -39,6 +39,8 @@ namespace Wams.DAL.Interfaces
 
         List<UserAccount> GetAllUserAccounts();
 
+        int DeleteMember(int id);
+
         #region Dues
 
         int AddMemberDues(MemberDues dues);

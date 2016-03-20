@@ -26,6 +26,8 @@ namespace Wams.Interfaces
 
         List<Profile> GetUserProfiles();
 
+        BaseResponse DeleteMember(int id);
+
         #region Dues
 
         BaseResponse AddMemberDues(AddMemberDuesRequest request);

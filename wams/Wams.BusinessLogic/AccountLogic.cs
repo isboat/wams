@@ -137,6 +137,25 @@ namespace Wams.BusinessLogic
             return null;
         }
 
+        public BaseResponse DeleteMember(int id)
+        {
+            var baseResponse = new BaseResponse();
+            try
+            {
+                var rows = this.accountRepository.DeleteMember(id);
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+
+            }
+            catch (Exception exception)
+            {
+                //log exception.Message here
+                return baseResponse;
+            }
+        }
+
         #region Member's dues
 
         public List<MemberDuesViewModel> ViewAllMemberDues(int accountId)

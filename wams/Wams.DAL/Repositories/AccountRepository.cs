@@ -148,7 +148,7 @@ namespace Wams.DAL.Repositories
             {
                 using (var connection = new MySqlConnection(this.ConString))
                 {
-                    var query = "select * from member_information";
+                    var query = "select * from member_information where deleted = 0 AND loginrole < 2";
 
                     using (var cmd = new MySqlCommand(query, connection))
                     {
@@ -420,6 +420,32 @@ namespace Wams.DAL.Repositories
             }
             catch (Exception ex)
             {
+                throw;
+            }
+        }
+
+        public int DeleteMember(int id)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, DeleteMember id:{0}", id));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = string.Format("update member_information set deleted = 1 where member_id = {0}", id);
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, DeleteMember id:{0}", id), ex);
                 throw;
             }
         }

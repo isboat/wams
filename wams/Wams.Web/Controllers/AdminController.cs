@@ -81,6 +81,32 @@ namespace Wams.Web.Controllers
                 this.RedirectToAction("UserDetails", new { id = profile.MemberId });
         }
 
+        public ActionResult DeleteMember(int id)
+        {
+            if (!this.Request.IsAuthenticated || this.User.UserLoginRole < 2)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            if (id == 0)
+            {
+                return this.RedirectToAction("Index");
+            }
+
+            var response = this.accountLogic.DeleteMember(id);
+
+            var model = new BaseResponse
+            {
+                Status = response.Success ? BaseResponseStatus.Success : BaseResponseStatus.Failed,
+                Message = response.Message,
+                HtmlString = response.Success ?
+                    new HtmlString("Member's account is deleted!!") :
+                    new HtmlString(string.Format("<a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", id))
+            };
+
+            return View("BaseResponse", model);
+        }
+            
         #region Member's Dues
 
         //
