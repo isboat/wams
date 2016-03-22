@@ -21,7 +21,7 @@ namespace Wams.DataObjects.Accounts
 
         public int DuesYear { get; set; }
 
-        public DateTime AddedDate { get; set; }
+        public string AddedDate { get; set; }
 
         public string AddedBy { get; set; }
 

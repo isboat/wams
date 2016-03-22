@@ -121,7 +121,7 @@ namespace Wams.Web.Controllers
                     MemberFullName = string.Format("{0} {1}", member.FirstName, member.LastName),
                     AddedBy = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
                     AddedById = this.User.Id,
-                    AddedDate = DateTime.Now,
+                    AddedDate = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
                     DueMonthOptions = UIHelper.GetMonthOptions(),
                     DueYearOptions = UIHelper.GetYearOptions()
                 };
@@ -205,7 +205,7 @@ namespace Wams.Web.Controllers
                     MemberFullName = model.MemberName,
                     AddedBy = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
                     AddedById = this.User.Id,
-                    AddedDate = DateTime.Now,
+                    AddedDate = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
                     DueMonth = model.DuesMonth,
                     DueYear = Convert.ToInt32(model.DuesYear),
                     DueMonthOptions = UIHelper.GetMonthOptions(),

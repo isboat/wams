@@ -183,7 +183,7 @@ namespace Wams.BusinessLogic
                             vm.DuesYear = x.DuesYear.ToString();
                             vm.Amount = x.Amount;
                             vm.AddedBy = x.AddedBy;
-                            vm.AddedDate = x.AddedDate.ToShortDateString();
+                            vm.AddedDate = x.AddedDate;
                             vm.AddedById = x.AddedById;
                         }
                     });
@@ -267,7 +267,7 @@ namespace Wams.BusinessLogic
                                 DuesYear = dues.DuesYear.ToString(),
                                 Amount = dues.Amount,
                                 AddedBy = dues.AddedBy,
-                                AddedDate = dues.AddedDate.ToShortDateString(),
+                                AddedDate = dues.AddedDate,
                                 AddedById = dues.AddedById
                             };
             }
