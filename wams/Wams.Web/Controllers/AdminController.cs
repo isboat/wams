@@ -121,7 +121,7 @@ namespace Wams.Web.Controllers
                     MemberFullName = string.Format("{0} {1}", member.FirstName, member.LastName),
                     AddedBy = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
                     AddedById = this.User.Id,
-                    AddedDate = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                    AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
                     DueMonthOptions = UIHelper.GetMonthOptions(),
                     DueYearOptions = UIHelper.GetYearOptions()
                 };
@@ -205,7 +205,7 @@ namespace Wams.Web.Controllers
                     MemberFullName = model.MemberName,
                     AddedBy = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
                     AddedById = this.User.Id,
-                    AddedDate = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                    AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
                     DueMonth = model.DuesMonth,
                     DueYear = Convert.ToInt32(model.DuesYear),
                     DueMonthOptions = UIHelper.GetMonthOptions(),
@@ -269,7 +269,6 @@ namespace Wams.Web.Controllers
                     MemberFullName = string.Format("{0} {1}", member.FirstName, member.LastName),
                     AddedBy = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
                     AddedById = this.User.Id,
-                    AddedDate = DateTime.Now,
                     InvmtMonthOptions = UIHelper.GetMonthOptions(),
                     InvmtYearOptions = UIHelper.GetYearOptions()
                 };
@@ -301,6 +300,7 @@ namespace Wams.Web.Controllers
                 return View(request);
             }
 
+            request.AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
             var response = this.accountLogic.AddMemberInvmt(request);
 
             var model = new BaseResponse
@@ -353,7 +353,7 @@ namespace Wams.Web.Controllers
                     MemberFullName = model.MemberName,
                     AddedBy = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
                     AddedById = this.User.Id,
-                    AddedDate = DateTime.Now,
+                    AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
                     InvmtMonth = model.DuesMonth,
                     InvmtYear = Convert.ToInt32(model.DuesYear),
                     InvmtMonthOptions = UIHelper.GetMonthOptions(),

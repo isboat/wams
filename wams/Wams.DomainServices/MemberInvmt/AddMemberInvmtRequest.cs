@@ -35,6 +35,6 @@ namespace Wams.ViewModels.MemberInvmt
 
         public int AddedById { get; set; }
 
-        public DateTime AddedDate { get; set; }
+        public string AddedDate { get; set; }
     }
 }

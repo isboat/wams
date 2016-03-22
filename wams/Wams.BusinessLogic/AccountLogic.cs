@@ -337,7 +337,7 @@ namespace Wams.BusinessLogic
                             vm.DuesYear = x.DuesYear.ToString();
                             vm.Amount = x.Amount;
                             vm.AddedBy = x.AddedBy;
-                            vm.AddedDate = x.AddedDate.ToShortDateString();
+                            vm.AddedDate = x.AddedDate;
                             vm.AddedById = x.AddedById;
                         }
                     });
@@ -400,7 +400,7 @@ namespace Wams.BusinessLogic
                         DuesYear = investment.DuesYear.ToString(),
                         Amount = investment.Amount,
                         AddedBy = investment.AddedBy,
-                        AddedDate = investment.AddedDate.ToShortDateString(),
+                        AddedDate = investment.AddedDate,
                         AddedById = investment.AddedById
                     };
             }
