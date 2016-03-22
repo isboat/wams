@@ -1,14 +1,19 @@
 ﻿@model System.Collections.Generic.IEnumerable<Wams.ViewModels.Account.Profile>
-<br /><br />
+<br/><br/>
+
 <p>
-    <select id="searchBy" class="form-control" style="display:inline-block; float: left; width: 130px">
+    @Html.ActionLink("Add Member", "Register", "Account", null, new { @class = "btn btn-success" })
+</p>
+<p>
+
+    <select id="searchBy" class="form-control" style="display: inline-block; float: left; width: 130px">
         <option value="">Search By...</option>
         <option value="firstname">First name</option>
         <option value="lastname">Last name</option>
         <option value="dob">DOB</option>
         <option value="memberId">Member ID</option>
     </select>
-    <input type="text" id="search" placeholder="Search" class="form-control text-box single-line" />
+    <input type="text" id="search" placeholder="Search" class="form-control text-box single-line"/>
 </p>
 <div>
     <table class="table table-hover table-responsive">

@@ -5,12 +5,23 @@
 @{
     if (Model.Status == BaseResponseStatus.Success)
     {
+        if (this.Request.IsAuthenticated && !(this.User.UserLoginRole < 2))
+        {
+            <div class="alert alert-success">
+                <p>
+                    <strong>Success!!!</strong> The registration is now pending approval.
+                </p>
+            </div>
+        }
+        else
+        {
         <div class="alert alert-success">
             <p>
                 <strong>Congratulations!!!</strong> Your registration is now pending approval. Contact member service on 0555873145
             </p>
             <div>Once approved, you can @Html.ActionLink("log in.", "Login", "Auth") with your registered credentials</div>
         </div>
+        }
     }
     else
     {

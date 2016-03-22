@@ -32,6 +32,11 @@ namespace Wams.Web.Controllers
         {
             try
             {
+                if (this.Request.IsAuthenticated && this.User.UserLoginRole < 2)
+                {
+                    return this.RedirectToAction("Index", "Home");
+                }
+
                 var model = new RegisterRequest
                 {
                     MembershipTypeOptions = UIHelper.GetMembershipTypeOptions(),
@@ -52,6 +57,11 @@ namespace Wams.Web.Controllers
         {
             try
             {
+                if (this.Request.IsAuthenticated && this.User.UserLoginRole < 2)
+                {
+                    return this.RedirectToAction("Index", "Home");
+                }
+
                 if (req == null)
                 {
                     return this.View();
