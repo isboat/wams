@@ -17,9 +17,9 @@
 </div>
 
 <div class="panel panel-warning">
-    <div class="panel-heading">Page Settings</div>
+    <div class="panel-heading">Admin Settings</div>
     <div class="panel-body">
-        @*@Html.ActionLink("Edit Contact Us", "", "", null, new { @class = "btn btn-warning" })*@
-        <a class="btn btn-warning" href="#">Edit Contact Us</a>
+        @Html.ActionLink("View Administrators", "ViewAdmins", "Admin", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Create Administrator", "CreateAdmin", "Admin", null, new { @class = "btn btn-warning" })
     </div>
 </div>

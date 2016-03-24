@@ -17,15 +17,15 @@ namespace Wams.DataObjects.Accounts
         public string Telephone { get; set; }
 
         public string EmergencyTel { get; set; }
-
-        public string MembershipType { get; set; }
     }
 
     public class BaseUserInfo
     {
         public int AccountId { get; set; }
 
-        public int UserLoginRole { get; set; }
+        public bool IsAdmin { get; set; }
+
+        public int LoginRole { get; set; }
 
         public bool CanInvest { get; set; }
 

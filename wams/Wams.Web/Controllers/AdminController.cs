@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Wams.Common.IoC;
 using Wams.Interfaces;
 using Wams.ViewModels.Account;
+using Wams.ViewModels.Admin;
 using Wams.ViewModels.MemberDues;
 using Wams.ViewModels.MemberInvmt;
 using Wams.Web.Models;
@@ -17,6 +18,8 @@ namespace Wams.Web.Controllers
         #region Instances Variables
 
         private readonly IAccount accountLogic = IoC.Instance.Resolve<IAccount>();
+
+        private readonly IAdminLogic adminLogic = IoC.Instance.Resolve<IAdminLogic>();
 
         #endregion
         
@@ -592,6 +595,135 @@ namespace Wams.Web.Controllers
             return this.RedirectToAction("Index", "Home");
         }
 
+        #endregion
+
+        #region Admin User
+
+        public ActionResult CreateAdmin()
+        {
+            if (!this.Request.IsAuthenticated || this.User.UserLoginRole < 2)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            var request = new RegisterAdminRequest
+            {
+                RoleOptions = UIHelper.GetPriviledgeOptions()
+            };
+            return View(request);
+        }
+
+        [HttpPost]
+        public ActionResult CreateAdmin(RegisterAdminRequest request)
+        {
+            if (!this.Request.IsAuthenticated || this.User.UserLoginRole < 2)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                request.RoleOptions = UIHelper.GetPriviledgeOptions();
+                return View(request);
+            }
+
+            var response = this.adminLogic.CreateAdmin(request);
+
+            var model = new BaseResponse
+            {
+                Status = response.Success ? BaseResponseStatus.Success : BaseResponseStatus.Failed,
+                Message = response.Message,
+                HtmlString = response.Success ?
+                    new HtmlString("Admin member is now created!!") :
+                    new HtmlString("Error occurred creating admin member")
+            };
+
+            return View("BaseResponse", model);
+        }
+
+        public ActionResult ViewAdmins()
+        {
+            if (!this.Request.IsAuthenticated || this.User.UserLoginRole < 2)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            var admins = this.adminLogic.GetAllAdmins();
+
+            return View(admins);
+        }
+
+        public ActionResult EditAdmin(int id)
+        {
+            if (!this.Request.IsAuthenticated || this.User.UserLoginRole < 2)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            var user = this.adminLogic.GetAdmin(id);
+
+            return View(new EditAdminRequest
+            {
+                EmailAddress = user.EmailAddress,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Id = id,
+                Role = user.Role,
+                RoleOptions = UIHelper.GetPriviledgeOptions(),
+                Password = user.Password,
+                ConfirmPassword = user.Password
+            });
+        }
+
+        [HttpPost]
+        public ActionResult EditAdmin(EditAdminRequest request)
+        {
+
+            if (!this.Request.IsAuthenticated || this.User.UserLoginRole < 2)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                request.RoleOptions = UIHelper.GetPriviledgeOptions();
+                return View(request);
+            }
+
+            var response = this.adminLogic.EditAdmin(request);
+
+            var model = new BaseResponse
+            {
+                Status = response.Success ? BaseResponseStatus.Success : BaseResponseStatus.Failed,
+                Message = response.Message,
+                HtmlString = response.Success ?
+                    new HtmlString("Admin member is now created!!") :
+                    new HtmlString("Error occurred creating admin member")
+            };
+
+            return View("BaseResponse", model);
+        }
+
+        public ActionResult DeleteAdmin(int id)
+        {
+            if (!this.Request.IsAuthenticated || this.User.UserLoginRole < 2)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            var response = this.adminLogic.DeleteAdmin(id);
+            
+            var model = new BaseResponse
+            {
+                Status = response.Success ? BaseResponseStatus.Success : BaseResponseStatus.Failed,
+                Message = response.Message,
+                HtmlString = response.Success ?
+                    new HtmlString("Admin member is now deleted!!") :
+                    new HtmlString("Error occurred creating admin member")
+            };
+
+            return View("BaseResponse", model);
+        }
         #endregion
     }
 }

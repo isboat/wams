@@ -22,7 +22,7 @@ namespace Wams.BusinessLogic
 
         private readonly IAdminRepository adminRepository;
 
-        public AuthenticationLogic(IAccountRepository accountRepository)
+        public AuthenticationLogic(IAccountRepository accountRepository, IAdminRepository adminRepository)
         {
             this.accountRepository = accountRepository;
             this.adminRepository = adminRepository;
@@ -43,18 +43,21 @@ namespace Wams.BusinessLogic
             
             if (userAccount != null)
             {
-                var serializeModel = new CustomPrincipalSerializeModel();
-                serializeModel.Id = userAccount.AccountId;
-                serializeModel.FirstName = userAccount.FirstName;
-                serializeModel.LastName = userAccount.LastName;
-                serializeModel.Email = userAccount.EmailAddress;
-                serializeModel.UserLoginRole = userAccount.UserLoginRole;
-                serializeModel.MembershipType = userAccount.MembershipType;
-                serializeModel.CanInvest = userAccount.CanInvest;
+                var serializeModel = new CustomPrincipalSerializeModel
+                {
+                    Id = userAccount.AccountId,
+                    FirstName = userAccount.FirstName,
+                    LastName = userAccount.LastName,
+                    Email = userAccount.EmailAddress,
+                    UserLoginRole = userAccount.LoginRole,
+                    MembershipType = userAccount.MembershipType,
+                    CanInvest = userAccount.CanInvest,
+                    IsAdmin = userAccount.IsAdmin
+                };
 
                 var response = new LoginResponse();
 
-                if (userAccount.UserLoginRole == 0)
+                if (userAccount.LoginRole == 0)
                 {
                     response.AuthenticationStatus = AuthenticationStatus.Failed;
                     response.Message = "Your information has been received, waiting for approval.";
@@ -109,49 +112,5 @@ namespace Wams.BusinessLogic
 
             return response;
         }
-
-
-        public AuthenticationResponse SetPassCode(string accountKey, string passcodeValue)
-        {
-            var i = this.accountRepository.SetPasscode(accountKey, passcodeValue);
-
-            var response = new AuthenticationResponse
-            {
-                AccountKey = accountKey.ToString(),
-                AuthenticationStatus = AuthenticationStatus.Failed
-            };
-            if (i == true)
-            {
-                response.AuthenticationStatus = AuthenticationStatus.Successful;
-            }
-
-            return response;
-        }
-
-        public bool ValidateLogon(string accountKey, string lastLogonToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<string> GetSecurityQuestions()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string CreateSecureToken(DateTime expiresOn, string tokenData)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetSecureToken(string token)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUsernameInfo(string token)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

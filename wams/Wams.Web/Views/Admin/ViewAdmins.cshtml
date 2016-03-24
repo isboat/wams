@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Wams.ViewModels.Admin.AdminUser>
+
+<p>
+    @Html.ActionLink("Create Administrator", "CreateAdmin", "Admin", null, new {@class = "btn btn-warning"})
+</p>
+
+<div class="panel panel-success">
+    <div class="panel-heading">List of all the administrators</div>
+    <div class="panel-body">
+        
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmailAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Role)
+                </th>
+                <th>Only super admin can edit/del</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmailAddress)
+                    </td>
+                    <td>
+                        @if (item.Role == 2)
+                        {
+                            <span>Administrator</span>
+                        }else if (item.Role == 3)
+                        {
+                            <span>Super Administrator</span>
+                        }
+                    </td>
+                    <td>
+                        @if (this.User.UserLoginRole > 2)
+                        {
+                            <span>@Html.ActionLink("Edit", "EditAdmin", new { id = item.Id }) | </span>
+                            @Html.ActionLink("Delete", "DeleteAdmin", new { id = item.Id })
+                        }
+                        else
+                        {
+                            <span>@Html.ActionLink("Edit", "EditAdmin", new {id = item.Id}, new {@class = "btn btn-warning", disabled = "disabled"}) | </span>
+                            @Html.ActionLink("Delete", "DeleteAdmin", new { id = item.Id }, new { @class = "btn btn-danger", disabled = "disabled" });
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+        
+    </div>
+</div>
+
+

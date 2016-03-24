@@ -61,6 +61,17 @@ namespace Wams.Web.Models
             return new SelectList(types, "Value", "Text");
         }
 
+        public static IEnumerable<SelectListItem> GetPriviledgeOptions()
+        {
+            var types = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Super Administrator", Value = "3"},
+                new SelectListItem {Text = "Adminstrator", Value = "2"}
+            };
+
+            return new SelectList(types, "Value", "Text");
+        }
+
         public static IEnumerable<SelectListItem> GetBenefitTypeOptions()
         {
             var types = new List<SelectListItem>

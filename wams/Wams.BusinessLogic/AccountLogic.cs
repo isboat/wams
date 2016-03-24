@@ -71,7 +71,7 @@ namespace Wams.BusinessLogic
                       Telephone = userProfile.Telephone,
                       Biography = userProfile.Biography,
                       EmergencyTel = userProfile.EmergencyTel,
-                      UserLoginRole = userProfile.UserLoginRole,
+                      UserLoginRole = userProfile.LoginRole,
                       MembershipType = userProfile.MembershipType,
                       ProfilePicUrl = userProfile.ProfilePicUrl,
                       CanInvest = userProfile.CanInvest
@@ -99,7 +99,7 @@ namespace Wams.BusinessLogic
                         Biography = profile.Biography,
                         EmergencyTel = profile.EmergencyTel,
                         MembershipType = profile.MembershipType,
-                        UserLoginRole = profile.UserLoginRole,
+                        LoginRole = profile.UserLoginRole,
                         CanInvest = profile.CanInvest
                     });
 

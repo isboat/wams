@@ -44,6 +44,9 @@
     <Compile Include="Accounts\MemberDues.cs" />
     <Compile Include="Accounts\MemberInvmt.cs" />
     <Compile Include="Accounts\UserAccount.cs" />
+    <Compile Include="Admin\CreateAdmin.cs" />
+    <Compile Include="Admin\EditAdmin.cs" />
+    <Compile Include="Admin\AdminUserInfo.cs" />
     <Compile Include="PendingBase.cs" />
     <Compile Include="PendingBenefitRequest.cs" />
     <Compile Include="PendingLoan.cs" />

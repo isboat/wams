@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountLogic.cs" />
+    <Compile Include="AdminLogic.cs" />
     <Compile Include="AuthenticationLogic.cs" />
     <Compile Include="AuthenticationModels\CustomPrincipal.cs" />
     <Compile Include="AuthenticationModels\CustomPrincipalSerializeModel.cs" />

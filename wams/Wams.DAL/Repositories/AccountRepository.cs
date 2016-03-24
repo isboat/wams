@@ -75,8 +75,9 @@ namespace Wams.DAL.Repositories
                                 FirstName = cmd.Parameters["@fn_out"].Value.ToString(),
                                 LastName = cmd.Parameters["@ln_out"].Value.ToString(),
                                 MembershipType = cmd.Parameters["@memtype_out"].Value.ToString(),
-                                UserLoginRole = Convert.ToInt32(cmd.Parameters["@loginrole_out"].Value.ToString()),
-                                CanInvest = Convert.ToInt32(cmd.Parameters["@caninvest_out"].Value.ToString()) == 1
+                                LoginRole = Convert.ToInt32(cmd.Parameters["@loginrole_out"].Value.ToString()),
+                                CanInvest = Convert.ToInt32(cmd.Parameters["@caninvest_out"].Value.ToString()) == 1,
+                                IsAdmin = false
                             };
                         }
 
@@ -124,7 +125,7 @@ namespace Wams.DAL.Repositories
                                 Telephone = record["phone_number"].ToString(),
                                 EmergencyTel = record["emergency_contact_number"].ToString(),
                                 MembershipType = record["membershiptype"].ToString(),
-                                UserLoginRole = Convert.ToInt32(record["loginrole"].ToString()),
+                                LoginRole = Convert.ToInt32(record["loginrole"].ToString()),
                                 ProfilePicUrl = record["picurl"].ToString(),
                                 CanInvest = Convert.ToInt32(record["canInvest"].ToString()) == 1
                             };
@@ -312,7 +313,7 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.AddWithValue("@p_memtype", userAccount.MembershipType);
                         cmd.Parameters["@p_memtype"].Direction = ParameterDirection.Input;
 
-                        cmd.Parameters.AddWithValue("@p_loginrole", userAccount.UserLoginRole);
+                        cmd.Parameters.AddWithValue("@p_loginrole", userAccount.LoginRole);
                         cmd.Parameters["@p_loginrole"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_caninvest", userAccount.CanInvest ? 1 : 0);
