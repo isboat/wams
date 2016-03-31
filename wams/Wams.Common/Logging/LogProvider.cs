@@ -17,7 +17,7 @@ namespace Wams.Common.Logging
 
         public void Error(string error)
         {
-#if DEBUG
+#if !DEBUG
             log.Error(error);
 #endif
         }
@@ -25,7 +25,7 @@ namespace Wams.Common.Logging
 
         public void Error(string message, Exception exception)
         {
-#if DEBUG
+#if !DEBUG
             var str = string.Format("{0} {1}", message, ToStr(exception));
             log.Error(str);
 #endif
@@ -33,7 +33,7 @@ namespace Wams.Common.Logging
 
         public void Info(string message)
         {
-#if DEBUG
+#if !DEBUG
             log.Info(message);
 #endif
         }
