@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Wams.ViewModels;
 
 namespace Wams.Web.Controllers
 {
@@ -10,8 +11,21 @@ namespace Wams.Web.Controllers
     {
         public ActionResult Index()
         {
+            var model = new HomepageViewModel();
             
-            return this.View();
+            var qs = this.Request.QueryString["slider"];
+            if (!string.IsNullOrEmpty(qs))
+            {
+                this.Response.Cookies.Add(new HttpCookie("slider", qs));
+                model.ShowSlider = qs == "show";
+            }
+            else
+            {
+                var cookie = this.Request.Cookies["slider"];
+                model.ShowSlider = cookie == null || cookie.Value == "show";
+            }
+
+            return this.View(model);
         }
 
         public ActionResult About()
