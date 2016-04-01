@@ -30,7 +30,7 @@ namespace Wams.DAL.Repositories
                 using (var connection = new MySqlConnection(this.ConString))
                 {
                     var query =
-                        string.Format("select * from administrators where email = '{0}' and password = '{1}' limit 1;",
+                        string.Format("select * from administrators where email = '{0}' and password = '{1}' and deleted = 0 limit 1;",
                             email, password);
 
                     using (var cmd = new MySqlCommand(query, connection))
@@ -142,7 +142,7 @@ namespace Wams.DAL.Repositories
             }
         }
 
-        public AdminUserInfo GetAdmins(int id)
+        public AdminUserInfo GetAdmin(int id)
         {
             try
             {
@@ -224,7 +224,7 @@ namespace Wams.DAL.Repositories
 
                 using (var connection = new MySqlConnection(this.ConString))
                 {
-                    var query = string.Format("delete from administrators where id = {0}", id);
+                    var query = string.Format("update administrators set deleted = 1 where id = {0}", id);
 
                     using (var cmd = new MySqlCommand(query, connection))
                     {

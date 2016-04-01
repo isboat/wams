@@ -30,8 +30,12 @@
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Login" class="btn btn-default"/>
                 <div>
-                    @*@Html.ActionLink("Not registered Yet? Sign up now", "../Account/Register", "Profile", new { @class = "toplink" })*@
                     @Html.ActionLink("Not registered Yet? Sign up now", "Register", "Account")
+                    <br/>
+                    <div style="margin-top: 75px;">
+                        @Html.ActionLink("Admin login", "AdminLogin", "Auth")
+                    </div>
+                    
                 </div>
             </div>
 

@@ -14,7 +14,7 @@ namespace Wams.DAL.Interfaces
 
         int CreateAdmin(CreateAdmin admin);
         List<BaseUserInfo> GetAllAdmins();
-        AdminUserInfo GetAdmins(int id);
+        AdminUserInfo GetAdmin(int id);
         int EditAdmin(EditAdmin editAdmin);
         int DeleteAdmin(int id);
     }

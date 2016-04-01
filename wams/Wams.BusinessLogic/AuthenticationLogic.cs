@@ -30,7 +30,7 @@ namespace Wams.BusinessLogic
 
         public LoginResponse Login(string username, string password, bool isAdmin = false)
         {
-            var cacheKey = GlobalCachingProvider.Instance.GetCacheKey("AuthenticationLogic", "Login", username);
+            var cacheKey = GlobalCachingProvider.Instance.GetCacheKey("AuthenticationLogic", "Login", username, password, isAdmin.ToString());
 
             if (GlobalCachingProvider.Instance.ItemExist(cacheKey))
             {

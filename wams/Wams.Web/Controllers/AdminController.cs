@@ -608,7 +608,7 @@ namespace Wams.Web.Controllers
 
             var request = new RegisterAdminRequest
             {
-                RoleOptions = UIHelper.GetPriviledgeOptions()
+                RoleOptions = UIHelper.GetPriviledgeOptions(this.User.UserLoginRole)
             };
             return View(request);
         }
@@ -623,7 +623,7 @@ namespace Wams.Web.Controllers
 
             if (!this.ModelState.IsValid)
             {
-                request.RoleOptions = UIHelper.GetPriviledgeOptions();
+                request.RoleOptions = UIHelper.GetPriviledgeOptions(this.User.UserLoginRole);
                 return View(request);
             }
 
@@ -669,7 +669,7 @@ namespace Wams.Web.Controllers
                 LastName = user.LastName,
                 Id = id,
                 Role = user.Role,
-                RoleOptions = UIHelper.GetPriviledgeOptions(),
+                RoleOptions = UIHelper.GetPriviledgeOptions(this.User.UserLoginRole),
                 Password = user.Password,
                 ConfirmPassword = user.Password
             });
@@ -686,7 +686,7 @@ namespace Wams.Web.Controllers
 
             if (!this.ModelState.IsValid)
             {
-                request.RoleOptions = UIHelper.GetPriviledgeOptions();
+                request.RoleOptions = UIHelper.GetPriviledgeOptions(this.User.UserLoginRole);
                 return View(request);
             }
 
@@ -697,8 +697,8 @@ namespace Wams.Web.Controllers
                 Status = response.Success ? BaseResponseStatus.Success : BaseResponseStatus.Failed,
                 Message = response.Message,
                 HtmlString = response.Success ?
-                    new HtmlString("Admin member is now created!!") :
-                    new HtmlString("Error occurred creating admin member")
+                    new HtmlString("Admin member is now updated!!") :
+                    new HtmlString("Error occurred updating admin member")
             };
 
             return View("BaseResponse", model);
@@ -719,7 +719,7 @@ namespace Wams.Web.Controllers
                 Message = response.Message,
                 HtmlString = response.Success ?
                     new HtmlString("Admin member is now deleted!!") :
-                    new HtmlString("Error occurred creating admin member")
+                    new HtmlString("Error occurred deleting admin member")
             };
 
             return View("BaseResponse", model);

@@ -56,7 +56,7 @@ namespace Wams.BusinessLogic
 
         public AdminUser GetAdmin(int id)
         {
-            var user = this.adminRepository.GetAdmins(id);
+            var user = this.adminRepository.GetAdmin(id);
 
             return user == null ? null : new AdminUser
             {

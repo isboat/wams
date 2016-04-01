@@ -61,14 +61,17 @@ namespace Wams.Web.Models
             return new SelectList(types, "Value", "Text");
         }
 
-        public static IEnumerable<SelectListItem> GetPriviledgeOptions()
+        public static IEnumerable<SelectListItem> GetPriviledgeOptions(int role)
         {
             var types = new List<SelectListItem>
             {
-                new SelectListItem {Text = "Super Administrator", Value = "3"},
                 new SelectListItem {Text = "Adminstrator", Value = "2"}
             };
 
+            if (role >= Constants.SuperAdminRole)
+            {
+                types.Add(new SelectListItem { Text = "Super Administrator", Value = "3" });
+            }
             return new SelectList(types, "Value", "Text");
         }
 
@@ -79,7 +82,10 @@ namespace Wams.Web.Models
                 new SelectListItem {Text = "Child Birth", Value = "ChildBirth"},
                 new SelectListItem {Text = "Funeral Assistance", Value = "FuneralAssistance"},
                 new SelectListItem {Text = "Maternity Allowance", Value = "MaternityAllowance"},
-                new SelectListItem {Text = "Family Support", Value = "FamilySupport"}
+                new SelectListItem {Text = "Family Support", Value = "FamilySupport"},
+                new SelectListItem {Text = "Disaster Relief Support", Value = "DisasterReliefSupport"},
+                new SelectListItem {Text = "Bereavement Allowance", Value = "BereavementAllowance"},
+                new SelectListItem {Text = "Medical Assistance", Value = "MedicalAssistance"}
             };
 
             return new SelectList(types, "Value", "Text");

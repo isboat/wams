@@ -108,6 +108,7 @@
     </Compile>
     <Compile Include="Models\BaseResponse.cs" />
     <Compile Include="Models\BaseViewPage.cs" />
+    <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\UIHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

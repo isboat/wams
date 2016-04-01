@@ -11,8 +11,14 @@
 }
 
   .navbar-default {
-    background-color: #antiquewhite;
-    border-color: #antiquewhite;
+    background-color: #e7e7e7 !important;
+    border-color: #e7e7e7 !important;
+}
+  button.navbar-toggle {
+    border-color: #777777 !important;
+}
+  .icon-bar {
+    background-color: #777777 !important;
 }
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
