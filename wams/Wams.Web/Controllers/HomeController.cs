@@ -13,16 +13,16 @@ namespace Wams.Web.Controllers
         {
             var model = new HomepageViewModel();
             
-            var qs = this.Request.QueryString["slider"];
+            var qs = this.Request.QueryString["reqclient"];
             if (!string.IsNullOrEmpty(qs))
             {
-                this.Response.Cookies.Add(new HttpCookie("slider", qs));
-                model.ShowSlider = qs == "show";
+                this.Response.Cookies.Add(new HttpCookie("reqclient", qs));
+                model.ShowSlider = qs != "android";
             }
             else
             {
-                var cookie = this.Request.Cookies["slider"];
-                model.ShowSlider = cookie == null || cookie.Value == "show";
+                var cookie = this.Request.Cookies["reqclient"];
+                model.ShowSlider = cookie == null || cookie.Value != "android";
             }
 
             return this.View(model);
