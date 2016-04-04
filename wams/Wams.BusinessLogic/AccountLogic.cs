@@ -151,7 +151,26 @@ namespace Wams.BusinessLogic
             }
             catch (Exception exception)
             {
-                //log exception.Message here
+                baseResponse.Message = "Error occured deleting memberid:" + id + " : " + exception.Message;
+                return baseResponse;
+            }
+        }
+
+        public BaseResponse SetMemberPassword(ChangeMemPasswd request)
+        {
+            var baseResponse = new BaseResponse();
+            try
+            {
+                var rows = this.accountRepository.SetMemberPassword(request.MemberId, request.NewPassword);
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+
+            }
+            catch (Exception exception)
+            {
+                baseResponse.Message = "Error occured updating member's password: " + exception.Message;
                 return baseResponse;
             }
         }

@@ -109,6 +109,23 @@ namespace Wams.Web.Controllers
 
             return View("BaseResponse", model);
         }
+
+        public JsonResult UpdateMemberPassword(ChangeMemPasswd request)
+        {
+            if (!this.Request.IsAuthenticated || this.User.UserLoginRole < 2)
+            {
+                return Json("Please refresh page", JsonRequestBehavior.DenyGet);
+            }
+
+            if (request.MemberId == 0)
+            {
+                return Json("Unknown member", JsonRequestBehavior.DenyGet);
+            }
+
+            var response = this.accountLogic.SetMemberPassword(request);
+
+            return Json(response, JsonRequestBehavior.DenyGet);
+        }
             
         #region Member's Dues
 

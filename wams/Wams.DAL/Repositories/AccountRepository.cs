@@ -451,6 +451,32 @@ namespace Wams.DAL.Repositories
             }
         }
 
+        public int SetMemberPassword(int id, string newPassword)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, SetMemberPassword id:{0}", id));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = string.Format("update member_information set password = '{0}' where member_id = {1}", newPassword, id);
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, SetMemberPassword id:{0}, newPassword={1}", id, newPassword), ex);
+                throw;
+            }
+        }
+
         #region Dues
 
         public int AddMemberDues(MemberDues dues)
