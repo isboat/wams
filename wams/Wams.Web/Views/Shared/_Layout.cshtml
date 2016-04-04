@@ -42,21 +42,35 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <div align="center">
-                @*@Html.ActionLink("About Us", "#", "#") | 
+<div class="container body-content">
+    @RenderBody()
+    <hr/>
+    <footer>
+        <div align="center">
+            @*@Html.ActionLink("About Us", "#", "#") | 
                 @Html.ActionLink("Terms and Conditions", "#", "#") | 
                 @Html.ActionLink("Cookie Policy", "#", "#") | 
                 @Html.ActionLink("Privacy Policy", "#", "#") |
-                @Html.ActionLink("Contact Us", "#", "#") |*@ 
-                <a href="http://uwwag.org/">Visit uwwag</a></div>
-            <div align="center">
-                <p>&copy; @DateTime.Now.Year - wams.com Application. All rights reserved</p>
-            </div>
-        </footer>
-    </div>
+                @Html.ActionLink("Contact Us", "#", "#") |*@
+            <a href="http://uwwag.org/">Visit uwwag</a>
+        </div>
+        <div align="center">
+            <p>&copy; @DateTime.Now.Year - wams.com Application. All rights reserved</p>
+        </div>
+    </footer>
+</div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $("#printBtn").click(function () {
+
+                window.PrintContent = $('.body-content').html();
+                window.open("/Content/printpage.html", "Print page", "height=650,width=850");
+
+                return false;
+            });
+        });
+    </script>
+
 </body>
 </html>

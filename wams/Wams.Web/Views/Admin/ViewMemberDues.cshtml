@@ -23,38 +23,43 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model)
-{
-    <tr class="@if (!item.Paid) { <text>alert-danger</text> }">
-        <td>
-            @Html.DisplayFor(modelItem => item.MemberName)
-        </td>
-        <td>
-            &#x20b5; @Html.DisplayFor(modelItem => item.Amount)  ghc
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DuesMonth)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DuesYear)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AddedDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AddedBy)
-        </td>
-        <td>
-            @if (!item.Paid)
-            {
-                <span class="alert-danger">Unpaid</span>
-            }
-            else
-            {
-                @Html.ActionLink("Edit", "EditMemberDues", new { duesid = item.DuesId })
-            }
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr class="@if (!item.Paid)
+                   {
+                       <text>alert-danger</text>
+                   }">
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberName)
+            </td>
+            <td>
+                &#x20b5; @Html.DisplayFor(modelItem => item.Amount) ghc
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DuesMonth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DuesYear)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddedBy)
+            </td>
+            <td>
+                @if (!item.Paid)
+                {
+                    <span class="alert-danger">Unpaid</span>
+                }
+                else
+                {
+                    @Html.ActionLink("Edit", "EditMemberDues", new {duesid = item.DuesId})
+                }
+            </td>
+        </tr>
+    }
 
 </table>
+
+<input type="submit" id="printBtn" value="Print" class="btn btn-warning" />
