@@ -41,6 +41,8 @@ namespace Wams.DAL.Interfaces
 
         int DeleteMember(int id);
 
+        int SetMemberPassword(int id, string newPassword);
+
         #region Dues
 
         int AddMemberDues(MemberDues dues);

@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="bootstrap.css" rel="stylesheet" />
+    <link href="Site.css" rel="stylesheet" />
+    <script src="../Scripts/jquery-1.10.2.js"></script>
+</head>
+<body>
+    <h1 id="PageTitle"></h1>
+    <div id="PrintContent"></div>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#PrintContent").html(window.opener.PrintContent);
+        $('a').hide();
+        $('#printBtn').hide();
+        window.print();
+    });
+    </script>
+
+</body>
+</html>

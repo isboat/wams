@@ -120,6 +120,7 @@
     <Content Include="Content\images\bx_loader.gif" />
     <Content Include="Content\images\controls.png" />
     <Content Include="Content\jquery.bxslider.css" />
+    <Content Include="Content\printpage.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

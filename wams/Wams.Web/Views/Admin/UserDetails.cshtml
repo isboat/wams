@@ -143,6 +143,16 @@
          </div>
      }
 
+    <div class="panel panel-warning">
+        <div class="panel-heading"><strong>Change @Model.FirstName 's password</strong></div>
+        <div class="panel-body">
+
+            <input class="form-control text-box single-line" id="changePassword" placeholder="Enter new password" type="text" value="">
+            <br/>
+            <input type="submit" id="changePasswordBtn" value="Save New Password" class="btn btn-warning"/> <span id="changePasswordMsg"></span>
+        </div>
+    </div>
+
     <div class="panel panel-danger">
         <div class="panel-heading">Delete @Model.FirstName @Model.LastName account completely</div>
         <div class="panel-body">
@@ -159,7 +169,42 @@
             $(".preset button").click(function(evt) {
                 evt.preventDefault();
                 $(this).siblings("input").val($(this).val());
-            })
+            });
+
+            $("#changePasswordBtn").click(function () {
+                var newPass = $("#changePassword").val();
+                if (newPass) {
+                 
+                    var data = {
+                        MemberId: @Model.MemberId,
+                        NewPassword: newPass
+                    }
+
+                    $.ajax({
+                        url: '@Url.Action("UpdateMemberPassword", "Admin")',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: data
+                    }).done(function (response) {
+                        if (response.Success) {
+                            $("#changePasswordMsg").fadeIn(2000, function() {
+                                $(this).html("password changed successfully!!");
+                                $(this).fadeOut(5000);
+                            });
+                        } else {
+                            $("#changePasswordMsg").fadeIn(2000, function() {
+                                $(this).html(response.Message);
+                                $(this).fadeOut(8000);
+                            });
+                        }
+                    }).fail(function () {
+                        $("#changePasswordMsg").fadeIn(2000, function() {
+                            $(this).html("Error occurred change password.");
+                            $(this).fadeOut(10000);
+                        });
+                    });
+                }
+            });
         });
     </script>
 }

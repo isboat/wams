@@ -28,6 +28,8 @@ namespace Wams.Interfaces
 
         BaseResponse DeleteMember(int id);
 
+        BaseResponse SetMemberPassword(ChangeMemPasswd request);
+
         #region Dues
 
         BaseResponse AddMemberDues(AddMemberDuesRequest request);
