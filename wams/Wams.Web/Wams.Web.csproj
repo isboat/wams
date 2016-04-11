@@ -142,6 +142,7 @@
     <None Include="Properties\PublishProfiles\deploy.pubxml" />
     <None Include="Properties\PublishProfiles\MobileSite.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\chart.min.js" />
     <Content Include="Scripts\datepicker\jquery.pickmeup.min.js" />
     <Content Include="Scripts\datepicker\pickmeup.min.css" />
     <Content Include="Scripts\jquery-1.10.2.js" />
