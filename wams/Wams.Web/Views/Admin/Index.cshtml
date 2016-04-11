@@ -16,6 +16,18 @@
     </div>
 </div>
 
+<div class="panel panel-success">
+    <div class="panel-heading">Accounting Section </div>
+    <div class="panel-body">
+        
+        @Html.ActionLink("Total Monthly Dues", "TotalMonthlyDues", "Accounting", null, new { @class = "btn btn-success" })
+
+        @Html.ActionLink("Total Investments Made", "ViewLoanRequests", "Admin", null, new { @class = "btn btn-primary" })
+
+        @Html.ActionLink("Total Loans Requests & Granted", "ViewBenefitRequests", "Admin", null, new { @class = "btn btn-danger" })
+    </div>
+</div>
+
 <div class="panel panel-warning">
     <div class="panel-heading">Admin Settings</div>
     <div class="panel-body">

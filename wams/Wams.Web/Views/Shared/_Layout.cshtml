@@ -18,6 +18,17 @@
     <script src="~/Scripts/jquery.bxslider.min.js"></script>
     <link href="~/Content/jquery.bxslider.css" rel="stylesheet" />
 
+    <script type="text/javascript">
+        wams = {
+            config: {
+                totalMonthlyDuesUrl: '@Url.Action("GetTotalMonthlyDues", "Accounting")'
+            }
+        }
+    </script>
+
+    <script src="~/Scripts/wams.accounting.js"></script>
+
+
     <style type="text/css">
         .printOnly {
             display: none;
