@@ -1,20 +1,35 @@
-﻿@model IEnumerable<Wams.ViewModels.MemberDues.MemberDuesViewModel>
+﻿@model Wams.ViewModels.MemberDues.ViewMemberDues
+
+<br/>
+<h3 class="printOnly">Print dues statement</h3>
+<div>
+    <div>Welfare Association</div>
+    <div>Member id: @Model.MemberId</div>
+    <div>Member name: @Model.MemberName</div>
+    <div>Membership type: @Model.MembershipType</div>
+    @if (!string.IsNullOrEmpty(Model.Address))
+    {
+        <div>Member Location: @Model.Address</div>
+    }
+
+</div>
+<br />
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Amount)
+            Amount
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DuesMonth)
+            Month
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DuesYear)
+            Year
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.Dues) {
     <tr class="@if (!item.Paid) { <text>alert-danger</text> }">
         <td>
 

@@ -41,5 +41,7 @@ namespace Wams.ViewModels.Account
 
         [DisplayName("Enable Investment")]
         public bool CanInvest { get; set; }
+
+        public string Address { get; set; }
     }
 }

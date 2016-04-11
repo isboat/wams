@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Wams.ViewModels.MemberInvmt;
 
 namespace Wams.Web.Models
 {
@@ -89,6 +90,16 @@ namespace Wams.Web.Models
             };
 
             return new SelectList(types, "Value", "Text");
+        }
+
+        public static string MemberIdToString(int id)
+        {
+            return id < 10 ? "00" + id : id < 100 ? "0" + id : id.ToString();
+        }
+
+        public static decimal TotalInvested(List<MemberInvmtViewModel> investments)
+        {
+            return investments.Sum(investment => investment.Amount);
         }
     }
 }

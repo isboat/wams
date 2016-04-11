@@ -17,6 +17,8 @@ namespace Wams.DataObjects.Accounts
         public string Telephone { get; set; }
 
         public string EmergencyTel { get; set; }
+
+        public string Address { get; set; }
     }
 
     public class BaseUserInfo

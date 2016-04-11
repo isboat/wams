@@ -1,34 +1,42 @@
-﻿@model IEnumerable<Wams.ViewModels.MemberInvmt.MemberInvmtViewModel>
+﻿@model Wams.ViewModels.MemberInvmt.ViewMemberInvestment
 
-    <table class="table">
+<br/>
+<h3 class="printOnly">Print investment statement</h3>
+<div>
+    <div>Welfare Association</div>
+    <div>Member id: @Model.MemberId</div>
+    <div>Member name: @Model.MemberName</div>
+    <div>Membership type: @Model.MembershipType</div> 
+    @if (!string.IsNullOrEmpty(Model.Address))
+    {
+        <div>Member Location: @Model.Address</div>
+    }
+</div>
+<br />
+
+<table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MemberName)
+                Amount
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Amount)
+                Month
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DuesMonth)
+                Year
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DuesYear)
+                Added Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AddedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AddedBy)
+                Added By
             </th>
             <th></th>
         </tr>
 
-        @foreach (var item in Model)
+        @foreach (var item in Model.Investments)
         {
             <tr class="@if (!item.Paid) { <text>alert-danger</text> }">
-                <td>
-                    @Html.DisplayFor(modelItem => item.MemberName)
-                </td>
                 <td>
                     &#x20b5; @Html.DisplayFor(modelItem => item.Amount)  ghc
                 </td>
@@ -59,5 +67,7 @@
 
     </table>
 
+<h4>Total investment made = <span>&#x20b5; @Model.TotalInvested ghc</span></h4>
+<br/>
 <input type="submit" id="printBtn" value="Print" class="btn btn-warning" />
 

@@ -1,25 +1,41 @@
-﻿@model IEnumerable<Wams.ViewModels.MemberInvmt.MemberInvmtViewModel>
+﻿@model Wams.ViewModels.MemberInvmt.ViewMemberInvestment
 
 <p>
-    @Html.ActionLink("Request for withdrawal", "WithdrawInvestment", null, new { @class = "btn btn-info" })
+    @Html.ActionLink("Request for withdrawal", "WithdrawInvestment", null, new {@class = "btn btn-info"})
 </p>
+
+<br/>
+<h3 class="printOnly">Print investment statement</h3>
+<div>
+    <div>Welfare Association</div>
+    <div>Member id: @Model.MemberId</div>
+    <div>Member name: @Model.MemberName</div>
+    <div>Membership type: @Model.MembershipType</div>
+    @if (!string.IsNullOrEmpty(Model.Address))
+    {
+        <div>Member Location: @Model.Address</div>
+    }
+    
+</div>
+<br/>
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Amount)
+            Amount
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DuesMonth)
+            Month
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DuesYear)
+            Year
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Paid)
+            Paid
         </th>
     </tr>
 
-@foreach (var item in Model)
+@foreach (var item in Model.Investments)
 {
     <tr class="@if (!item.Paid) { <text>alert-danger</text> }">
         <td>
@@ -50,5 +66,6 @@
 
 </table>
 
-
+<h4>Total investment made = <span>&#x20b5; @Model.TotalInvested ghc</span></h4>
+<br/>
 <input type="submit" id="printBtn" value="Print" class="btn btn-warning" />

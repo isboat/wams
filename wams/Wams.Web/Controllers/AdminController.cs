@@ -194,9 +194,17 @@ namespace Wams.Web.Controllers
                 return this.RedirectToAction("Index", "Home");
             }
 
-            var model = this.accountLogic.ViewAllMemberDues(id);
-
-            if (model == null)
+            var dues = this.accountLogic.ViewAllMemberDues(id);
+            var member = this.accountLogic.GetMemberProfile(id);
+            var viewModel = new ViewMemberDues
+            {
+                Dues = dues,
+                MemberName = string.Format("{0} {1}", member.FirstName, member.LastName),
+                MemberId = UIHelper.MemberIdToString(id),
+                MembershipType = member.MembershipType,
+                Address = member.Address
+            };
+            if (dues == null)
             {
                 return View("BaseResponse",
                     new BaseResponse
@@ -207,7 +215,7 @@ namespace Wams.Web.Controllers
                     });
             }
 
-            return View(model);
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -342,9 +350,19 @@ namespace Wams.Web.Controllers
                 return this.RedirectToAction("Index", "Home");
             }
 
-            var model = this.accountLogic.ViewAllMemberInvestments(id);
+            var investments = this.accountLogic.ViewAllMemberInvestments(id);
+            var member = this.accountLogic.GetMemberProfile(id);
+            var viewModel = new ViewMemberInvestment
+            {
+                Investments = investments,
+                MemberName = string.Format("{0} {1}", member.FirstName, member.LastName),
+                MemberId = UIHelper.MemberIdToString(id),
+                MembershipType = member.MembershipType,
+                Address = member.Address,
+                TotalInvested = UIHelper.TotalInvested(investments)
+            };
 
-            if (model == null)
+            if (investments == null)
             {
                 return View("BaseResponse",
                     new BaseResponse
@@ -355,7 +373,7 @@ namespace Wams.Web.Controllers
                     });
             }
 
-            return View(model);
+            return View(viewModel);
         }
 
         [HttpGet]

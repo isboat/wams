@@ -34,4 +34,19 @@ namespace Wams.ViewModels.MemberInvmt
 
         public bool Paid { get; set; }
     }
+
+    public class ViewMemberInvestment
+    {
+        public string MemberId { get; set; }
+
+        public string MemberName { get; set; }
+
+        public string MembershipType { get; set; }
+
+        public string Address { get; set; }
+
+        public decimal TotalInvested { get; set; }
+
+        public List<MemberInvmtViewModel> Investments { get; set; }
+    }
 }

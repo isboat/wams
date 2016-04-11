@@ -7,6 +7,19 @@ using System.Threading.Tasks;
 
 namespace Wams.ViewModels.MemberDues
 {
+    public class ViewMemberDues
+    {
+        public string MemberId { get; set; }
+
+        public string MemberName { get; set; }
+
+        public string MembershipType { get; set; }
+
+        public string Address { get; set; }
+
+        public List<MemberDuesViewModel> Dues { get; set; }
+        
+    }
     public class MemberDuesViewModel
     {
         public int DuesId { get; set; }

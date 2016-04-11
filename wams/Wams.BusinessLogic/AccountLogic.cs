@@ -74,7 +74,8 @@ namespace Wams.BusinessLogic
                       UserLoginRole = userProfile.LoginRole,
                       MembershipType = userProfile.MembershipType,
                       ProfilePicUrl = userProfile.ProfilePicUrl,
-                      CanInvest = userProfile.CanInvest
+                      CanInvest = userProfile.CanInvest,
+                      Address = userProfile.Address
                   }
                 : null;
         }

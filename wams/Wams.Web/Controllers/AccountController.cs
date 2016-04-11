@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Wams.ViewModels.Account;
+using Wams.ViewModels.MemberDues;
 using Wams.ViewModels.MemberInvmt;
 using Wams.ViewModels.Registration;
 
@@ -234,9 +235,17 @@ namespace Wams.Web.Controllers
                     return this.RedirectToAction("Login", "Auth");
                 }
 
-                var model = this.accountLogic.ViewAllMemberDues(this.User.Id);
+                var dues = this.accountLogic.ViewAllMemberDues(this.User.Id);
+                var viewModel = new ViewMemberDues
+                {
+                    Dues = dues,
+                    MemberName = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
+                    MemberId = UIHelper.MemberIdToString(this.User.Id),
+                    MembershipType = this.User.MembershipType,
+                    Address = this.accountLogic.GetMemberProfile(this.User.Id).Address
+                };
 
-                if (model == null)
+                if (dues == null)
                 {
                     return View("BaseResponse",
                         new BaseResponse
@@ -247,7 +256,7 @@ namespace Wams.Web.Controllers
                         });
                 }
 
-                return View(model);
+                return View(viewModel);
             }
             catch (Exception ex)
             {
@@ -300,9 +309,18 @@ namespace Wams.Web.Controllers
                     return this.RedirectToAction("Login", "Auth");
                 }
 
-                var model = this.accountLogic.ViewAllMemberInvestments(this.User.Id);
+                var investments = this.accountLogic.ViewAllMemberInvestments(this.User.Id);
+                var viewModel = new ViewMemberInvestment
+                {
+                    Investments = investments,
+                    MemberName = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
+                    MemberId = UIHelper.MemberIdToString(this.User.Id),
+                    MembershipType = this.User.MembershipType,
+                    Address = this.accountLogic.GetMemberProfile(this.User.Id).Address,
+                    TotalInvested = UIHelper.TotalInvested(investments)
+                };
 
-                if (model == null)
+                if (investments == null)
                 {
                     return View("BaseResponse",
                         new BaseResponse
@@ -313,7 +331,7 @@ namespace Wams.Web.Controllers
                         });
                 }
 
-                return View(model);
+                return View(viewModel);
             }
             catch (Exception ex)
             {

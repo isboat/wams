@@ -127,7 +127,8 @@ namespace Wams.DAL.Repositories
                                 MembershipType = record["membershiptype"].ToString(),
                                 LoginRole = Convert.ToInt32(record["loginrole"].ToString()),
                                 ProfilePicUrl = record["picurl"].ToString(),
-                                CanInvest = Convert.ToInt32(record["canInvest"].ToString()) == 1
+                                CanInvest = Convert.ToInt32(record["canInvest"].ToString()) == 1,
+                                Address = record["address"].ToString()
                             };
                         }
 
