@@ -36,12 +36,18 @@ namespace Wams.BusinessLogic
             var total = new TotalMonthlyDues
             {
                 AnnualDues = AnnualDues(annualDues, year),
-                TotalDuesAmount = annualDues.Sum(x => x.Amount)
+                TotalDuesAmount = annualDues.Sum(x => x.Amount),
+                UsersWithFullDues = UsersWithFullDues(annualDues)
             };
 
 
 
             return total;
+        }
+
+        private int UsersWithFullDues(List<MemberDues> annualDues)
+        {
+            return 20;
         }
 
         private Dictionary<string, decimal> AnnualDues(List<MemberDues> dues, int year)
