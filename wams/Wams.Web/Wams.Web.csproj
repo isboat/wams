@@ -128,6 +128,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\hill_trees.jpg" />
     <Content Include="Images\houses.jpg" />
+    <Content Include="Content\loading.gif" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\me_trees.jpg" />
     <Content Include="Images\profile.png" />
@@ -158,6 +159,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\wams.accounting.js" />
+    <Content Include="Scripts\wams.ui.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

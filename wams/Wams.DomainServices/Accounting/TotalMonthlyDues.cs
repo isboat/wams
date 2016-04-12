@@ -8,9 +8,9 @@ namespace Wams.ViewModels.Accounting
 {
     public class TotalMonthlyDues
     {
-        public Dictionary<string, decimal> AnnualDues { get; set; }
+        public List<KeyValuePair<string, decimal>> AnnualDues { get; set; }
 
-        public Dictionary<string, int> AnnualMonthlyPaidUser { get; set; }
+        public List<KeyValuePair<string, decimal>> AnnualMonthlyPaidUser { get; set; }
 
         public int UsersWithNoDues { get; set; }
 

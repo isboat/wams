@@ -28,6 +28,7 @@
         }
     </script>
 
+    <script src="~/Scripts/wams.ui.js"></script>
     <script src="~/Scripts/wams.accounting.js"></script>
 
 
@@ -38,28 +39,28 @@
     </style>
 </head>
 <body>
-    <div class="navbar navbar-fixed-top navbar-default" >
-        <div class="container">
-            <div class="navbar-header navbar-default">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand navbar-default" href="/">
-                    @*<img src="@Url.Content("~/Images/logo.png")" width="100" height="40" />*@
-                    Welfare System
-                </a>
-                @*@Html.ActionLink("UPACAR", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    @Html.Partial("_LogOnPartial")
-                </ul>
-            </div>
+<div class="navbar navbar-fixed-top navbar-default">
+    <div class="container">
+        <div class="navbar-header navbar-default">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand navbar-default" href="/">
+                @*<img src="@Url.Content("~/Images/logo.png")" width="100" height="40" />*@
+                Welfare System
+            </a>
+            @*@Html.ActionLink("UPACAR", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                @Html.Partial("_LogOnPartial")
+            </ul>
         </div>
     </div>
+</div>
 <div class="container body-content">
     @RenderBody()
     <hr/>
@@ -77,18 +78,18 @@
         </div>
     </footer>
 </div>
-    <script type="text/javascript">
-        $(document).ready(function() {
+<script type="text/javascript">
+    $(document).ready(function() {
 
-            $("#printBtn").click(function () {
+        $("#printBtn").click(function() {
 
-                window.PrintContent = $('.body-content').html();
-                window.open("/Content/printpage.html", "Print page", "height=650,width=850");
+            window.PrintContent = $('.body-content').html();
+            window.open("/Content/printpage.html", "Print page", "height=650,width=850");
 
-                return false;
-            });
+            return false;
         });
-    </script>
+    });
+</script>
 
 </body>
 </html>

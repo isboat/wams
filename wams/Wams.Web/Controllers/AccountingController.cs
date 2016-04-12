@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Wams.Common.IoC;
 using Wams.Interfaces;
+using Wams.Web.Models;
 
 namespace Wams.Web.Controllers
 {
