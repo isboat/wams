@@ -30,7 +30,7 @@ namespace Wams.Web.Controllers
         }
 
         // GET: Accounting/Create
-        public ActionResult Create()
+        public ActionResult InvestmentView()
         {
             return View();
         }

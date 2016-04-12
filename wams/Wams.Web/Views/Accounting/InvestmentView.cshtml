@@ -1,0 +1,12 @@
+﻿@{
+    var year = DateTime.Now.Year;
+    var lastYear = year - 1;
+}
+<h3>Investment Analysis</h3>
+<div style="display: inline-block">
+    <select id="displayYear" class="form-control" style="display: inline-block; float: left; width: 130px">
+        <option selected="selected" value="@year">@year</option>
+        <option value="@lastYear">@lastYear</option>
+    </select>
+</div><br/>
+<div>loading...</div>

@@ -113,9 +113,9 @@
                     
                 }
             });
-        }
+        },
 
-
+        showInvestmentData: function (){}
     }
 })(wams);
 

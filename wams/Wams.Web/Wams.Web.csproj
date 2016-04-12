@@ -217,6 +217,7 @@
     <Content Include="Views\Admin\ViewAdmins.cshtml" />
     <Content Include="Views\Admin\EditAdmin.cshtml" />
     <Content Include="Views\Accounting\TotalMonthlyDues.cshtml" />
+    <Content Include="Views\Accounting\InvestmentView.cshtml" />
     <None Include="Views\Base\AboutUs.cshtml" />
     <None Include="Views\Base\ContactUs.cshtml" />
     <None Include="Views\Base\CookiePolicy.cshtml" />
