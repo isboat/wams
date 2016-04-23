@@ -10,5 +10,7 @@ namespace Wams.DAL.Interfaces
     public interface IAccountingRepository
     {
         List<MemberDues> GetAll_AnnualDues(int year);
+
+        List<MemberInvmt> GetAll_Investments(int year);
     }
 }

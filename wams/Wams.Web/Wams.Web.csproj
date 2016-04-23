@@ -15,7 +15,7 @@
     <AssemblyName>Wams.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -103,7 +103,6 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\InvestmentController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -159,6 +158,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\wams.accounting.js" />
+    <Content Include="Scripts\wams.charts.js" />
     <Content Include="Scripts\wams.ui.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
@@ -227,7 +227,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Investment\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.html" />
@@ -276,7 +275,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>58245</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:58245/</IISUrl>
+          <IISUrl>http://wams.local.com/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

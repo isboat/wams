@@ -23,14 +23,15 @@
     <script type="text/javascript">
         wams = {
             config: {
-                totalMonthlyDuesUrl: '@Url.Action("GetTotalMonthlyDues", "Accounting")'
+                totalMonthlyDuesUrl: '@Url.Action("GetTotalMonthlyDues", "Accounting")',
+                investmentDataUrl: '@Url.Action("GetInvestmentData", "Accounting")'
             }
         }
     </script>
 
     <script src="~/Scripts/wams.ui.js"></script>
+    <script src="~/Scripts/wams.charts.js"></script>
     <script src="~/Scripts/wams.accounting.js"></script>
-
 
     <style type="text/css">
         .printOnly {

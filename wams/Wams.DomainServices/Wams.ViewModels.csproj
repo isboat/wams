@@ -69,7 +69,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Accounting\TotalMonthlyDues.cs" />
+    <Compile Include="Accounting\MemberData.cs" />
+    <Compile Include="Accounting\TotalData.cs" />
     <Compile Include="Account\ChangeMemPasswd.cs" />
     <Compile Include="Admin\AdminUser.cs" />
     <Compile Include="Admin\EditAdminRequest.cs" />

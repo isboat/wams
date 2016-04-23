@@ -9,6 +9,8 @@ namespace Wams.Interfaces
 {
     public interface IAccounting
     {
-        TotalMonthlyDues TotalMonthlyDues(int year);
+        TotalData TotalMonthlyDues(int year);
+
+        TotalData InvestmentData(int year);
     }
 }

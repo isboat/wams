@@ -22,18 +22,26 @@ namespace Wams.Web.Controllers
             return View();
         }
 
-        // GET: Accounting/Details/5
         public ActionResult GetTotalMonthlyDues(int year)
         {
             var data = this.accounting.TotalMonthlyDues(year);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Accounting/Create
+        #region Investment
+
         public ActionResult InvestmentView()
         {
             return View();
         }
+
+        public ActionResult GetInvestmentData(int year)
+        {
+            var result = this.accounting.InvestmentData(year);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
 
         // POST: Accounting/Create
         [HttpPost]
