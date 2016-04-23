@@ -42,6 +42,9 @@ namespace Wams.ViewModels.Account
         [DisplayName("Enable Investment")]
         public bool CanInvest { get; set; }
 
+        [DisplayName("Enable Child Support")]
+        public bool CanDoChildSupport { get; set; }
+
         public string Address { get; set; }
     }
 }

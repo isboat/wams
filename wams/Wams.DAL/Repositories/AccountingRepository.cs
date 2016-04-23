@@ -91,7 +91,7 @@ namespace Wams.DAL.Repositories
                         {
                             records.Add(new MemberInvmt
                             {
-                                InvmtId = Convert.ToInt32(record["invmtid"].ToString()),
+                                Id = Convert.ToInt32(record["invmtid"].ToString()),
                                 MemberId = Convert.ToInt32(record["member_id"].ToString()),
                                 MemberName = record["member_name"].ToString(),
                                 Amount = Convert.ToDecimal(record["amount"].ToString()),

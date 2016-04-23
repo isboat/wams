@@ -48,6 +48,7 @@ namespace Wams.Web
                         UserLoginRole = serializeModel.UserLoginRole,
                         MembershipType = serializeModel.MembershipType,
                         CanInvest = serializeModel.CanInvest,
+                        CanDoChildBenefit = serializeModel.CanDoChildBenefit,
                         IsAdmin = serializeModel.IsAdmin
                     };
 

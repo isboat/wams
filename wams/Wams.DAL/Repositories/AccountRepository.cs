@@ -63,6 +63,9 @@ namespace Wams.DAL.Repositories
                         cmd.Parameters.Add(new MySqlParameter("@caninvest_out", MySqlDbType.Int32));
                         cmd.Parameters["@caninvest_out"].Direction = ParameterDirection.Output;
 
+                        cmd.Parameters.Add(new MySqlParameter("@canDoChildBenefit_out", MySqlDbType.Int32));
+                        cmd.Parameters["@canDoChildBenefit_out"].Direction = ParameterDirection.Output;
+
                         cmd.ExecuteNonQuery();
 
                         var id = cmd.Parameters["@id_out"].Value.ToString();
@@ -77,6 +80,7 @@ namespace Wams.DAL.Repositories
                                 MembershipType = cmd.Parameters["@memtype_out"].Value.ToString(),
                                 LoginRole = Convert.ToInt32(cmd.Parameters["@loginrole_out"].Value.ToString()),
                                 CanInvest = Convert.ToInt32(cmd.Parameters["@caninvest_out"].Value.ToString()) == 1,
+                                CanDoChildBenefit = Convert.ToInt32(cmd.Parameters["@canDoChildBenefit_out"].Value.ToString()) == 1,
                                 IsAdmin = false
                             };
                         }
@@ -128,6 +132,7 @@ namespace Wams.DAL.Repositories
                                 LoginRole = Convert.ToInt32(record["loginrole"].ToString()),
                                 ProfilePicUrl = record["picurl"].ToString(),
                                 CanInvest = Convert.ToInt32(record["canInvest"].ToString()) == 1,
+                                CanDoChildBenefit = Convert.ToInt32(record["canDoChildBenefit"].ToString()) == 1,
                                 Address = record["address"].ToString()
                             };
                         }
@@ -319,6 +324,9 @@ namespace Wams.DAL.Repositories
 
                         cmd.Parameters.AddWithValue("@p_caninvest", userAccount.CanInvest ? 1 : 0);
                         cmd.Parameters["@p_caninvest"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_canDoChildBenefit", userAccount.CanDoChildBenefit ? 1 : 0);
+                        cmd.Parameters["@p_canDoChildBenefit"].Direction = ParameterDirection.Input;
 
                         return cmd.ExecuteNonQuery();
                     }
@@ -675,6 +683,206 @@ namespace Wams.DAL.Repositories
 
         #endregion
 
+        #region Benefits
+
+        public int AddMemberSupport(MemberInvmt memberInvmt)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, AddMemberSupport memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, invmtMonth:{5}, invmtYear:{6}, invmtMemberName:{7}",
+                    memberInvmt.MemberId, memberInvmt.AddedBy, memberInvmt.AddedById, memberInvmt.AddedDate, memberInvmt.Amount, memberInvmt.DuesMonth, memberInvmt.DuesYear, memberInvmt.MemberName));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    using (var cmd = new MySqlCommand("addsupport", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        connection.Open();
+
+                        cmd.Parameters.AddWithValue("@p_mem_id", memberInvmt.MemberId);
+                        cmd.Parameters["@p_mem_id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_mem_name", memberInvmt.MemberName);
+                        cmd.Parameters["@p_mem_name"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_month", memberInvmt.DuesMonth);
+                        cmd.Parameters["@p_month"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_year", memberInvmt.DuesYear);
+                        cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_date", memberInvmt.AddedDate);
+                        cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_by", memberInvmt.AddedBy);
+                        cmd.Parameters["@p_added_by"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_by_id", memberInvmt.AddedById);
+                        cmd.Parameters["@p_added_by_id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_amount", memberInvmt.Amount.ToString());
+                        cmd.Parameters["@p_amount"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_stype", "child");
+                        cmd.Parameters["@p_stype"].Direction = ParameterDirection.Input;
+
+                        var results = cmd.ExecuteNonQuery();
+
+                        return results;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, AddMemberSupport memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, invmtMonth:{5}, invmtYear:{6}, invmtMemberName:{7}",
+                    memberInvmt.MemberId, memberInvmt.AddedBy, memberInvmt.AddedById, memberInvmt.AddedDate, memberInvmt.Amount, memberInvmt.DuesMonth, memberInvmt.DuesYear, memberInvmt.MemberName), ex);
+
+                return -1;
+            }
+        }
+
+        public List<ChildBenefit> ViewAllMemberChildSupport(int id)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, ViewAllMemberChildBenefits memberId:{0}", id));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = string.Format("select * from supports where member_id = {0} and support_type='child'", id);
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        var record = cmd.ExecuteReader();
+
+                        var records = new List<ChildBenefit>();
+                        while (record.Read())
+                        {
+                            records.Add(new ChildBenefit
+                            {
+                                Id = Convert.ToInt32(record["sid"].ToString()),
+                                MemberId = Convert.ToInt32(record["member_id"].ToString()),
+                                MemberName = record["member_name"].ToString(),
+                                Amount = Convert.ToDecimal(record["amount"].ToString()),
+                                Month = record["month"].ToString(),
+                                Year = Convert.ToInt32(record["year"].ToString()),
+                                AddedDate = record["added_date"].ToString(),
+                                AddedBy = record["added_by"].ToString(),
+                                AddedById = Convert.ToInt32(record["added_by_id"].ToString())
+                            });
+                        }
+
+                        return records;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, ViewAllMemberChildBenefits memberId:{0}", id), ex);
+                throw;
+            }
+        }
+
+        public MemberInvmt GetMemberSupport(int id)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, GetMemberSupport id:{0}", id));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    var query = string.Format("select * from supports where sid = {0} limit 1", id);
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        connection.Open();
+
+                        var record = cmd.ExecuteReader(CommandBehavior.SingleRow);
+
+                        if (record.Read())
+                        {
+                            return new MemberInvmt
+                            {
+                                Id = Convert.ToInt32(record["sid"].ToString()),
+                                MemberId = Convert.ToInt32(record["member_id"].ToString()),
+                                MemberName = record["member_name"].ToString(),
+                                Amount = Convert.ToDecimal(record["amount"].ToString()),
+                                DuesMonth = record["month"].ToString(),
+                                DuesYear = Convert.ToInt32(record["year"].ToString()),
+                                AddedDate = record["added_date"].ToString(),
+                                AddedBy = record["added_by"].ToString(),
+                                AddedById = Convert.ToInt32(record["added_by_id"].ToString())
+                            };
+                        }
+
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, GetMemberSupport id:{0}", id), ex);
+                throw;
+            }
+        }
+
+        public int UpdateMemberSupport(MemberInvmt investment)
+        {
+            try
+            {
+                this.logProvider.Info(string.Format("AccountRepository, UpdateMemberSupport memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, invmtMonth:{5}, invmtYear:{6}, invmtMemberName:{7}",
+                    investment.MemberId, investment.AddedBy, investment.AddedById, investment.AddedDate, investment.Amount, investment.DuesMonth, investment.DuesYear, investment.MemberName));
+
+                using (var connection = new MySqlConnection(this.ConString))
+                {
+                    using (var cmd = new MySqlCommand("updatesupport", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        connection.Open();
+
+                        cmd.Parameters.AddWithValue("@p_id", investment.Id);
+                        cmd.Parameters["@p_id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_month", investment.DuesMonth);
+                        cmd.Parameters["@p_month"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_year", investment.DuesYear);
+                        cmd.Parameters["@p_year"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_date", investment.AddedDate);
+                        cmd.Parameters["@p_added_date"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_by", investment.AddedBy);
+                        cmd.Parameters["@p_added_by"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_added_by_id", investment.AddedById);
+                        cmd.Parameters["@p_added_by_id"].Direction = ParameterDirection.Input;
+
+                        cmd.Parameters.AddWithValue("@p_amount", investment.Amount.ToString(CultureInfo.InvariantCulture));
+                        cmd.Parameters["@p_amount"].Direction = ParameterDirection.Input;
+
+                        var results = cmd.ExecuteNonQuery();
+
+                        return results;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(string.Format("AccountRepository, UpdateMemberSupport memberId:{0}, addedBy:{1}, addedById:{2}, addedDate:{3}, amount:{4}, invmtMonth:{5}, invmtYear:{6}, invmtMemberName:{7}",
+                    investment.MemberId, investment.AddedBy, investment.AddedById, investment.AddedDate, investment.Amount, investment.DuesMonth, investment.DuesYear, investment.MemberName), ex);
+                return -1;
+            }
+        }
+
+        #endregion
+
         #region Investments
 
         public int AddMemberInvmt(MemberInvmt investment)
@@ -753,7 +961,7 @@ namespace Wams.DAL.Repositories
                         {
                             records.Add(new MemberInvmt
                             {
-                                InvmtId = Convert.ToInt32(record["invmtid"].ToString()),
+                                Id = Convert.ToInt32(record["invmtid"].ToString()),
                                 MemberId = Convert.ToInt32(record["member_id"].ToString()),
                                 MemberName = record["member_name"].ToString(),
                                 Amount = Convert.ToDecimal(record["amount"].ToString()),
@@ -797,7 +1005,7 @@ namespace Wams.DAL.Repositories
                         {
                             return new MemberInvmt
                             {
-                                InvmtId = Convert.ToInt32(record["invmtid"].ToString()),
+                                Id = Convert.ToInt32(record["invmtid"].ToString()),
                                 MemberId = Convert.ToInt32(record["member_id"].ToString()),
                                 MemberName = record["member_name"].ToString(),
                                 Amount = Convert.ToDecimal(record["amount"].ToString()),
@@ -835,7 +1043,7 @@ namespace Wams.DAL.Repositories
 
                         connection.Open();
 
-                        cmd.Parameters.AddWithValue("@p_invmt_id", investment.InvmtId);
+                        cmd.Parameters.AddWithValue("@p_invmt_id", investment.Id);
                         cmd.Parameters["@p_invmt_id"].Direction = ParameterDirection.Input;
 
                         cmd.Parameters.AddWithValue("@p_month", investment.DuesMonth);

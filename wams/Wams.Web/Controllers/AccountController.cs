@@ -15,6 +15,7 @@ namespace Wams.Web.Controllers
     using Wams.Common.Logging;
     using Wams.Enums.Registration;
     using Wams.Interfaces;
+    using Wams.ViewModels.MemberChildBenefit;
     using Wams.Web.Models;
 
     public class AccountController : BaseController
@@ -310,16 +311,7 @@ namespace Wams.Web.Controllers
                 }
 
                 var investments = this.accountLogic.ViewAllMemberInvestments(this.User.Id);
-                var viewModel = new ViewMemberInvestment
-                {
-                    Investments = investments,
-                    MemberName = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
-                    MemberId = UIHelper.MemberIdToString(this.User.Id),
-                    MembershipType = this.User.MembershipType,
-                    Address = this.accountLogic.GetMemberProfile(this.User.Id).Address,
-                    TotalInvested = UIHelper.TotalInvested(investments)
-                };
-
+                
                 if (investments == null)
                 {
                     return View("BaseResponse",
@@ -330,6 +322,16 @@ namespace Wams.Web.Controllers
                             HtmlString = new HtmlString("Try again.")
                         });
                 }
+
+                var viewModel = new ViewMemberInvestment
+                {
+                    Investments = investments,
+                    MemberName = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
+                    MemberId = UIHelper.MemberIdToString(this.User.Id),
+                    MembershipType = this.User.MembershipType,
+                    Address = this.accountLogic.GetMemberProfile(this.User.Id).Address,
+                    TotalInvested = UIHelper.TotalInvested(investments)
+                };
 
                 return View(viewModel);
             }
@@ -404,6 +406,53 @@ namespace Wams.Web.Controllers
                 throw;
             }
         }
+        #endregion
+
+        #region Child Benefit
+
+        public ActionResult ViewMemberSupport()
+        {
+            try
+            {
+                if (!this.Request.IsAuthenticated)
+                {
+                    return this.RedirectToAction("Login", "Auth");
+                }
+
+                var benefits = this.accountLogic.ViewAllMemberChildSupport(this.User.Id);
+
+                if (benefits == null)
+                {
+                    return View("BaseResponse",
+                        new BaseResponse
+                        {
+                            Status = BaseResponseStatus.Failed,
+                            Message = "Unknown error occured.",
+                            HtmlString = new HtmlString("Try again.")
+                        });
+                }
+
+                var viewModel = new ViewSupport
+                {
+                    Supports = benefits,
+                    MemberName = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
+                    MemberId = UIHelper.MemberIdToString(this.User.Id),
+                    MembershipType = this.User.MembershipType,
+                    Address = this.accountLogic.GetMemberProfile(this.User.Id).Address,
+                    TotalSupportAmount = benefits.Sum(investment => investment.Amount)
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                this.logProvider.Error(this.Request.RawUrl, ex);
+                throw;
+            }
+        }
+
+
+
         #endregion
 
         #region Request Loan

@@ -7,6 +7,7 @@ using Wams.Common.IoC;
 using Wams.Interfaces;
 using Wams.ViewModels.Account;
 using Wams.ViewModels.Admin;
+using Wams.ViewModels.MemberChildBenefit;
 using Wams.ViewModels.MemberDues;
 using Wams.ViewModels.MemberInvmt;
 using Wams.Web.Models;
@@ -502,6 +503,163 @@ namespace Wams.Web.Controllers
             }
 
             return this.RedirectToAction("Index", "Home");
+        }
+
+        #endregion
+
+        #region Supports
+
+        public ActionResult AddMemberSupport(int id)
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1 && id > 0)
+            {
+                var member = this.accountLogic.GetMemberProfile(id);
+                var model = new AddMemberInvmtRequest
+                {
+                    MemberId = id,
+                    MemberFullName = string.Format("{0} {1}", member.FirstName, member.LastName),
+                    AddedBy = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
+                    AddedById = this.User.Id,
+                    InvmtMonthOptions = UIHelper.GetMonthOptions(),
+                    InvmtYearOptions = UIHelper.GetYearOptions()
+                };
+
+                return View(model);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult AddMemberSupport(AddMemberInvmtRequest request)
+        {
+            if (!this.Request.IsAuthenticated || this.User.UserLoginRole < 2)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            if (request == null)
+            {
+                return this.RedirectToAction("Error");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                request.InvmtMonthOptions = UIHelper.GetMonthOptions();
+                request.InvmtYearOptions = UIHelper.GetYearOptions();
+
+                return View(request);
+            }
+
+            request.AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+            var response = this.accountLogic.AddMemberSupport(request);
+
+            var model = new BaseResponse
+            {
+                Status = response.Success ? BaseResponseStatus.Success : BaseResponseStatus.Failed,
+                Message = response.Message,
+                HtmlString = response.Success ?
+                    new HtmlString(string.Format("Member's support added. <a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", request.MemberId)) :
+                    new HtmlString(string.Format("<a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", request.MemberId))
+            };
+
+            return View("BaseResponse", model);
+        }
+
+        [HttpGet]
+        public ActionResult EditMemberSupport(int id)
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            {
+                var model = this.accountLogic.GetMemberSupport(id);
+
+                var req = new EditMemberInvmtRequest
+                {
+                    MemberId = model.MemberId,
+                    InvmtId = model.Id,
+                    Amount = model.Amount,
+                    MemberFullName = model.MemberName,
+                    AddedBy = string.Format("{0} {1}", this.User.FirstName, this.User.LastName),
+                    AddedById = this.User.Id,
+                    AddedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"),
+                    InvmtMonth = model.Month,
+                    InvmtYear = Convert.ToInt32(model.Year),
+                    InvmtMonthOptions = UIHelper.GetMonthOptions(),
+                    InvmtYearOptions = UIHelper.GetYearOptions()
+                };
+
+                return View(req);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult EditMemberSupport(EditMemberInvmtRequest model)
+        {
+            if (this.Request.IsAuthenticated && this.User.UserLoginRole > 1)
+            {
+                if (model == null)
+                {
+                    return this.RedirectToAction("Error");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    model.InvmtMonthOptions = UIHelper.GetMonthOptions();
+                    model.InvmtYearOptions = UIHelper.GetYearOptions();
+
+                    return View(model);
+                }
+
+                var result = this.accountLogic.UpdateMemberSupport(model);
+
+                var response = new BaseResponse
+                {
+                    Status = result.Success ? BaseResponseStatus.Success : BaseResponseStatus.Failed,
+                    Message = result.Message,
+                    HtmlString = result.Success ?
+                        new HtmlString(string.Format("Member's support updated. <a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", model.MemberId)) :
+                        new HtmlString(string.Format("<a href='/Admin/UserDetails/{0}'>Back to member's profile</a>", model.MemberId))
+                };
+
+                return View("BaseResponse", response);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult ViewMemberSupport(int id)
+        {
+            if (!this.Request.IsAuthenticated || this.User.UserLoginRole < 2)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            var benefits = this.accountLogic.ViewAllMemberChildSupport(id);
+            
+            if (benefits == null)
+            {
+                return View("BaseResponse",
+                    new BaseResponse
+                    {
+                        Status = BaseResponseStatus.Failed,
+                        Message = "Unknown error occured.",
+                        HtmlString = new HtmlString("Try again.")
+                    });
+            }
+            var member = this.accountLogic.GetMemberProfile(id);
+
+            var viewModel = new ViewSupport
+            {
+                Supports = benefits,
+                MemberName = string.Format("{0} {1}", member.FirstName, member.LastName),
+                MemberId = UIHelper.MemberIdToString(id),
+                MembershipType = member.MembershipType,
+                Address = member.Address,
+                TotalSupportAmount = benefits.Sum(investment => investment.Amount)
+            };
+            return View(viewModel);
         }
 
         #endregion

@@ -8,6 +8,7 @@ using Wams.DAL.Interfaces;
 using Wams.Interfaces;
 using Wams.ViewModels.Accounting;
 using Wams.ViewModels.Account;
+using Wams.Caching;
 
 namespace Wams.BusinessLogic
 {
@@ -31,6 +32,7 @@ namespace Wams.BusinessLogic
         }
 
         #endregion
+
         public TotalData TotalMonthlyDues(int year)
         {
             var annualDues = this.accountingRepository.GetAll_AnnualDues(year);

@@ -1,0 +1,74 @@
+﻿@model Wams.ViewModels.MemberChildBenefit.ViewSupport
+
+<br />
+<h3 class="printOnly">Print statement</h3>
+<div>
+    <div>Welfare Association</div>
+    <div>Member Id: @Model.MemberId</div>
+    <div>Member name: @Model.MemberName</div>
+    <div>Membership type: @Model.MembershipType</div>
+    @if (!string.IsNullOrEmpty(Model.Address))
+    {
+        <div>Member Location: @Model.Address</div>
+    }
+
+</div>
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+            Amount
+        </th>
+        <th>
+            Month
+        </th>
+        <th>
+            Year
+        </th>
+        <th>
+            Added Date
+        </th>
+        <th>
+            Added By
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Supports)
+    {
+        <tr class="@if (!item.Paid)
+                   {
+                       <text>alert-danger</text>
+                   }">
+            <td>
+                &#x20b5; @Html.DisplayFor(modelItem => item.Amount) ghc
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Month)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddedBy)
+            </td>
+            <td>
+                @if (!item.Paid)
+                {
+                    <span class="alert-danger">Unpaid</span>
+                }
+                else
+                {
+                    @Html.ActionLink("Edit", "EditMemberSupport", new { id = item.Id })
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+<input type="submit" id="printBtn" value="Print" class="btn btn-warning" />

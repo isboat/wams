@@ -34,7 +34,7 @@ namespace Wams.BusinessLogic
 
             if (GlobalCachingProvider.Instance.ItemExist(cacheKey))
             {
-                return (LoginResponse)GlobalCachingProvider.Instance.GetItem(cacheKey);
+                // return (LoginResponse)GlobalCachingProvider.Instance.GetItem(cacheKey);
             }
 
             var userAccount = isAdmin ?
@@ -52,6 +52,7 @@ namespace Wams.BusinessLogic
                     UserLoginRole = userAccount.LoginRole,
                     MembershipType = userAccount.MembershipType,
                     CanInvest = userAccount.CanInvest,
+                    CanDoChildBenefit = userAccount.CanDoChildBenefit,
                     IsAdmin = userAccount.IsAdmin
                 };
 

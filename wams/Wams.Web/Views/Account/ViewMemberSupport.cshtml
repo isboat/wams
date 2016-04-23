@@ -1,0 +1,65 @@
+﻿@model Wams.ViewModels.MemberChildBenefit.ViewSupport
+
+<br />
+<h3 class="printOnly">Print child support statement</h3>
+<div>
+    <div>Welfare Association</div>
+    <div>Member id: @Model.MemberId</div>
+    <div>Member name: @Model.MemberName</div>
+    <div>Membership type: @Model.MembershipType</div>
+    @if (!string.IsNullOrEmpty(Model.Address))
+    {
+        <div>Member Location: @Model.Address</div>
+    }
+
+</div>
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+            Amount
+        </th>
+        <th>
+            Month
+        </th>
+        <th>
+            Year
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Supports)
+    {
+        <tr class="@if (!item.Paid) { <text>alert-danger</text> }">
+            <td>
+
+                @if (!item.Paid)
+                {
+                    <span>&#x20b5; <span class="alert-danger">@Html.DisplayFor(modelItem => item.Amount)</span></span>
+
+                }
+                else
+                {
+                    <span>&#x20b5; @Html.DisplayFor(modelItem => item.Amount) ghc</span>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Month)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @if (!item.Paid)
+                {
+                    <span class="alert-danger">Unpaid</span>
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+<input type="submit" id="printBtn" value="Print" class="btn btn-warning" />

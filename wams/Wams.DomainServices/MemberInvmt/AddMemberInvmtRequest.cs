@@ -19,13 +19,13 @@ namespace Wams.ViewModels.MemberInvmt
         [Required]
         public decimal Amount { get; set; }
 
-        [DisplayName("Investment Month")]
+        [DisplayName("Month")]
         [Required]
         public string InvmtMonth { get; set; }
 
         public IEnumerable<SelectListItem> InvmtMonthOptions { get; set; }
 
-        [DisplayName("Investment year")]
+        [DisplayName("Year")]
         [Required]
         public int InvmtYear { get; set; }
 

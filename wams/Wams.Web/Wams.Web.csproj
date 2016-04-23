@@ -218,6 +218,10 @@
     <Content Include="Views\Admin\EditAdmin.cshtml" />
     <Content Include="Views\Accounting\TotalMonthlyDues.cshtml" />
     <Content Include="Views\Accounting\InvestmentView.cshtml" />
+    <Content Include="Views\Account\ViewMemberSupport.cshtml" />
+    <Content Include="Views\Admin\ViewMemberSupport.cshtml" />
+    <Content Include="Views\Admin\AddMemberSupport.cshtml" />
+    <Content Include="Views\Admin\EditMemberSupport.cshtml" />
     <None Include="Views\Base\AboutUs.cshtml" />
     <None Include="Views\Base\ContactUs.cshtml" />
     <None Include="Views\Base\CookiePolicy.cshtml" />

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Wams.DataObjects.Accounts
 {
-    public class MemberInvmt
+    public class ChildBenefit
     {
         public int Id { get; set; }
 
@@ -16,9 +16,9 @@ namespace Wams.DataObjects.Accounts
 
         public decimal Amount { get; set; }
 
-        public string DuesMonth { get; set; }
+        public string Month { get; set; }
 
-        public int DuesYear { get; set; }
+        public int Year { get; set; }
 
         public string AddedDate { get; set; }
 

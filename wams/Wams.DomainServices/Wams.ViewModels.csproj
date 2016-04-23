@@ -88,6 +88,7 @@
     <Compile Include="BaseRequest.cs" />
     <Compile Include="BaseResponse.cs" />
     <Compile Include="HomepageViewModel.cs" />
+    <Compile Include="MemberChildBenefit\SupportViewModel.cs" />
     <Compile Include="MemberDues\AddMemberDuesRequest.cs" />
     <Compile Include="MemberDues\EditMemberDuesRequest.cs" />
     <Compile Include="MemberDues\MemberDuesViewModel.cs" />

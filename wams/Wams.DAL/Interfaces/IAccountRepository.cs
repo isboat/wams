@@ -90,5 +90,13 @@ namespace Wams.DAL.Interfaces
         PendingLoan GetPendingdLoan(int loanid);
         
         int UpdateLoan(PendingLoan pendingLoan);
+
+        List<ChildBenefit> ViewAllMemberChildSupport(int id);
+
+        int AddMemberSupport(MemberInvmt memberInvmt);
+
+        MemberInvmt GetMemberSupport(int id);
+
+        int UpdateMemberSupport(MemberInvmt memberInvmt);
     }
 }

@@ -27,6 +27,10 @@
                 {
                     <li>@Html.ActionLink("Investment statement", "ViewMemberInvestments", "Account")</li>
                 }
+                @if (User.CanDoChildBenefit)
+                {
+                    <li>@Html.ActionLink("Child support statement", "ViewMemberSupport", "Account")</li>
+                }
 
             </ul>
         </li>

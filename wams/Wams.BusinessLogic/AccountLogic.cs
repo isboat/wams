@@ -16,6 +16,7 @@ namespace Wams.BusinessLogic
     using Wams.Enums.Registration;
     using Wams.DataObjects;
     using Wams.ViewModels.MemberInvmt;
+    using Wams.ViewModels.MemberChildBenefit;
 
     public class AccountLogic : IAccount
     {
@@ -75,6 +76,7 @@ namespace Wams.BusinessLogic
                       MembershipType = userProfile.MembershipType,
                       ProfilePicUrl = userProfile.ProfilePicUrl,
                       CanInvest = userProfile.CanInvest,
+                      CanDoChildSupport = userProfile.CanDoChildBenefit,
                       Address = userProfile.Address
                   }
                 : null;
@@ -101,7 +103,8 @@ namespace Wams.BusinessLogic
                         EmergencyTel = profile.EmergencyTel,
                         MembershipType = profile.MembershipType,
                         LoginRole = profile.UserLoginRole,
-                        CanInvest = profile.CanInvest
+                        CanInvest = profile.CanInvest,
+                        CanDoChildBenefit = profile.CanDoChildSupport
                     });
 
             return response;
@@ -351,7 +354,7 @@ namespace Wams.BusinessLogic
                         if (x.DuesMonth == month.Month && x.DuesYear == month.Year)
                         {
                             vm.Paid = true;
-                            vm.InvmtId = x.InvmtId;
+                            vm.InvmtId = x.Id;
                             vm.MemberId = x.MemberId;
                             vm.MemberName = x.MemberName;
                             vm.DuesYear = x.DuesYear.ToString();
@@ -413,7 +416,7 @@ namespace Wams.BusinessLogic
                     null :
                     new MemberInvmtViewModel
                     {
-                        InvmtId = investment.InvmtId,
+                        InvmtId = investment.Id,
                         MemberId = investment.MemberId,
                         MemberName = investment.MemberName,
                         DuesMonth = investment.DuesMonth,
@@ -437,7 +440,7 @@ namespace Wams.BusinessLogic
             {
                 var rows = this.accountRepository.UpdateMemberInvmt(new MemberInvmt
                 {
-                    InvmtId = request.InvmtId,
+                    Id = request.InvmtId,
                     MemberId = request.MemberId,
                     MemberName = request.MemberFullName,
                     Amount = request.Amount,
@@ -565,6 +568,138 @@ namespace Wams.BusinessLogic
             }
         }
 
+        #endregion
+
+        #region Child Benefits
+
+        public List<SupportViewModel> ViewAllMemberChildSupport(int id)
+        {
+            try
+            {
+                var list = this.accountRepository.ViewAllMemberChildSupport(id);
+
+                var uptodateMonths = this.UptoDateMonths();
+
+                var response = new List<SupportViewModel>();
+
+                foreach (var month in uptodateMonths)
+                {
+                    var vm = new SupportViewModel { Month = month.Month, Year = month.Year.ToString() };
+
+                    list.ForEach(x =>
+                    {
+
+                        if (x.Month == month.Month && x.Year == month.Year)
+                        {
+                            vm.Paid = true;
+                            vm.Id = x.Id;
+                            vm.MemberId = x.MemberId;
+                            vm.MemberName = x.MemberName;
+                            vm.Year = x.Year.ToString();
+                            vm.Amount = x.Amount;
+                            vm.AddedBy = x.AddedBy;
+                            vm.AddedDate = x.AddedDate;
+                            vm.AddedById = x.AddedById;
+                        }
+                    });
+
+                    response.Add(vm);
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                //log ex.Message;
+                return null;
+            }
+        }
+
+        public BaseResponse AddMemberSupport(AddMemberInvmtRequest request)
+        {
+            var baseResponse = new BaseResponse();
+            try
+            {
+                var rows = this.accountRepository.AddMemberSupport(new MemberInvmt
+                {
+                    MemberId = request.MemberId,
+                    MemberName = request.MemberFullName,
+                    Amount = request.Amount,
+                    DuesMonth = request.InvmtMonth,
+                    DuesYear = request.InvmtYear,
+                    AddedDate = request.AddedDate,
+                    AddedBy = request.AddedBy,
+                    AddedById = request.AddedById,
+                });
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+
+            }
+            catch (Exception exception)
+            {
+                //log exception.Message here
+                return baseResponse;
+            }
+        }
+
+        public SupportViewModel GetMemberSupport(int id)
+        {
+            try
+            {
+                var support = this.accountRepository.GetMemberSupport(id);
+
+                return support == null ?
+                    null :
+                    new SupportViewModel
+                    {
+                        Id = support.Id,
+                        MemberId = support.MemberId,
+                        MemberName = support.MemberName,
+                        Month = support.DuesMonth,
+                        Year = support.DuesYear.ToString(),
+                        Amount = support.Amount,
+                        AddedBy = support.AddedBy,
+                        AddedDate = support.AddedDate,
+                        AddedById = support.AddedById
+                    };
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public BaseResponse UpdateMemberSupport(EditMemberInvmtRequest request)
+        {
+            var baseResponse = new BaseResponse();
+            try
+            {
+                var rows = this.accountRepository.UpdateMemberSupport(new MemberInvmt
+                {
+                    Id = request.InvmtId,
+                    MemberId = request.MemberId,
+                    MemberName = request.MemberFullName,
+                    Amount = request.Amount,
+                    DuesMonth = request.InvmtMonth,
+                    DuesYear = request.InvmtYear,
+                    AddedDate = request.AddedDate,
+                    AddedBy = request.AddedBy,
+                    AddedById = request.AddedById,
+                });
+
+                baseResponse.Success = rows == 1;
+
+                return baseResponse;
+
+            }
+            catch (Exception exception)
+            {
+                //log exception.Message here
+                return baseResponse;
+            }
+        }
         #endregion
 
         #region Request Loan

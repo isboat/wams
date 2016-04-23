@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using Wams.ViewModels;
 using Wams.ViewModels.Account;
+using Wams.ViewModels.MemberChildBenefit;
 using Wams.ViewModels.MemberDues;
 using Wams.ViewModels.MemberInvmt;
 using Wams.ViewModels.Registration;
@@ -82,5 +83,13 @@ namespace Wams.Interfaces
         LoanRequest GetLoan(int loanid);
         
         BaseResponse UpdateLoan(LoanRequest request);
+
+        List<SupportViewModel> ViewAllMemberChildSupport(int id);
+
+        BaseResponse AddMemberSupport(AddMemberInvmtRequest request);
+
+        SupportViewModel GetMemberSupport(int id);
+
+        BaseResponse UpdateMemberSupport(EditMemberInvmtRequest model);
     }
 }

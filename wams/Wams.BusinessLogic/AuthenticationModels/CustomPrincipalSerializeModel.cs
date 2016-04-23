@@ -15,6 +15,7 @@ namespace Wams.BusinessLogic.AuthenticationModels
         public int UserLoginRole { get; set; }
         public string MembershipType { get; set; }
         public bool CanInvest { get; set; }
+        public bool CanDoChildBenefit { get; set; }
         public bool IsAdmin { get; set; }
     }
 }

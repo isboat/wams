@@ -31,6 +31,8 @@ namespace Wams.DataObjects.Accounts
 
         public bool CanInvest { get; set; }
 
+        public bool CanDoChildBenefit { get; set; }
+
         public string EmailAddress { get; set; }
 
         public string FirstName { get; set; }

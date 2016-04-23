@@ -14,7 +14,11 @@
                 @Html.ActionLink("Add customer's dues", "AddMemberDues", "Admin", new {id = Model.MemberId}, new {@class = "btn btn-primary"})
                 @Html.ActionLink("View customer's dues", "ViewMemberDues", "Admin", new {id = Model.MemberId}, new {@class = "btn btn-primary"})
                 @Html.ActionLink("Add customer's investment", "AddMemberInvmt", "Admin", new {id = Model.MemberId}, new {@class = "btn btn-warning"})
-                @Html.ActionLink("View customer's investment", "ViewMemberInvmt", "Admin", new {id = Model.MemberId}, new {@class = "btn btn-warning"})
+                @Html.ActionLink("View customer's investment", "ViewMemberInvmt", "Admin", new { id = Model.MemberId }, new { @class = "btn btn-warning" })
+                <div style="margin: 10px 0;">
+                    @Html.ActionLink("Add customer's child support", "AddMemberSupport", "Admin", new { id = Model.MemberId }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("View customer's Child support", "ViewMemberSupport", "Admin", new { id = Model.MemberId }, new { @class = "btn btn-success" })
+                </div>
                 @Html.ActionLink("Process customer's transfer", "List", "Admin", null, new {@class = "btn btn-danger disabled"})
             </div>
         </div>
@@ -89,6 +93,16 @@
                      <div class="checkbox">
                          @Html.EditorFor(model => model.CanInvest)
                          @Html.ValidationMessageFor(model => model.CanInvest, "", new {@class = "text-danger"})
+                     </div>
+                 </div>
+             </div>
+
+             <div class="form-group">
+                 @Html.LabelFor(model => model.CanDoChildSupport, htmlAttributes: new { @class = "control-label col-md-2" })
+                 <div class="col-md-10">
+                     <div class="checkbox">
+                         @Html.EditorFor(model => model.CanDoChildSupport)
+                         @Html.ValidationMessageFor(model => model.CanDoChildSupport, "", new { @class = "text-danger" })
                      </div>
                  </div>
              </div>
