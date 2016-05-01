@@ -63,9 +63,59 @@
         </td>
     </tr>
 }
+    <tr>
+        <td>Total = <span>&#x20b5; @Model.TotalInvested ghc</span></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
 
 </table>
 
-<h4>Total investment made = <span>&#x20b5; @Model.TotalInvested ghc</span></h4>
 <br/>
+@if (Model.Withdrawals.Count > 0)
+{
+<div class="panel panel-success">
+    <div class="panel-heading">Granted Withdrawals</div>
+    <div class="panel-body">
+        <table class="table">
+            <tr>
+                <th>
+                    Request Date
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    Payment Method
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Withdrawals)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RequestDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HowToPayYou)
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td></td>
+                <td>Total = <span>&#x20b5; @Model.Withdrawals.Sum(x => x.Amount) ghc</span></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+}
+
+<h4>Remaining investment amount = <span>&#x20b5; @(Model.TotalInvested - Model.Withdrawals.Sum(x => x.Amount)) ghc</span></h4>
+<br />
 <input type="submit" id="printBtn" value="Print" class="btn btn-warning" />

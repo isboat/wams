@@ -464,6 +464,8 @@ namespace Wams.Web.Controllers
                     Amount = model.Amount,
                     MemberName = model.MemberName,
                     Granted = model.Granted,
+                    HowToPayYou = model.HowToPayYou,
+                    HowToPayYouOptions = UIHelper.GetHowToPayYouOptions(),
                     RequestDate = model.RequestDate
                 };
 

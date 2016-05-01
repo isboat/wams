@@ -70,9 +70,14 @@ namespace Wams.Web.Models
                 new SelectListItem {Text = "Adminstrator", Value = "2"}
             };
 
+            if (role >= Constants.Accountant)
+            {
+                types.Add(new SelectListItem { Text = "Accountant", Value = "3" });
+            }
+
             if (role >= Constants.SuperAdminRole)
             {
-                types.Add(new SelectListItem { Text = "Super Administrator", Value = "3" });
+                types.Add(new SelectListItem { Text = "Super Administrator", Value = "10" });
             }
             return new SelectList(types, "Value", "Text");
         }
@@ -88,6 +93,19 @@ namespace Wams.Web.Models
                 new SelectListItem {Text = "Disaster Relief Support", Value = "DisasterReliefSupport"},
                 new SelectListItem {Text = "Bereavement Allowance", Value = "BereavementAllowance"},
                 new SelectListItem {Text = "Medical Assistance", Value = "MedicalAssistance"}
+            };
+
+            return new SelectList(types, "Value", "Text");
+        }
+
+        public static IEnumerable<SelectListItem> GetHowToPayYouOptions()
+        {
+            var types = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "By Mobile Money", Value = "MobileMoney"},
+                new SelectListItem {Text = "By Cash", Value = "Cash"},
+                new SelectListItem {Text = "By Cheque", Value = "Cheque"},
+                new SelectListItem {Text = "By Bank Account", Value = "BankAccount"}
             };
 
             return new SelectList(types, "Value", "Text");

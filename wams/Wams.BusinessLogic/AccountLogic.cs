@@ -469,12 +469,13 @@ namespace Wams.BusinessLogic
 
             try
             {
-                var rows = this.accountRepository.RequestInvestmentWithdrawal(new PendingBase
+                var rows = this.accountRepository.RequestInvestmentWithdrawal(new InvestmentWithdrawal
                 {
                     Amount = request.Amount,
                     MemberId = request.MemberId,
                     MemberName = request.MemberName,
-                    RequestDate = request.RequestDate
+                    RequestDate = request.RequestDate,
+                    HowToPayYou = request.HowToPayYou
                 });
 
                 baseResponse.Success = rows == 1;
@@ -504,6 +505,7 @@ namespace Wams.BusinessLogic
                     WithdrawInvmtReqId = pending.PendingId,
                     Amount = pending.Amount,
                     RequestDate = pending.RequestDate,
+                    HowToPayYou = pending.HowToPayYou,
                     Granted = pending.Granted
                 };
 
@@ -514,6 +516,33 @@ namespace Wams.BusinessLogic
             }
         }
 
+        public List<WithdrawInvestmentRequest> GetGrantedMemberInvestmentReqs(int memberId)
+        {
+            try
+            {
+                var pendingLoans = this.accountRepository.GetGrantedMemberInvestmentReqs(memberId);
+                if (pendingLoans == null)
+                {
+                    return null;
+                }
+
+                return pendingLoans.Select(x =>
+                    new WithdrawInvestmentRequest
+                    {
+                        Amount = x.Amount,
+                        MemberId = x.MemberId,
+                        MemberName = x.MemberName,
+                        RequestDate = x.RequestDate,
+                        WithdrawInvmtReqId = x.PendingId,
+                        HowToPayYou = x.HowToPayYou
+                    }).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
         public List<WithdrawInvestmentRequest> GetAllInvestmentRequests()
         {
             try
@@ -546,14 +575,15 @@ namespace Wams.BusinessLogic
             var baseResponse = new BaseResponse();
             try
             {
-                var rows = this.accountRepository.UpdateInvestmentRequest(new PendingBase
+                var rows = this.accountRepository.UpdateInvestmentRequest(new InvestmentWithdrawal
                 {
                     PendingId = request.WithdrawInvmtReqId,
                     MemberId = request.MemberId,
                     MemberName = request.MemberName,
                     RequestDate = request.RequestDate,
                     Amount = request.Amount,
-                    Granted = request.Granted
+                    Granted = request.Granted,
+                    HowToPayYou = request.HowToPayYou
                 });
 
                 baseResponse.Success = rows == 1;

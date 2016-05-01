@@ -16,6 +16,9 @@
     </div>
 </div>
 
+@if (User.UserLoginRole > 2)
+{
+
 <div class="panel panel-success">
     <div class="panel-heading">Accounting Section </div>
     <div class="panel-body">
@@ -28,6 +31,8 @@
     </div>
 </div>
 
+}
+    
 <div class="panel panel-warning">
     <div class="panel-heading">Admin Settings</div>
     <div class="panel-body">

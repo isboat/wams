@@ -65,13 +65,15 @@ namespace Wams.DAL.Interfaces
 
         int UpdateMemberInvmt(MemberInvmt investment);
 
-        int RequestInvestmentWithdrawal(PendingBase pending);
+        int RequestInvestmentWithdrawal(InvestmentWithdrawal withdraw);
+
+        List<InvestmentWithdrawal> GetGrantedMemberInvestmentReqs(int memberId);
 
         List<PendingBase> GetAllInvestmentRequests();
 
-        PendingBase GetInvestmentWithdrawRequest(int id);
+        InvestmentWithdrawal GetInvestmentWithdrawRequest(int id);
 
-        int UpdateInvestmentRequest(PendingBase pendingBase);
+        int UpdateInvestmentRequest(InvestmentWithdrawal pendingBase);
 
         #endregion
 

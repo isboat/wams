@@ -311,7 +311,14 @@ namespace Wams.Web.Controllers
                 }
 
                 var investments = this.accountLogic.ViewAllMemberInvestments(this.User.Id);
-                
+                var withdrawals = this.accountLogic.GetGrantedMemberInvestmentReqs(this.User.Id);
+                withdrawals.ForEach(x => {
+                    var option = UIHelper.GetHowToPayYouOptions().FirstOrDefault(opt => opt.Value == x.HowToPayYou);
+                    if (option != null)
+                    {
+                        x.HowToPayYou = option.Text;
+                    }
+                });
                 if (investments == null)
                 {
                     return View("BaseResponse",
@@ -330,7 +337,8 @@ namespace Wams.Web.Controllers
                     MemberId = UIHelper.MemberIdToString(this.User.Id),
                     MembershipType = this.User.MembershipType,
                     Address = this.accountLogic.GetMemberProfile(this.User.Id).Address,
-                    TotalInvested = UIHelper.TotalInvested(investments)
+                    TotalInvested = UIHelper.TotalInvested(investments),
+                    Withdrawals = withdrawals
                 };
 
                 return View(viewModel);
@@ -351,7 +359,12 @@ namespace Wams.Web.Controllers
                     return this.RedirectToAction("Login", "Auth");
                 }
 
-                return View(new WithdrawInvestmentRequest());
+                var model = new WithdrawInvestmentRequest
+                {
+                    HowToPayYouOptions = UIHelper.GetHowToPayYouOptions()
+                };
+
+                return View(model);
             }
             catch (Exception ex)
             {

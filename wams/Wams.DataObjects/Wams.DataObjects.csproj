@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounts\ChildBenefit.cs" />
+    <Compile Include="Accounts\InvestmentWithdrawal.cs" />
     <Compile Include="Accounts\Loan.cs" />
     <Compile Include="Accounts\MemberDues.cs" />
     <Compile Include="Accounts\MemberInvmt.cs" />

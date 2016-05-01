@@ -48,5 +48,7 @@ namespace Wams.ViewModels.MemberInvmt
         public decimal TotalInvested { get; set; }
 
         public List<MemberInvmtViewModel> Investments { get; set; }
+
+        public List<WithdrawInvestmentRequest> Withdrawals { get; set; }
     }
 }

@@ -108,7 +108,7 @@ namespace Wams.DAL.Repositories
 
                 using (var connection = new MySqlConnection(this.ConString))
                 {
-                    var query = "select * from administrators;";
+                    var query = "select * from administrators where deleted = 0;";
 
                     using (var cmd = new MySqlCommand(query, connection))
                     {
@@ -150,7 +150,7 @@ namespace Wams.DAL.Repositories
 
                 using (var connection = new MySqlConnection(this.ConString))
                 {
-                    var query = string.Format("select * from administrators where id = {0} limit 1;", id);
+                    var query = string.Format("select * from administrators where id = {0} and deleted = 0 limit 1;", id);
 
                     using (var cmd = new MySqlCommand(query, connection))
                     {

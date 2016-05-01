@@ -43,11 +43,14 @@
                             <span>Administrator</span>
                         }else if (item.Role == 3)
                         {
+                            <span>Accountant</span>
+                        }else if (item.Role == 10)
+                        {
                             <span>Super Administrator</span>
                         }
                     </td>
                     <td>
-                        @if (this.User.UserLoginRole > 2)
+                        @if (this.User.UserLoginRole == 10)
                         {
                             <span>@Html.ActionLink("Edit", "EditAdmin", new { id = item.Id }) | </span>
                             @Html.ActionLink("Delete", "DeleteAdmin", new { id = item.Id })
