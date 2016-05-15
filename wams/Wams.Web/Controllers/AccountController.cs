@@ -383,7 +383,7 @@ namespace Wams.Web.Controllers
                     return this.RedirectToAction("Login", "Auth");
                 }
 
-                if (!ModelState.IsValid)
+                if (!ModelState.IsValid || string.IsNullOrEmpty(request.HowToPayYou) || string.IsNullOrEmpty(request.RequestDate))
                 {
                     return View(request);
                 }

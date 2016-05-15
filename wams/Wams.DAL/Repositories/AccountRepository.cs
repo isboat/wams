@@ -1092,7 +1092,7 @@ namespace Wams.DAL.Repositories
 
                 using (var connection = new MySqlConnection(this.ConString))
                 {
-                    var cmdText = string.Format("INSERT INTO investmentrequest(member_id, member_name, amount, request_date, howtoPayYou, granted) VALUES({0}, '{1}', {2}, {3}, {4}, {5})",
+                    var cmdText = string.Format("INSERT INTO investmentrequest(member_id, member_name, amount, request_date, howtoPayYou, granted) VALUES({0}, '{1}', {2}, '{3}', '{4}', {5})",
                         pending.MemberId, pending.MemberName, pending.Amount, pending.RequestDate, pending.HowToPayYou, 0);
 
                     using (var cmd = new MySqlCommand(cmdText, connection))
